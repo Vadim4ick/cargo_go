@@ -3,6 +3,7 @@ package user
 import (
 	"encoding/json"
 	"net/http"
+	"test-project/internal/repository"
 	"test-project/internal/usecase"
 
 	"github.com/gorilla/mux"
@@ -14,6 +15,15 @@ type Handler struct {
 
 func NewHandler(uc usecase.UserUsecase) *Handler {
 	return &Handler{uc: uc}
+}
+
+func RegisterUserRoutes(r *mux.Router) {
+	userRepo := repository.NewInMemoryUserRepo()
+	svc := usecase.NewUserUsecase(userRepo)
+	h := NewHandler(svc)
+
+	r.HandleFunc("/users", h.List).Methods("GET")
+	r.HandleFunc("/users/{id}", h.Get).Methods("GET")
 }
 
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {

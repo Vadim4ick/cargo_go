@@ -1,6 +1,8 @@
 package router
 
 import (
+	user "test-project/internal/delivery/http"
+
 	"github.com/gorilla/mux"
 )
 
@@ -9,7 +11,7 @@ func Setup() *mux.Router {
 
 	subrouter := r.PathPrefix("/api/v1").Subrouter()
 
-	RegisterUserRoutes(subrouter)
+	user.RegisterUserRoutes(subrouter)
 
 	return subrouter
 }
