@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-	mux := router.Setup()
 
 	dsn := config.Envs.POSTGRES_URI
 
@@ -28,6 +27,8 @@ func main() {
 		log.Fatal("Не удалось проверить подключение к базе данных:", err)
 	}
 	fmt.Println("Успешное подключение к базе данных!")
+
+	mux := router.Setup(pool)
 
 	fmt.Println("Starting server on :8080")
 	if err := http.ListenAndServe(":8080", mux); err != nil {

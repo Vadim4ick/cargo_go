@@ -1,39 +1,59 @@
 package repository
 
 import (
+	"context"
 	"errors"
 	"test-project/internal/domain"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 var ErrUserNotFound = errors.New("user not found")
 
-type InMemoryUserRepo struct {
-	data map[string]domain.User
+type PostgresUserRepo struct {
+	db *pgxpool.Pool
 }
 
-func NewInMemoryUserRepo() domain.UserRepository {
-	return &InMemoryUserRepo{
-		data: make(map[string]domain.User),
+func NewPostgresUserRepo(db *pgxpool.Pool) domain.UserRepository {
+	return &PostgresUserRepo{db: db}
+}
+
+func (r *PostgresUserRepo) FindAll() ([]domain.User, error) {
+	rows, err := r.db.Query(context.Background(), "SELECT id, username, email, password, role, created_at FROM users")
+	if err != nil {
+		return nil, err
 	}
-}
+	defer rows.Close()
 
-func (r *InMemoryUserRepo) FindAll() ([]domain.User, error) {
-	users := make([]domain.User, 0, len(r.data))
-	for _, u := range r.data {
+	var users []domain.User
+
+	for rows.Next() {
+		var u domain.User
+		if err := rows.Scan(&u.ID, &u.Username, &u.Email, &u.Password, &u.Role, &u.CreatedAt); err != nil {
+			return nil, err
+		}
 		users = append(users, u)
 	}
 	return users, nil
 }
 
-func (r *InMemoryUserRepo) FindByID(id string) (domain.User, error) {
-	u, ok := r.data[id]
-	if !ok {
-		return domain.User{}, ErrUserNotFound
+func (r *PostgresUserRepo) FindByID(id string) (domain.User, error) {
+	var u domain.User
+	err := r.db.QueryRow(context.Background(),
+		"SELECT id, username, email, password, role, created_at FROM users WHERE id=$1", id).
+		Scan(&u.ID, &u.Username, &u.Email, &u.Password, &u.Role, &u.CreatedAt)
+	if err != nil {
+		return domain.User{}, err
 	}
 	return u, nil
 }
 
-func (r *InMemoryUserRepo) Create(u domain.User) (domain.User, error) {
-	r.data[u.ID] = u
+func (r *PostgresUserRepo) Create(u domain.User) (domain.User, error) {
+	_, err := r.db.Exec(context.Background(),
+		"INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
+		u.Username, u.Email, u.Password)
+	if err != nil {
+		return domain.User{}, err
+	}
 	return u, nil
 }
