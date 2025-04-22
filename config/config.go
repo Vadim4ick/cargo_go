@@ -1,15 +1,31 @@
 package config
 
 import (
-	"github.com/kelseyhightower/envconfig"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	Addr string `envconfig:"ADDR" default:":8080"`
+	Addr         string
+	POSTGRES_URI string
 }
 
-func Load() (*Config, error) {
-	var cfg Config
-	err := envconfig.Process("", &cfg)
-	return &cfg, err
+var Envs = initConfig()
+
+func initConfig() Config {
+	godotenv.Load()
+
+	return Config{
+		Addr:         getEnv("PUBLIC_HOST", "http://localhost"),
+		POSTGRES_URI: getEnv("POSTGRES_URI", "postgres://test:test@localhost:5432/test"),
+	}
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+
+	return fallback
 }
