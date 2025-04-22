@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
 	"test-project/config"
 	router "test-project/internal/delivery"
+
+	_ "test-project/docs"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

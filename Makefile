@@ -7,6 +7,12 @@ test:
 run: build
 	@./bin/ecom
 
+swagger:
+	swag init -g cmd/main.go -o docs --parseInternal
+
+server: swagger
+	go run cmd/main.go
+
 GOMIGRATE := $(shell go env GOPATH)/bin/migrate
 DB_URL := postgres://test:test@localhost:5432/test?sslmode=disable
 

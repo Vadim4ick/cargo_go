@@ -37,6 +37,14 @@ func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
 	r.HandleFunc("/users", h.Create).Methods("POST")
 }
 
+// @Summary      List users
+// @Description  Возвращает всех зарегистрированных пользователей
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  domain.User
+// @Failure      500  {object}  map[string]string
+// @Router       /users [get]
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	users, err := h.uc.ListUsers()
 	if err != nil {
