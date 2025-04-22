@@ -1,6 +1,11 @@
 package usecase
 
-import "test-project/internal/domain"
+import (
+	"errors"
+	"strings"
+	"test-project/internal/domain"
+	"test-project/internal/validator"
+)
 
 type UserUsecase interface {
 	ListUsers() ([]domain.User, error)
@@ -9,11 +14,12 @@ type UserUsecase interface {
 }
 
 type userUsecase struct {
-	repo domain.UserRepository
+	repo      domain.UserRepository
+	validator *validator.UserValidator
 }
 
-func NewUserUsecase(r domain.UserRepository) UserUsecase {
-	return &userUsecase{repo: r}
+func NewUserUsecase(r domain.UserRepository, v *validator.UserValidator) UserUsecase {
+	return &userUsecase{repo: r, validator: v}
 }
 
 func (u *userUsecase) ListUsers() ([]domain.User, error) {
@@ -25,6 +31,8 @@ func (u *userUsecase) GetUser(id string) (domain.User, error) {
 }
 
 func (u *userUsecase) CreateUser(input domain.User) (domain.User, error) {
-	// валидировать input…
+	if errs := u.validator.ValidateUser(input); len(errs) > 0 {
+		return domain.User{}, errors.New(strings.Join(errs, "; "))
+	}
 	return u.repo.Create(input)
 }

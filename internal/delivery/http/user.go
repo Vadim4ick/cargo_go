@@ -2,11 +2,13 @@ package user
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
+	"strings"
 	"test-project/internal/domain"
 	"test-project/internal/repository"
 	"test-project/internal/usecase"
+	"test-project/internal/validator"
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -21,8 +23,13 @@ func NewHandler(uc usecase.UserUsecase) *Handler {
 }
 
 func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
+	userValidator, err := validator.NewUserValidator()
+	if err != nil {
+		log.Fatal("Ошибка инициализации валидатора:", err)
+	}
+
 	userRepo := repository.NewPostgresUserRepo(db)
-	svc := usecase.NewUserUsecase(userRepo)
+	svc := usecase.NewUserUsecase(userRepo, userValidator)
 	h := NewHandler(svc)
 
 	r.HandleFunc("/users", h.List).Methods("GET")
@@ -52,14 +59,20 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var user domain.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, "invalid request", http.StatusBadRequest)
+		http.Error(w, "Невалидный формат JSON", http.StatusBadRequest)
 		return
 	}
 
 	user, err := h.uc.CreateUser(user)
-	fmt.Println(err)
 	if err != nil {
-		http.Error(w, "cannot create user", http.StatusInternalServerError)
+		// Ошибки валидации (400), всё остальное (500)
+		status := http.StatusInternalServerError
+		if err.Error() == "Имя пользователя обязательно" ||
+			strings.HasPrefix(err.Error(), "Невалидный") ||
+			strings.HasPrefix(err.Error(), "Пароль") {
+			status = http.StatusBadRequest
+		}
+		http.Error(w, err.Error(), status)
 		return
 	}
 

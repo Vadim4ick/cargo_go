@@ -1,11 +1,10 @@
 CREATE TYPE role AS ENUM ('USER', 'ADMIN');
 
 CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id SERIAL PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
   username TEXT,
   password TEXT NOT NULL,
   role role NOT NULL DEFAULT 'USER',
-  "createdAt" TIMESTAMP NOT NULL DEFAULT now()
+  "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
- 

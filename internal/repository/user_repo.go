@@ -49,9 +49,13 @@ func (r *PostgresUserRepo) FindByID(id string) (domain.User, error) {
 }
 
 func (r *PostgresUserRepo) Create(u domain.User) (domain.User, error) {
-	_, err := r.db.Exec(context.Background(),
-		"INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
-		u.Username, u.Email, u.Password)
+	err := r.db.QueryRow(context.Background(),
+		`INSERT INTO users (username, email, password) 
+		 VALUES ($1, $2, $3)
+		 RETURNING id, role, "createdAt"`,
+		u.Username, u.Email, u.Password,
+	).Scan(&u.ID, &u.Role, &u.CreatedAt)
+
 	if err != nil {
 		return domain.User{}, err
 	}

@@ -10,12 +10,12 @@ const (
 )
 
 type User struct {
-	ID        string `json:"id"`
-	Username  string `json:"username"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Role      Role   `json:"role"`
-	CreatedAt time.Time
+	ID        int       `json:"id"`
+	Username  string    `json:"username" validate:"required,min=3"`
+	Email     string    `json:"email" validate:"required,email"`
+	Password  string    `json:"password" validate:"required,min=6"`
+	Role      Role      `json:"role"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 type UserRepository interface {
