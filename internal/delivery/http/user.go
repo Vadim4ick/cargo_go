@@ -23,13 +23,13 @@ func NewHandler(uc usecase.UserUsecase) *Handler {
 }
 
 func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
-	userValidator, err := validator.NewUserValidator()
+	v, err := validator.New()
 	if err != nil {
 		log.Fatal("Ошибка инициализации валидатора:", err)
 	}
 
 	userRepo := repository.NewPostgresUserRepo(db)
-	svc := usecase.NewUserUsecase(userRepo, userValidator)
+	svc := usecase.NewUserUsecase(userRepo, v)
 	h := NewHandler(svc)
 
 	r.HandleFunc("/users", h.List).Methods("GET")

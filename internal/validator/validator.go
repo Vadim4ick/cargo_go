@@ -1,38 +1,35 @@
 package validator
 
 import (
-	"test-project/internal/domain"
-
 	"github.com/go-playground/locales/ru"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	translations "github.com/go-playground/validator/v10/translations/ru"
 )
 
-type UserValidator struct {
+type Validator struct {
 	validate *validator.Validate
 	trans    ut.Translator
 }
 
-func NewUserValidator() (*UserValidator, error) {
+func New() (*Validator, error) {
 	validate := validator.New()
 
 	ruLocale := ru.New()
 	uni := ut.New(ruLocale, ruLocale)
 	trans, _ := uni.GetTranslator("ru")
-	err := translations.RegisterDefaultTranslations(validate, trans)
-	if err != nil {
+	if err := translations.RegisterDefaultTranslations(validate, trans); err != nil {
 		return nil, err
 	}
 
-	return &UserValidator{
+	return &Validator{
 		validate: validate,
 		trans:    trans,
 	}, nil
 }
 
-func (v *UserValidator) ValidateUser(user domain.User) []string {
-	err := v.validate.Struct(user)
+func (v *Validator) Validate(i interface{}) []string {
+	err := v.validate.Struct(i)
 	if err == nil {
 		return nil
 	}
