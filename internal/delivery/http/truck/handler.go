@@ -7,6 +7,7 @@ import (
 	truckDomain "test-project/internal/domain/truck"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
+	"test-project/utils"
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -36,18 +37,16 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var truck truckDomain.Truck
 
 	if err := json.NewDecoder(r.Body).Decode(&truck); err != nil {
-		http.Error(w, "Невалидный формат JSON", http.StatusBadRequest)
+		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil)
 		return
 	}
 
 	truck, err := h.uc.CreateTruck(truck)
 
 	if err != nil {
-		status := http.StatusInternalServerError
-		http.Error(w, err.Error(), status)
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(truck)
+	utils.JSON(w, http.StatusCreated, "Машина успешно создана", truck)
 }

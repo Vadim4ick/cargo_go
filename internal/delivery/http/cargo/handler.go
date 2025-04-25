@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"strconv"
 	cargoDomain "test-project/internal/domain/cargo"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
+	"test-project/utils"
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -42,49 +42,45 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var cargo cargoDomain.Cargo
 
 	if err := json.NewDecoder(r.Body).Decode(&cargo); err != nil {
-		http.Error(w, "Невалидный формат JSON", http.StatusBadRequest)
+		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil)
 		return
 	}
 
 	cargo, err := h.uc.CreateCargo(cargo)
 
 	if err != nil {
-		status := http.StatusInternalServerError
-		http.Error(w, err.Error(), status)
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(cargo)
+	utils.JSON(w, http.StatusCreated, "Груз успешно создан", cargo)
 }
 
 func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 	cargos, err := h.uc.ListGargos()
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
-	json.NewEncoder(w).Encode(cargos)
+	utils.JSON(w, http.StatusOK, "Список всех грузов", cargos)
 }
 
 func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
-	idStr := mux.Vars(r)["id"]
+	id, err := utils.ParseNumber(mux.Vars(r)["id"])
 
-	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		http.Error(w, "Некорректный id", http.StatusBadRequest)
+		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil)
 		return
 	}
 
-	// Теперь id — это int
 	cargo, err := h.uc.GetCargo(id)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
-	json.NewEncoder(w).Encode(cargo)
+	utils.JSON(w, http.StatusOK, "Данные о грузе", cargo)
 }

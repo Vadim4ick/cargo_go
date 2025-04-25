@@ -9,7 +9,7 @@ import (
 
 type UserUsecase interface {
 	ListUsers() ([]userDomain.User, error)
-	GetUser(id string) (userDomain.User, error)
+	GetUser(id int) (userDomain.User, error)
 	CreateUser(input userDomain.User) (userDomain.User, error)
 }
 
@@ -26,7 +26,7 @@ func (u *userUsecase) ListUsers() ([]userDomain.User, error) {
 	return u.repo.FindAll()
 }
 
-func (u *userUsecase) GetUser(id string) (userDomain.User, error) {
+func (u *userUsecase) GetUser(id int) (userDomain.User, error) {
 	return u.repo.FindByID(id)
 }
 

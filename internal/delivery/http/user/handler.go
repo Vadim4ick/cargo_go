@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"strings"
 	userDomain "test-project/internal/domain/user"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
+	"test-project/utils"
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -47,43 +47,43 @@ func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	users, err := h.uc.ListUsers()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		utils.JSON(w, http.StatusNotFound, err.Error(), nil)
 		return
 	}
-	json.NewEncoder(w).Encode(users)
+
+	utils.JSON(w, http.StatusCreated, "Список пользователей", users)
 }
 
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	user, err := h.uc.GetUser(id)
+	id, err := utils.ParseNumber(mux.Vars(r)["id"])
+
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil)
 		return
 	}
-	json.NewEncoder(w).Encode(user)
+
+	user, err := h.uc.GetUser(id)
+	if err != nil {
+		utils.JSON(w, http.StatusNotFound, err.Error(), nil)
+		return
+	}
+
+	utils.JSON(w, http.StatusCreated, "Пользователь", user)
 }
 
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var user userDomain.User
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, "Невалидный формат JSON", http.StatusBadRequest)
+		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil)
 		return
 	}
 
 	user, err := h.uc.CreateUser(user)
 	if err != nil {
-		// Ошибки валидации (400), всё остальное (500)
-		status := http.StatusInternalServerError
-		if err.Error() == "Имя пользователя обязательно" ||
-			strings.HasPrefix(err.Error(), "Невалидный") ||
-			strings.HasPrefix(err.Error(), "Пароль") {
-			status = http.StatusBadRequest
-		}
-		http.Error(w, err.Error(), status)
+		utils.JSON(w, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(user)
+	utils.JSON(w, http.StatusCreated, "Пользователь успешно создан", user)
 }

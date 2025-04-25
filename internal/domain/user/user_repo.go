@@ -3,7 +3,9 @@ package user
 import (
 	"context"
 	"errors"
+	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -18,7 +20,7 @@ func NewPostgresUserRepo(db *pgxpool.Pool) UserRepository {
 }
 
 func (r *PostgresUserRepo) FindAll() ([]User, error) {
-	rows, err := r.db.Query(context.Background(), "SELECT id, username, email, password, role, created_at FROM users")
+	rows, err := r.db.Query(context.Background(), "SELECT id, username, email, password, role, 'createdAt' FROM users")
 	if err != nil {
 		return nil, err
 	}
@@ -36,12 +38,16 @@ func (r *PostgresUserRepo) FindAll() ([]User, error) {
 	return users, nil
 }
 
-func (r *PostgresUserRepo) FindByID(id string) (User, error) {
+func (r *PostgresUserRepo) FindByID(id int) (User, error) {
 	var u User
 	err := r.db.QueryRow(context.Background(),
-		"SELECT id, username, email, password, role, created_at FROM users WHERE id=$1", id).
+		"SELECT id, username, email, password, role, 'createdAt' FROM users WHERE id=$1", id).
 		Scan(&u.ID, &u.Username, &u.Email, &u.Password, &u.Role, &u.CreatedAt)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return User{}, fmt.Errorf("Пользователь с id=%d не существует", id)
+		}
+
 		return User{}, err
 	}
 	return u, nil
@@ -51,7 +57,7 @@ func (r *PostgresUserRepo) Create(u User) (User, error) {
 	err := r.db.QueryRow(context.Background(),
 		`INSERT INTO users (username, email, password) 
 		 VALUES ($1, $2, $3)
-		 RETURNING id, role, created_at`,
+		 RETURNING id, role, 'createdAt'`,
 		u.Username, u.Email, u.Password,
 	).Scan(&u.ID, &u.Role, &u.CreatedAt)
 

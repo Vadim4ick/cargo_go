@@ -20,6 +20,6 @@ type User struct {
 
 type UserRepository interface {
 	FindAll() ([]User, error)
-	FindByID(id string) (User, error)
+	FindByID(id int) (User, error)
 	Create(user User) (User, error)
 }
