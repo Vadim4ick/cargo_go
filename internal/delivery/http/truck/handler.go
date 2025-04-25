@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"test-project/internal/domain"
-	"test-project/internal/repository"
+	truckDomain "test-project/internal/domain/truck"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
 
@@ -26,7 +25,7 @@ func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
 		log.Fatal("Ошибка инициализации валидатора:", err)
 	}
 
-	truckRepo := repository.NewPostgresTruckRepo(db)
+	truckRepo := truckDomain.NewPostgresTruckRepo(db)
 	svc := usecase.NewTruckUsecase(truckRepo, v)
 	h := NewHandler(svc)
 
@@ -34,7 +33,7 @@ func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
 }
 
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	var truck domain.Truck
+	var truck truckDomain.Truck
 
 	if err := json.NewDecoder(r.Body).Decode(&truck); err != nil {
 		http.Error(w, "Невалидный формат JSON", http.StatusBadRequest)

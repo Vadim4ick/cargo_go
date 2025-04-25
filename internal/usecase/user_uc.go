@@ -3,36 +3,36 @@ package usecase
 import (
 	"errors"
 	"strings"
-	"test-project/internal/domain"
+	userDomain "test-project/internal/domain/user"
 	"test-project/internal/validator"
 )
 
 type UserUsecase interface {
-	ListUsers() ([]domain.User, error)
-	GetUser(id string) (domain.User, error)
-	CreateUser(input domain.User) (domain.User, error)
+	ListUsers() ([]userDomain.User, error)
+	GetUser(id string) (userDomain.User, error)
+	CreateUser(input userDomain.User) (userDomain.User, error)
 }
 
 type userUsecase struct {
-	repo      domain.UserRepository
+	repo      userDomain.UserRepository
 	validator *validator.Validator
 }
 
-func NewUserUsecase(r domain.UserRepository, v *validator.Validator) UserUsecase {
+func NewUserUsecase(r userDomain.UserRepository, v *validator.Validator) UserUsecase {
 	return &userUsecase{repo: r, validator: v}
 }
 
-func (u *userUsecase) ListUsers() ([]domain.User, error) {
+func (u *userUsecase) ListUsers() ([]userDomain.User, error) {
 	return u.repo.FindAll()
 }
 
-func (u *userUsecase) GetUser(id string) (domain.User, error) {
+func (u *userUsecase) GetUser(id string) (userDomain.User, error) {
 	return u.repo.FindByID(id)
 }
 
-func (u *userUsecase) CreateUser(input domain.User) (domain.User, error) {
+func (u *userUsecase) CreateUser(input userDomain.User) (userDomain.User, error) {
 	if errs := u.validator.Validate(input); len(errs) > 0 {
-		return domain.User{}, errors.New(strings.Join(errs, "; "))
+		return userDomain.User{}, errors.New(strings.Join(errs, "; "))
 	}
 
 	return u.repo.Create(input)

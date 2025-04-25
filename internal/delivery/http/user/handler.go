@@ -5,8 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"test-project/internal/domain"
-	"test-project/internal/repository"
+	userDomain "test-project/internal/domain/user"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
 
@@ -28,7 +27,7 @@ func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
 		log.Fatal("Ошибка инициализации валидатора:", err)
 	}
 
-	userRepo := repository.NewPostgresUserRepo(db)
+	userRepo := userDomain.NewPostgresUserRepo(db)
 	svc := usecase.NewUserUsecase(userRepo, v)
 	h := NewHandler(svc)
 
@@ -65,7 +64,8 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	var user domain.User
+	var user userDomain.User
+
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Невалидный формат JSON", http.StatusBadRequest)
 		return
