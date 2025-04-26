@@ -43,6 +43,16 @@ func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool) {
 	r.Handle("/online", auth.JwtMiddleware(h.svc, jwtService, time.Minute*0, h.onlineList)).Methods("GET")
 }
 
+// refresh handles token refresh
+// @Summary Refresh access token
+// @Description Refreshes access token using refresh token stored in cookie
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Success 200 {object} auth.RefreshResponse "Token successfully refreshed"
+// @Failure 401 {object} auth.ErrorResponse "Invalid or missing refresh token"
+// @Failure 500 {object} auth.ErrorResponse "Internal server error"
+// @Router /refresh [post]
 func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh_token")
 	if err != nil {
@@ -93,6 +103,16 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// register handles user registration
+// @Summary Register a new user
+// @Description Registers a new user with email and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param credentials body auth.RegisterRequest true "User credentials"
+// @Success 201 {object} auth.RegisterResponse "User successfully registered"
+// @Failure 400 {object} auth.ErrorResponse "Invalid input"
+// @Router /register [post]
 func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 	var req struct{ Email, Password string }
 	json.NewDecoder(r.Body).Decode(&req)
@@ -105,6 +125,17 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 	utils.JSON(w, http.StatusCreated, "Пользователь успешно зарегистрирован", u)
 }
 
+// login handles user authentication
+// @Summary User login
+// @Description Authenticates a user and returns access and refresh tokens
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param credentials body auth.LoginRequest true "User credentials"
+// @Success 200 {object} auth.LoginResponse "User successfully authenticated"
+// @Failure 400 {object} auth.ErrorResponse "Invalid input"
+// @Failure 401 {object} auth.ErrorResponse "Unauthorized"
+// @Router /login [post]
 func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Email    string `json:"email"`
@@ -139,6 +170,17 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// onlineList retrieves a list of online user IDs
+// @Summary List online users
+// @Description Retrieves a list of user IDs who are currently online
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} auth.OnlineListResponse "List of online user IDs"
+// @Failure 401 {object} auth.ErrorResponse "Unauthorized"
+// @Failure 500 {object} auth.ErrorResponse "Internal server error"
+// @Router /online [get]
 func (h *Handler) onlineList(w http.ResponseWriter, r *http.Request) {
 	ids, err := h.svc.OnlineUsers(5 * time.Minute)
 

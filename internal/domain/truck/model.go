@@ -11,3 +11,8 @@ type Truck struct {
 type TruckRepository interface {
 	Create(truck Truck) (Truck, error)
 }
+
+type CreateResponse struct {
+	Message string `json:"message" example:"Машина успешно создана"`
+	Data    Truck  `json:"data"`
+}

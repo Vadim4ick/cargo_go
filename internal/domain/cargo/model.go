@@ -25,3 +25,23 @@ type CargoRepository interface {
 	FindAll() ([]Cargo, error)
 	FindByID(id int) (Cargo, error)
 }
+
+type CreateResponse struct {
+	Message string `json:"message" example:"Груз успешно создан"`
+	Data    Cargo  `json:"data"`
+}
+
+type ListResponse struct {
+	Message string  `json:"message" example:"Список всех грузов"`
+	Data    []Cargo `json:"data"`
+}
+
+type GetResponse struct {
+	Message string `json:"message" example:"Данные о грузе"`
+	Data    Cargo  `json:"data"`
+}
+
+type ErrorResponse struct {
+	Message string      `json:"message" example:"Невалидный формат JSON"`
+	Data    interface{} `json:"data"`
+}

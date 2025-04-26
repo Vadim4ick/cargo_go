@@ -13,6 +13,15 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+// @title Cargo Project API
+// @version 1.0
+// @description This is the API for the Cargo Project
+// @host localhost:8080
+// @BasePath /api/v1
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Bearer token for authenticated requests
 func main() {
 
 	dsn := config.Envs.POSTGRES_URI

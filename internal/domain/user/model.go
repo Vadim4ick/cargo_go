@@ -24,3 +24,23 @@ type UserRepository interface {
 	Create(user User) (User, error)
 	FindByEmail(email string) (User, error)
 }
+
+type ListResponse struct {
+	Message string `json:"message" example:"Список пользователей"`
+	Data    []User `json:"data"`
+}
+
+type GetResponse struct {
+	Message string `json:"message" example:"Пользователь"`
+	Data    User   `json:"data"`
+}
+
+type CreateResponse struct {
+	Message string `json:"message" example:"Пользователь успешно создан"`
+	Data    User   `json:"data"`
+}
+
+type ErrorResponse struct {
+	Message string      `json:"message" example:"Невалидный формат JSON"`
+	Data    interface{} `json:"data"`
+}

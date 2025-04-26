@@ -33,6 +33,17 @@ func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
 	r.HandleFunc("/trucks", h.Create).Methods("POST")
 }
 
+// Create handles the creation of a new truck
+// @Summary Create a new truck
+// @Description Creates a new truck with the provided details
+// @Tags trucks
+// @Accept json
+// @Produce json
+// @Param truck body truck.Truck true "Truck object to be created"
+// @Success 201 {object} cargo.CreateResponse "Cargo successfully created"
+// @Failure 400 {object} cargo.ErrorResponse "Invalid JSON format"
+// @Failure 500 {object} cargo.ErrorResponse "Internal server error"
+// @Router /trucks [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var truck truckDomain.Truck
 
