@@ -18,29 +18,26 @@ import (
 )
 
 type Handler struct {
-	svc    usecase.AuthUsecase
-	jwtSvc *usecase.JwtUsecase
-	logger *zap.Logger
+	svc      usecase.AuthUsecase
+	jwtSvc   *usecase.JwtUsecase
+	logger   *zap.Logger
+	redisSvc *redis.Client
 }
 
-func NewHandler(svc usecase.AuthUsecase, jwtSvc *usecase.JwtUsecase, logger *zap.Logger) *Handler {
-	return &Handler{svc, jwtSvc, logger}
+func NewHandler(svc usecase.AuthUsecase, jwtSvc *usecase.JwtUsecase, logger *zap.Logger, redisSvc *redis.Client) *Handler {
+	return &Handler{svc, jwtSvc, logger, redisSvc}
 }
 
-func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger) {
-
+func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger, jwtService *usecase.JwtUsecase, redisService *redis.Client) {
 	userRepo := user.NewPostgresUserRepo(db)
-	jwtService := usecase.NewJWTService("secretAccess", "secretRefresh", time.Minute*15, time.Hour*24*30)
-	redisService := redis.New("localhost:6379", "")
 
 	svc := usecase.NewService(userRepo, jwtService, redisService)
-	h := NewHandler(svc, jwtService, logger)
+	h := NewHandler(svc, jwtService, logger, redisService)
 
 	r.HandleFunc("/register", h.register).Methods("POST")
 	r.HandleFunc("/login", h.login).Methods("POST")
 	r.HandleFunc("/refresh", h.refresh).Methods("POST")
 
-	// защищённый роут: список онлайн пользователей
 	r.Handle("/online", auth.JwtMiddleware(h.svc, jwtService, logger, h.onlineList)).Methods("GET")
 }
 

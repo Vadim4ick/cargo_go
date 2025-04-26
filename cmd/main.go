@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"test-project/config"
 	router "test-project/internal/delivery"
+	"test-project/internal/redis"
+	"test-project/internal/usecase"
 	logger "test-project/pkg"
 
 	_ "test-project/docs"
@@ -47,7 +49,16 @@ func main() {
 	}
 	logger.Info("Успешное подключение к базе данных")
 
-	mux := router.Setup(pool, logger)
+	jwtService := usecase.NewJWTService(
+		config.Envs.JWTSecretAccess,
+		config.Envs.JWTSecretRefresh,
+		config.Envs.JWTAccessTTL,
+		config.Envs.JWTRefreshTTL,
+	)
+
+	redisService := redis.New(config.Envs.RedisAddr, config.Envs.RedisPassword)
+
+	mux := router.Setup(pool, logger, jwtService, redisService)
 
 	logger.Info("Starting server on :8080")
 	fmt.Println("Swagger UI available at http://localhost:8080/swagger/index.html")
