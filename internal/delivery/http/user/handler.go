@@ -1,7 +1,6 @@
 package user
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"test-project/internal/domain/user"
@@ -35,7 +34,6 @@ func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger) {
 
 	r.HandleFunc("/users", h.List).Methods("GET")
 	r.HandleFunc("/users/{id}", h.Get).Methods("GET")
-	r.HandleFunc("/users", h.Create).Methods("POST")
 }
 
 // List retrieves a list of all users
@@ -82,31 +80,4 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.JSON(w, http.StatusCreated, "Пользователь", user, h.logger)
-}
-
-// Create handles the creation of a new user
-// @Summary Create a new user
-// @Description Creates a new user with the provided details
-// @Tags users
-// @Accept json
-// @Produce json
-// @Param user body user.User true "User object to be created"
-// @Success 201 {object} user.CreateResponse "User successfully created"
-// @Failure 400 {object} user.ErrorResponse "Invalid JSON format or creation error"
-// @Router /users [post]
-func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	var user user.User
-
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil, h.logger)
-		return
-	}
-
-	user, err := h.uc.CreateUser(user)
-	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, err.Error(), nil, h.logger)
-		return
-	}
-
-	utils.JSON(w, http.StatusCreated, "Пользователь успешно создан", user, h.logger)
 }

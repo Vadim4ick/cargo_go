@@ -26,6 +26,12 @@ definitions:
         example: Пользователь успешно авторизован
         type: string
     type: object
+  auth.LogoutResponse:
+    properties:
+      message:
+        example: Успешный выход из системы
+        type: string
+    type: object
   auth.OnlineListResponse:
     properties:
       data:
@@ -34,6 +40,14 @@ definitions:
         type: array
       message:
         example: Список ID-шников онлайн пользователей
+        type: string
+    type: object
+  auth.ProfileResponse:
+    properties:
+      data:
+        $ref: '#/definitions/user.User'
+      message:
+        example: Данные о пользователе
         type: string
     type: object
   auth.RefreshResponse:
@@ -135,14 +149,6 @@ definitions:
       id:
         type: integer
       name:
-        type: string
-    type: object
-  user.CreateResponse:
-    properties:
-      data:
-        $ref: '#/definitions/user.User'
-      message:
-        example: Пользователь успешно создан
         type: string
     type: object
   user.ErrorResponse:
@@ -313,6 +319,21 @@ paths:
       summary: User login
       tags:
       - auth
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: Logs out a user and clears the refresh token cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User successfully logged out
+          schema:
+            $ref: '#/definitions/auth.LogoutResponse'
+      summary: User logout
+      tags:
+      - auth
   /online:
     get:
       consumes:
@@ -336,6 +357,35 @@ paths:
       security:
       - BearerAuth: []
       summary: List online users
+      tags:
+      - auth
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves user profile information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile information
+          schema:
+            $ref: '#/definitions/auth.ProfileResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: User profile
       tags:
       - auth
   /refresh:
@@ -434,31 +484,6 @@ paths:
           schema:
             $ref: '#/definitions/user.ErrorResponse'
       summary: List all users
-      tags:
-      - users
-    post:
-      consumes:
-      - application/json
-      description: Creates a new user with the provided details
-      parameters:
-      - description: User object to be created
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/user.User'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: User successfully created
-          schema:
-            $ref: '#/definitions/user.CreateResponse'
-        "400":
-          description: Invalid JSON format or creation error
-          schema:
-            $ref: '#/definitions/user.ErrorResponse'
-      summary: Create a new user
       tags:
       - users
   /users/{id}:

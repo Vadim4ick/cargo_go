@@ -40,9 +40,13 @@ func (r *PostgresUserRepo) FindAll() ([]User, error) {
 
 func (r *PostgresUserRepo) FindByID(id int) (User, error) {
 	var u User
-	err := r.db.QueryRow(context.Background(),
-		"SELECT id, username, email, password, role, 'createdAt' FROM users WHERE id=$1", id).
-		Scan(&u.ID, &u.Username, &u.Email, &u.Password, &u.Role, &u.CreatedAt)
+	err := r.db.QueryRow(
+		context.Background(),
+		`SELECT id, username, email, password, role, "createdAt" 
+		   FROM users 
+		  WHERE id = $1`, id,
+	).Scan(&u.ID, &u.Username, &u.Email, &u.Password, &u.Role, &u.CreatedAt)
+
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return User{}, fmt.Errorf("Пользователь с id=%d не существует", id)

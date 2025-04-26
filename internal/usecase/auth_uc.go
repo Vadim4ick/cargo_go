@@ -16,6 +16,8 @@ type AuthUsecase interface {
 	Login(email, password string) (string, string, error)
 	TouchOnline(userID string) error
 	OnlineUsers(since time.Duration) ([]string, error)
+
+	GetUser(id int) (userDomain.User, error)
 }
 
 type usecase struct {
@@ -73,4 +75,8 @@ func (u *usecase) TouchOnline(userID string) error {
 func (u *usecase) OnlineUsers(since time.Duration) ([]string, error) {
 	// простая реализация: сканируем ключи "online:*"
 	return u.redis.Keys("online:*")
+}
+
+func (s *usecase) GetUser(id int) (userDomain.User, error) {
+	return s.repo.FindByID(id)
 }

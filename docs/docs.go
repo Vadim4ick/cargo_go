@@ -178,6 +178,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/logout": {
+            "post": {
+                "description": "Logs out a user and clears the refresh token cookie",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User logout",
+                "responses": {
+                    "200": {
+                        "description": "User successfully logged out",
+                        "schema": {
+                            "$ref": "#/definitions/auth.LogoutResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/online": {
             "get": {
                 "security": [
@@ -205,6 +228,52 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/profile": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieves user profile information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User profile",
+                "responses": {
+                    "200": {
+                        "description": "User profile information",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ProfileResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
                         "schema": {
                             "$ref": "#/definitions/auth.ErrorResponse"
                         }
@@ -366,44 +435,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "post": {
-                "description": "Creates a new user with the provided details",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "Create a new user",
-                "parameters": [
-                    {
-                        "description": "User object to be created",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "User successfully created",
-                        "schema": {
-                            "$ref": "#/definitions/user.CreateResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid JSON format or creation error",
-                        "schema": {
-                            "$ref": "#/definitions/user.ErrorResponse"
-                        }
-                    }
-                }
             }
         },
         "/users/{id}": {
@@ -490,6 +521,15 @@ const docTemplate = `{
                 }
             }
         },
+        "auth.LogoutResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Успешный выход из системы"
+                }
+            }
+        },
         "auth.OnlineListResponse": {
             "type": "object",
             "properties": {
@@ -502,6 +542,18 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Список ID-шников онлайн пользователей"
+                }
+            }
+        },
+        "auth.ProfileResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/user.User"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Данные о пользователе"
                 }
             }
         },
@@ -652,18 +704,6 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
-                }
-            }
-        },
-        "user.CreateResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/user.User"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Пользователь успешно создан"
                 }
             }
         },

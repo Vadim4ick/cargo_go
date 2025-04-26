@@ -13,6 +13,9 @@ swagger:
 server: swagger
 	go run cmd/main.go
 
+newHandler:
+	go run create_handler.go $(NAME)
+
 GOMIGRATE := $(shell go env GOPATH)/bin/migrate
 DB_URL := postgres://test:test@localhost:5432/test?sslmode=disable
 

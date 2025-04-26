@@ -12,7 +12,7 @@ import (
 
 type ctxKey string
 
-const userIDKey ctxKey = "userID"
+const UserIDKey ctxKey = "userID"
 
 func JwtMiddleware(svc usecase.AuthUsecase, jwtSvc *usecase.JwtUsecase, logger *zap.Logger, next http.HandlerFunc) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -30,7 +30,8 @@ func JwtMiddleware(svc usecase.AuthUsecase, jwtSvc *usecase.JwtUsecase, logger *
 		// помечаем онлайн
 		svc.TouchOnline(uid)
 		// передаём в ctx
-		ctx := context.WithValue(r.Context(), userIDKey, uid)
+		ctx := context.WithValue(r.Context(), UserIDKey, uid)
+
 		next(w, r.WithContext(ctx))
 	})
 }

@@ -36,8 +36,10 @@ func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger, jwt
 
 	r.HandleFunc("/register", h.register).Methods("POST")
 	r.HandleFunc("/login", h.login).Methods("POST")
+	r.HandleFunc("/logout", h.logout).Methods("POST")
 	r.HandleFunc("/refresh", h.refresh).Methods("POST")
 
+	r.Handle("/profile", auth.JwtMiddleware(h.svc, jwtService, logger, h.profile)).Methods("GET")
 	r.Handle("/online", auth.JwtMiddleware(h.svc, jwtService, logger, h.onlineList)).Methods("GET")
 }
 
@@ -192,4 +194,63 @@ func (h *Handler) onlineList(w http.ResponseWriter, r *http.Request) {
 		ids[i] = strings.TrimPrefix(k, "online:")
 	}
 	utils.JSON(w, http.StatusOK, "Список ID-шников онлайн пользователей", ids, h.logger)
+}
+
+// logout handles user logout
+// @Summary User logout
+// @Description Logs out a user and clears the refresh token cookie
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Success 200 {object} auth.LogoutResponse "User successfully logged out"
+// @Router /logout [post]
+func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    "",
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   false, // true если HTTPS
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   -1,
+	})
+
+	utils.JSON(w, http.StatusOK, "Успешный выход из системы", nil, h.logger)
+}
+
+// profile handles user profile
+// @Summary User profile
+// @Description Retrieves user profile information
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} auth.ProfileResponse "User profile information"
+// @Failure 401 {object} auth.ErrorResponse "Unauthorized"
+// @Failure 404 {object} auth.ErrorResponse "User not found"
+// @Failure 500 {object} auth.ErrorResponse "Internal server error"
+// @Router /profile [get]
+func (h *Handler) profile(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(auth.UserIDKey).(string)
+
+	if !ok {
+		utils.JSON(w, http.StatusUnauthorized, "unauthorized", nil, h.logger)
+		return
+	}
+
+	id, err := utils.ParseNumber(userID)
+
+	if err != nil {
+		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.logger)
+		return
+	}
+
+	u, err := h.svc.GetUser(id)
+
+	if err != nil {
+		utils.JSON(w, http.StatusNotFound, err.Error(), nil, h.logger)
+		return
+	}
+
+	utils.JSON(w, http.StatusOK, "Профиль", u, h.logger)
 }
