@@ -11,16 +11,18 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"go.uber.org/zap"
 )
 
 type Handler struct {
-	uc usecase.TruckUsecase
+	uc     usecase.TruckUsecase
+	logger *zap.Logger
 }
 
-func NewHandler(uc usecase.TruckUsecase) *Handler {
-	return &Handler{uc: uc}
+func NewHandler(uc usecase.TruckUsecase, logger *zap.Logger) *Handler {
+	return &Handler{uc: uc, logger: logger}
 }
-func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
+func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger) {
 	v, err := validator.New()
 	if err != nil {
 		log.Fatal("Ошибка инициализации валидатора:", err)
@@ -28,7 +30,7 @@ func RegisterUserRoutes(r *mux.Router, db *pgxpool.Pool) {
 
 	truckRepo := truckDomain.NewPostgresTruckRepo(db)
 	svc := usecase.NewTruckUsecase(truckRepo, v)
-	h := NewHandler(svc)
+	h := NewHandler(svc, logger)
 
 	r.HandleFunc("/trucks", h.Create).Methods("POST")
 }
@@ -48,16 +50,16 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var truck truckDomain.Truck
 
 	if err := json.NewDecoder(r.Body).Decode(&truck); err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil)
+		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil, h.logger)
 		return
 	}
 
 	truck, err := h.uc.CreateTruck(truck)
 
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil)
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusCreated, "Машина успешно создана", truck)
+	utils.JSON(w, http.StatusCreated, "Машина успешно создана", truck, h.logger)
 }

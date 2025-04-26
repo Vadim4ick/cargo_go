@@ -7,10 +7,12 @@ import (
 	"net/http"
 	"test-project/config"
 	router "test-project/internal/delivery"
+	logger "test-project/pkg"
 
 	_ "test-project/docs"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"go.uber.org/zap"
 )
 
 // @title Cargo Project API
@@ -23,25 +25,33 @@ import (
 // @name Authorization
 // @description Bearer token for authenticated requests
 func main() {
+	logger, err := logger.NewLogger("logs/app.log")
+
+	if err != nil {
+		log.Fatal("Ошибка инициализации логгера:", err)
+	}
+
+	defer logger.Sync()
 
 	dsn := config.Envs.POSTGRES_URI
 
 	pool, err := pgxpool.New(context.Background(), dsn)
 	if err != nil {
-		log.Fatal("Ошибка подключения к базе данных:", err)
+		logger.Fatal("Ошибка подключения к базе данных", zap.Error(err))
 	}
 	defer pool.Close()
 
 	// Проверка подключения к базе данных
 	if err := pool.Ping(context.Background()); err != nil {
-		log.Fatal("Не удалось проверить подключение к базе данных:", err)
+		logger.Fatal("Не удалось проверить подключение к базе данных", zap.Error(err))
 	}
-	fmt.Println("Успешное подключение к базе данных!")
+	logger.Info("Успешное подключение к базе данных")
 
-	mux := router.Setup(pool)
+	mux := router.Setup(pool, logger)
 
-	fmt.Println("Starting server on :8080")
+	logger.Info("Starting server on :8080")
+	fmt.Println("Swagger UI available at http://localhost:8080/swagger/index.html")
 	if err := http.ListenAndServe(":8080", mux); err != nil {
-		log.Fatal(err)
+		logger.Fatal("Ошибка запуска сервера", zap.Error(err))
 	}
 }

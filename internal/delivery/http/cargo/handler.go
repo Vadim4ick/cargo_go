@@ -11,19 +11,22 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"go.uber.org/zap"
 )
 
 type Handler struct {
-	uc usecase.CargoUsecase
+	uc     usecase.CargoUsecase
+	logger *zap.Logger
 }
 
-func NewHandler(uc usecase.CargoUsecase) *Handler {
+func NewHandler(uc usecase.CargoUsecase, logger *zap.Logger) *Handler {
 	return &Handler{
-		uc: uc,
+		uc:     uc,
+		logger: logger,
 	}
 }
 
-func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool) {
+func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger) {
 	v, err := validator.New()
 	if err != nil {
 		log.Fatal("Ошибка инициализации валидатора:", err)
@@ -31,7 +34,7 @@ func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool) {
 
 	cargoRepo := cargoDomain.NewPostgresCargoRepo(db)
 	svc := usecase.NewCargoUsecase(cargoRepo, v)
-	h := NewHandler(svc)
+	h := NewHandler(svc, logger)
 
 	r.HandleFunc("/cargos", h.Create).Methods("POST")
 	r.HandleFunc("/cargos", h.GET).Methods("GET")
@@ -53,18 +56,18 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var cargo cargoDomain.Cargo
 
 	if err := json.NewDecoder(r.Body).Decode(&cargo); err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil)
+		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil, h.logger)
 		return
 	}
 
 	cargo, err := h.uc.CreateCargo(cargo)
 
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil)
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusCreated, "Груз успешно создан", cargo)
+	utils.JSON(w, http.StatusCreated, "Груз успешно создан", cargo, h.logger)
 }
 
 // GET retrieves a list of all cargos
@@ -80,11 +83,11 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 	cargos, err := h.uc.ListGargos()
 
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil)
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusOK, "Список всех грузов", cargos)
+	utils.JSON(w, http.StatusOK, "Список всех грузов", cargos, h.logger)
 }
 
 // GETByID retrieves a cargo by ID
@@ -102,16 +105,16 @@ func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
 	id, err := utils.ParseNumber(mux.Vars(r)["id"])
 
 	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil)
+		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.logger)
 		return
 	}
 
 	cargo, err := h.uc.GetCargo(id)
 
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil)
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusOK, "Данные о грузе", cargo)
+	utils.JSON(w, http.StatusOK, "Данные о грузе", cargo, h.logger)
 }

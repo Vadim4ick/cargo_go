@@ -1,0 +1,5 @@
+{"level":"INFO","ts":"2025-04-26T22:08:11.872+0400","caller":"cmd/main.go:48","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-26T22:08:11.873+0400","caller":"cmd/main.go:52","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-26T22:08:15.569+0400","caller":"utils/utils.go:26","msg":"HTTP response message","message":"Пользователь с таким email уже существует","status":400}
+{"level":"INFO","ts":"2025-04-26 22:09:54","caller":"cmd/main.go:48","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-26 22:09:54","caller":"cmd/main.go:52","msg":"Starting server on :8080"}

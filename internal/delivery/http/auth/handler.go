@@ -14,33 +14,34 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"go.uber.org/zap"
 )
 
 type Handler struct {
 	svc    usecase.AuthUsecase
 	jwtSvc *usecase.JwtUsecase
+	logger *zap.Logger
 }
 
-func NewHandler(svc usecase.AuthUsecase, jwtSvc *usecase.JwtUsecase) *Handler {
-	return &Handler{svc, jwtSvc}
-
+func NewHandler(svc usecase.AuthUsecase, jwtSvc *usecase.JwtUsecase, logger *zap.Logger) *Handler {
+	return &Handler{svc, jwtSvc, logger}
 }
 
-func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool) {
+func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger) {
 
 	userRepo := user.NewPostgresUserRepo(db)
 	jwtService := usecase.NewJWTService("secretAccess", "secretRefresh", time.Minute*15, time.Hour*24*30)
 	redisService := redis.New("localhost:6379", "")
 
 	svc := usecase.NewService(userRepo, jwtService, redisService)
-	h := NewHandler(svc, jwtService)
+	h := NewHandler(svc, jwtService, logger)
 
 	r.HandleFunc("/register", h.register).Methods("POST")
 	r.HandleFunc("/login", h.login).Methods("POST")
 	r.HandleFunc("/refresh", h.refresh).Methods("POST")
 
 	// защищённый роут: список онлайн пользователей
-	r.Handle("/online", auth.JwtMiddleware(h.svc, jwtService, time.Minute*0, h.onlineList)).Methods("GET")
+	r.Handle("/online", auth.JwtMiddleware(h.svc, jwtService, logger, h.onlineList)).Methods("GET")
 }
 
 // refresh handles token refresh
@@ -56,14 +57,14 @@ func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool) {
 func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh_token")
 	if err != nil {
-		utils.JSON(w, http.StatusUnauthorized, "Refresh токен отсутствует", nil)
+		utils.JSON(w, http.StatusUnauthorized, "Refresh токен отсутствует", nil, h.logger)
 		return
 	}
 
 	userID, err := h.jwtSvc.ValidateRefresh(cookie.Value)
 
 	if err != nil {
-		utils.JSON(w, http.StatusUnauthorized, "Невалидный refresh токен", nil)
+		utils.JSON(w, http.StatusUnauthorized, "Невалидный refresh токен", nil, h.logger)
 		http.SetCookie(w, &http.Cookie{
 			Name:     "refresh_token",
 			Value:    "",
@@ -79,12 +80,12 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	// Генерируем новые access и refresh токены
 	newAccessToken, err := h.jwtSvc.GenerateAccess(userID)
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации access токена", nil)
+		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации access токена", nil, h.logger)
 		return
 	}
 	newRefreshToken, err := h.jwtSvc.GenerateRefresh(userID)
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации refresh токена", nil)
+		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации refresh токена", nil, h.logger)
 		return
 	}
 
@@ -100,7 +101,7 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 
 	utils.JSON(w, http.StatusOK, "Токен успешно обновлён", map[string]string{
 		"access_token": newAccessToken,
-	})
+	}, h.logger)
 }
 
 // register handles user registration
@@ -118,11 +119,11 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&req)
 	u, err := h.svc.Register(req.Email, req.Password)
 	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, err.Error(), nil)
+		utils.JSON(w, http.StatusBadRequest, err.Error(), nil, h.logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusCreated, "Пользователь успешно зарегистрирован", u)
+	utils.JSON(w, http.StatusCreated, "Пользователь успешно зарегистрирован", u, h.logger)
 }
 
 // login handles user authentication
@@ -143,13 +144,13 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректные данные", nil)
+		utils.JSON(w, http.StatusBadRequest, "Некорректные данные", nil, h.logger)
 		return
 	}
 
 	accessToken, refreshToken, err := h.svc.Login(req.Email, req.Password)
 	if err != nil {
-		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil)
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.logger)
 		return
 	}
 
@@ -167,7 +168,7 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 
 	utils.JSON(w, http.StatusOK, "Пользователь успешно авторизован", map[string]string{
 		"access_token": accessToken,
-	})
+	}, h.logger)
 }
 
 // onlineList retrieves a list of online user IDs
@@ -185,7 +186,7 @@ func (h *Handler) onlineList(w http.ResponseWriter, r *http.Request) {
 	ids, err := h.svc.OnlineUsers(5 * time.Minute)
 
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, fmt.Sprintf("error getting online users: %v", err), nil)
+		utils.JSON(w, http.StatusInternalServerError, fmt.Sprintf("error getting online users: %v", err), nil, h.logger)
 		return
 	}
 
@@ -193,5 +194,5 @@ func (h *Handler) onlineList(w http.ResponseWriter, r *http.Request) {
 	for i, k := range ids {
 		ids[i] = strings.TrimPrefix(k, "online:")
 	}
-	utils.JSON(w, http.StatusOK, "Список ID-шников онлайн пользователей", ids)
+	utils.JSON(w, http.StatusOK, "Список ID-шников онлайн пользователей", ids, h.logger)
 }
