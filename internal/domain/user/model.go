@@ -22,4 +22,5 @@ type UserRepository interface {
 	FindAll() ([]User, error)
 	FindByID(id int) (User, error)
 	Create(user User) (User, error)
+	FindByEmail(email string) (User, error)
 }

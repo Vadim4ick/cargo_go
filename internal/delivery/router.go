@@ -1,6 +1,7 @@
 package router
 
 import (
+	"test-project/internal/delivery/http/auth"
 	"test-project/internal/delivery/http/cargo"
 	"test-project/internal/delivery/http/truck"
 	"test-project/internal/delivery/http/user"
@@ -20,6 +21,7 @@ func Setup(pool *pgxpool.Pool) *mux.Router {
 	user.RegisterUserRoutes(subrouter, pool)
 	truck.RegisterUserRoutes(subrouter, pool)
 	cargo.RegisterCargoRoute(subrouter, pool)
+	auth.RegisterCargoRoute(subrouter, pool)
 
 	return subrouter
 }

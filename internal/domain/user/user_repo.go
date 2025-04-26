@@ -57,11 +57,43 @@ func (r *PostgresUserRepo) Create(u User) (User, error) {
 	err := r.db.QueryRow(context.Background(),
 		`INSERT INTO users (username, email, password) 
 		 VALUES ($1, $2, $3)
-		 RETURNING id, role, 'createdAt'`,
+		 RETURNING id, role, "createdAt"`,
 		u.Username, u.Email, u.Password,
 	).Scan(&u.ID, &u.Role, &u.CreatedAt)
 
 	if err != nil {
+		return User{}, err
+	}
+	return u, nil
+}
+
+func (r *PostgresUserRepo) FindByEmail(email string) (User, error) {
+	var u User
+
+	const query = `
+        SELECT id,
+               username,
+               email,
+               password,
+               role,
+               "createdAt"
+          FROM users
+         WHERE email = $1
+    `
+
+	err := r.db.QueryRow(context.Background(), query, email).
+		Scan(
+			&u.ID,
+			&u.Username,
+			&u.Email,
+			&u.Password,
+			&u.Role,
+			&u.CreatedAt,
+		)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return User{}, fmt.Errorf("Пользователь с email=%s не существует", email)
+		}
 		return User{}, err
 	}
 	return u, nil
