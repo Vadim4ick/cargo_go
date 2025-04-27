@@ -6,7 +6,7 @@ type Invitation struct {
 	ID int `json:"id"`
 
 	Email string `json:"email" validate:"required,email"`
-	Token string `json:"token"`
+	Token string `json:"token" validate:"required"`
 	Used  bool   `json:"used" default:"false"`
 
 	CreatedAt time.Time `json:"createdAt"`

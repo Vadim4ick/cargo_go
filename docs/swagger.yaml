@@ -179,6 +179,7 @@ definitions:
         type: boolean
     required:
     - email
+    - token
     type: object
   truck.ErrorResponse:
     properties:

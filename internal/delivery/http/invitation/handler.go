@@ -2,12 +2,15 @@ package invitation
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"test-project/config"
 	"test-project/internal/domain/auth"
 	invitationDomain "test-project/internal/domain/invitation"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
+	"test-project/pkg"
 	"test-project/utils"
 
 	"github.com/gorilla/mux"
@@ -51,7 +54,6 @@ func RegisterInvitationRoutes(r *mux.Router, deps *auth.Deps) {
 // @Failure 500 {object} invitation.ErrorResponse "Internal server error"
 // @Router /invitation [post]
 func (h *Handler) CREATE(w http.ResponseWriter, r *http.Request) {
-
 	var cargo invitationDomain.Invitation
 
 	if err := json.NewDecoder(r.Body).Decode(&cargo); err != nil {
@@ -59,12 +61,31 @@ func (h *Handler) CREATE(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cargo, err := h.uc.CreateInvitation(cargo)
+	inviteToken, err := h.deps.JwtService.GenerateInvite(cargo.Email)
+	if err != nil {
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	cargo.Token = inviteToken
+
+	inviteLink := fmt.Sprintf("%s/register?token=%s", config.Envs.FRONT_URI, inviteToken)
+
+	fmt.Println(inviteLink)
+
+	cargo, err = h.uc.CreateInvitation(cargo)
 
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusCreated, "Приглашение успешно создано", cargo, h.deps.Logger)
+	err = pkg.SendEmail(cargo.Email, inviteLink)
+
+	if err != nil {
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	utils.JSON(w, http.StatusCreated, "Приглашение успешно отправлено. Время жизни 5 минут", cargo, h.deps.Logger)
 }

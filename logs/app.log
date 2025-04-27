@@ -187,3 +187,29 @@
 {"level":"INFO","ts":"2025-04-27 21:58:30","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
 {"level":"INFO","ts":"2025-04-27 21:58:30","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
 {"level":"INFO","ts":"2025-04-27 21:58:32","caller":"invitation/handler.go:69","msg":"HTTP response message","message":"Приглашение успешно создано","status":201}
+{"level":"INFO","ts":"2025-04-27 23:06:00","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:06:00","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:06:07","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:06:07","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:06:40","caller":"invitation/handler.go:66","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-27 23:09:41","caller":"invitation/handler.go:77","msg":"HTTP response message","message":"Приглашение успешно создано","status":201}
+{"level":"INFO","ts":"2025-04-27 23:25:00","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:25:00","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:25:17","caller":"invitation/handler.go:77","msg":"HTTP response message","message":"Приглашение успешно создано","status":201}
+{"level":"INFO","ts":"2025-04-27 23:34:44","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:34:44","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:38:41","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:38:41","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:38:47","caller":"invitation/handler.go:75","msg":"HTTP response message","message":"Token обязательное поле","status":500}
+{"level":"INFO","ts":"2025-04-27 23:41:36","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:41:36","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:41:39","caller":"invitation/handler.go:77","msg":"HTTP response message","message":"ERROR: column \"invitelink\" of relation \"invitations\" does not exist (SQLSTATE 42703)","status":500}
+{"level":"INFO","ts":"2025-04-27 23:42:16","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:42:16","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:42:17","caller":"invitation/handler.go:79","msg":"HTTP response message","message":"ERROR: column \"invitelink\" of relation \"invitations\" does not exist (SQLSTATE 42703)","status":500}
+{"level":"INFO","ts":"2025-04-27 23:43:33","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:43:33","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:43:34","caller":"invitation/handler.go:79","msg":"HTTP response message","message":"ERROR: INSERT has more target columns than expressions (SQLSTATE 42601)","status":500}
+{"level":"INFO","ts":"2025-04-27 23:44:04","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 23:44:04","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 23:44:07","caller":"invitation/handler.go:90","msg":"HTTP response message","message":"Приглашение успешно отправлено. Время жизни 5 минут","status":201}

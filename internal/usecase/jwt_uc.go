@@ -45,6 +45,17 @@ func (j *JwtUsecase) GenerateRefresh(userID string) (string, error) {
 	return token.SignedString(j.secretRefresh)
 }
 
+// Генерация Invite Token
+func (j *JwtUsecase) GenerateInvite(email string) (string, error) {
+	claims := jwt.MapClaims{
+		"email": email,
+		"exp":   time.Now().Add(5 * time.Minute).Unix(),
+		"type":  "invite",
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(j.secretAccess) // Можно использовать тот же secretAccess
+}
+
 // Валидация Access Token
 func (j *JwtUsecase) ValidateAccess(tokenStr string) (string, error) {
 	t, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
@@ -76,4 +87,22 @@ func (j *JwtUsecase) ValidateRefresh(tokenStr string) (string, error) {
 		return "", errors.New("invalid token type")
 	}
 	return claims["sub"].(string), nil
+}
+
+// Валидация Invite Token
+func (j *JwtUsecase) ValidateInvite(tokenStr string) (string, error) {
+	t, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
+		return j.secretAccess, nil
+	})
+	if err != nil || !t.Valid {
+		return "", err
+	}
+
+	claims := t.Claims.(jwt.MapClaims)
+
+	if claims["type"] != "invite" {
+		return "", errors.New("invalid token type")
+	}
+
+	return claims["email"].(string), nil
 }

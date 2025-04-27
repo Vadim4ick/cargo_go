@@ -1025,7 +1025,8 @@ const docTemplate = `{
         "invitation.Invitation": {
             "type": "object",
             "required": [
-                "email"
+                "email",
+                "token"
             ],
             "properties": {
                 "createdAt": {

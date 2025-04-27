@@ -15,7 +15,7 @@ func NewPostgresCargoRepo(db *pgxpool.Pool) InvitationRepository {
 }
 
 func (r *PostgresInvitationRepo) Create(i Invitation) (Invitation, error) {
-	err := r.db.QueryRow(context.Background(), "INSERT INTO invitations (email) VALUES ($1) RETURNING id", i.Email).Scan(&i.ID)
+	err := r.db.QueryRow(context.Background(), "INSERT INTO invitations (email, token) VALUES ($1, $2) RETURNING id", i.Email, i.Token).Scan(&i.ID)
 
 	if err != nil {
 		return Invitation{}, err
