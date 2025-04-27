@@ -5,6 +5,8 @@ import (
 	"test-project/internal/delivery/http/cargo"
 	"test-project/internal/delivery/http/truck"
 	"test-project/internal/delivery/http/user"
+	authDomain "test-project/internal/domain/auth"
+	userDomain "test-project/internal/domain/user"
 	"test-project/internal/redis"
 	"test-project/internal/usecase"
 
@@ -21,10 +23,21 @@ func Setup(pool *pgxpool.Pool, logger *zap.Logger, jwtService *usecase.JwtUsecas
 	subrouter := r.PathPrefix("/api/v1").Subrouter()
 	subrouter.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
-	user.RegisterUserRoutes(subrouter, pool, logger)
-	truck.RegisterUserRoutes(subrouter, pool, logger)
-	cargo.RegisterCargoRoute(subrouter, pool, logger)
-	auth.RegisterCargoRoute(subrouter, pool, logger, jwtService, redisService)
+	userRepo := userDomain.NewPostgresUserRepo(pool)
+	authSvc := usecase.NewService(userRepo, jwtService, redisService)
+
+	deps := &authDomain.Deps{
+		Logger:      logger,
+		JwtService:  jwtService,
+		AuthService: authSvc,
+		Redis:       redisService,
+		DB:          pool,
+	}
+
+	user.RegisterUserRoutes(subrouter, deps)
+	truck.RegisterUserRoutes(subrouter, deps)
+	cargo.RegisterCargoRoute(subrouter, deps)
+	auth.RegisterCargoRoute(subrouter, deps)
 
 	return subrouter
 }

@@ -20,10 +20,25 @@ type Cargo struct {
 	TruckID int `json:"truckId" validate:"required"`
 }
 
+type UpdateCargoInput struct {
+	CargoNumber        *string    `json:"cargoNumber,omitempty"`
+	Date               *time.Time `json:"date,omitempty"`
+	LoadUnloadDate     *time.Time `json:"loadUnloadDate,omitempty"`
+	Driver             *string    `json:"driver,omitempty"`
+	TransportationInfo *string    `json:"transportationInfo,omitempty"`
+	PayoutAmount       *float64   `json:"payoutAmount,omitempty"`
+	PayoutDate         *time.Time `json:"payoutDate,omitempty"`
+	PaymentStatus      *string    `json:"paymentStatus,omitempty"`
+	PayoutTerms        *string    `json:"payoutTerms,omitempty"`
+	TruckID            *int       `json:"truckId,omitempty"`
+}
+
 type CargoRepository interface {
 	Create(cargo Cargo) (Cargo, error)
 	FindAll() ([]Cargo, error)
 	FindByID(id int) (Cargo, error)
+	Update(cargo UpdateCargoInput, id int) (Cargo, error)
+	Delete(id int) error
 }
 
 type CreateResponse struct {
@@ -39,6 +54,11 @@ type ListResponse struct {
 type GetResponse struct {
 	Message string `json:"message" example:"Данные о грузе"`
 	Data    Cargo  `json:"data"`
+}
+
+type DeleteResponse struct {
+	Message string      `json:"message" example:"Груз успешно удалён"`
+	Data    interface{} `json:"data"`
 }
 
 type ErrorResponse struct {

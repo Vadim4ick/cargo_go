@@ -22,6 +22,7 @@ type UserRepository interface {
 	FindAll() ([]User, error)
 	FindByID(id int) (User, error)
 	Create(user User) (User, error)
+	Delete(id int) error
 	FindByEmail(email string) (User, error)
 }
 
@@ -42,5 +43,10 @@ type CreateResponse struct {
 
 type ErrorResponse struct {
 	Message string      `json:"message" example:"Невалидный формат JSON"`
+	Data    interface{} `json:"data"`
+}
+
+type DeleteResponse struct {
+	Message string      `json:"message" example:"Пользователь успешно удалён"`
 	Data    interface{} `json:"data"`
 }

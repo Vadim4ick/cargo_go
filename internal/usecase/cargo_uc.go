@@ -10,7 +10,9 @@ import (
 
 type CargoUsecase interface {
 	CreateCargo(input cargoDomain.Cargo) (cargoDomain.Cargo, error)
+	PatchCargo(input cargoDomain.UpdateCargoInput, id int) (cargoDomain.Cargo, error)
 	ListGargos() ([]cargoDomain.Cargo, error)
+	DeleteCargo(id int) error
 	GetCargo(id int) (cargoDomain.Cargo, error)
 }
 
@@ -43,4 +45,18 @@ func (u *cargoUsecase) GetCargo(id int) (cargoDomain.Cargo, error) {
 	}
 
 	return cargo, err
+}
+
+func (u *cargoUsecase) PatchCargo(input cargoDomain.UpdateCargoInput, id int) (cargoDomain.Cargo, error) {
+	return u.repo.Update(input, id)
+}
+
+func (u *cargoUsecase) DeleteCargo(id int) error {
+	_, err := u.repo.FindByID(id)
+
+	if err != nil {
+		return err
+	}
+
+	return u.repo.Delete(id)
 }

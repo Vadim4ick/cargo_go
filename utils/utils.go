@@ -16,6 +16,7 @@ type Response struct {
 func JSON(w http.ResponseWriter, status int, message string, data interface{}, logger *zap.Logger) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
+
 	response := map[string]interface{}{
 		"message": message,
 		"data":    data,
@@ -23,14 +24,14 @@ func JSON(w http.ResponseWriter, status int, message string, data interface{}, l
 
 	// Логируем сообщение ответа
 	if logger != nil {
-		logger.Info("HTTP response message",
+		logger.WithOptions(zap.AddCallerSkip(1)).Info("HTTP response message",
 			zap.String("message", message),
 			zap.Int("status", status),
 		)
 	}
 
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		logger.Error("Failed to encode JSON response", zap.Error(err))
+	if err := json.NewEncoder(w).Encode(response); err != nil && logger != nil {
+		logger.WithOptions(zap.AddCallerSkip(1)).Error("Failed to encode JSON response", zap.Error(err))
 	}
 }
 

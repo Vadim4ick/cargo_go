@@ -2,6 +2,11 @@ package auth
 
 import (
 	"test-project/internal/domain/user"
+	"test-project/internal/redis"
+	"test-project/internal/usecase"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+	"go.uber.org/zap"
 )
 
 // type Service interface {
@@ -56,4 +61,12 @@ type ProfileResponse struct {
 type ErrorResponse struct {
 	Message string      `json:"message" example:"Некорректные данные"`
 	Data    interface{} `json:"data"`
+}
+
+type Deps struct {
+	Logger      *zap.Logger
+	JwtService  *usecase.JwtUsecase
+	AuthService usecase.AuthUsecase
+	Redis       *redis.Client
+	DB          *pgxpool.Pool
 }

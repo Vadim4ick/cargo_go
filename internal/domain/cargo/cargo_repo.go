@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -107,4 +108,84 @@ func (r *PostgresCargoRepo) FindByID(id int) (Cargo, error) {
 	}
 
 	return c, nil
+}
+
+func (r *PostgresCargoRepo) Update(c UpdateCargoInput, id int) (Cargo, error) {
+	query := "UPDATE cargos SET "
+	args := []interface{}{}
+	i := 1
+
+	if c.CargoNumber != nil {
+		query += fmt.Sprintf("cargoNumber = $%d, ", i)
+		args = append(args, *c.CargoNumber)
+		i++
+	}
+	if c.Date != nil {
+		query += fmt.Sprintf("date = $%d, ", i)
+		args = append(args, *c.Date)
+		i++
+	}
+	if c.LoadUnloadDate != nil {
+		query += fmt.Sprintf("loadUnloadDate = $%d, ", i)
+		args = append(args, *c.LoadUnloadDate)
+		i++
+	}
+	if c.Driver != nil {
+		query += fmt.Sprintf("driver = $%d, ", i)
+		args = append(args, *c.Driver)
+		i++
+	}
+	if c.TransportationInfo != nil {
+		query += fmt.Sprintf("transportationInfo = $%d, ", i)
+		args = append(args, *c.TransportationInfo)
+		i++
+	}
+	if c.PayoutAmount != nil {
+		query += fmt.Sprintf("payoutAmount = $%d, ", i)
+		args = append(args, *c.PayoutAmount)
+		i++
+	}
+	if c.PayoutDate != nil {
+		query += fmt.Sprintf("payoutDate = $%d, ", i)
+		args = append(args, *c.PayoutDate)
+		i++
+	}
+	if c.PaymentStatus != nil {
+		query += fmt.Sprintf("paymentStatus = $%d, ", i)
+		args = append(args, *c.PaymentStatus)
+		i++
+	}
+	if c.PayoutTerms != nil {
+		query += fmt.Sprintf("payoutTerms = $%d, ", i)
+		args = append(args, *c.PayoutTerms)
+		i++
+	}
+	if c.TruckID != nil {
+		query += fmt.Sprintf("truckId = $%d, ", i)
+		args = append(args, *c.TruckID)
+		i++
+	}
+
+	// убрать последнюю запятую
+	query = strings.TrimSuffix(query, ", ")
+	// добавить WHERE
+	query += fmt.Sprintf(" WHERE id = $%d", i)
+	args = append(args, id)
+
+	_, err := r.db.Exec(context.Background(), query, args...)
+	if err != nil {
+		return Cargo{}, err
+	}
+
+	cargo, err := r.FindByID(id)
+	if err != nil {
+		return Cargo{}, err
+	}
+
+	return cargo, nil
+}
+
+func (r *PostgresCargoRepo) Delete(id int) error {
+	_, err := r.db.Exec(context.Background(), "DELETE FROM cargos WHERE id=$1", id)
+	return err
 }

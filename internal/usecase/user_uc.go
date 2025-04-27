@@ -10,6 +10,7 @@ import (
 type UserUsecase interface {
 	ListUsers() ([]userDomain.User, error)
 	GetUser(id int) (userDomain.User, error)
+	DeleteUser(id int) error
 	CreateUser(input userDomain.User) (userDomain.User, error)
 }
 
@@ -36,4 +37,14 @@ func (u *userUsecase) CreateUser(input userDomain.User) (userDomain.User, error)
 	}
 
 	return u.repo.Create(input)
+}
+
+func (u *userUsecase) DeleteUser(id int) error {
+	_, err := u.repo.FindByID(id)
+
+	if err != nil {
+		return err
+	}
+
+	return u.repo.Delete(id)
 }

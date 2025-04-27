@@ -117,6 +117,13 @@ definitions:
         example: Груз успешно создан
         type: string
     type: object
+  cargo.DeleteResponse:
+    properties:
+      data: {}
+      message:
+        example: Груз успешно удалён
+        type: string
+    type: object
   cargo.ErrorResponse:
     properties:
       data: {}
@@ -142,6 +149,33 @@ definitions:
         example: Список всех грузов
         type: string
     type: object
+  truck.ErrorResponse:
+    properties:
+      data: {}
+      message:
+        example: Невалидный формат JSON
+        type: string
+    type: object
+  truck.GetResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/truck.Truck'
+        type: array
+      message:
+        example: Машина
+        type: string
+    type: object
+  truck.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/truck.Truck'
+        type: array
+      message:
+        example: Список всех машин
+        type: string
+    type: object
   truck.Truck:
     properties:
       createdAt:
@@ -149,6 +183,13 @@ definitions:
       id:
         type: integer
       name:
+        type: string
+    type: object
+  user.DeleteResponse:
+    properties:
+      data: {}
+      message:
+        example: Пользователь успешно удалён
         type: string
     type: object
   user.ErrorResponse:
@@ -228,6 +269,8 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/cargo.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: List all cargos
       tags:
       - cargos
@@ -257,10 +300,42 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/cargo.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new cargo
       tags:
       - cargos
   /cargos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a cargo by its ID
+      parameters:
+      - description: Cargo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cargo deleted
+          schema:
+            $ref: '#/definitions/cargo.DeleteResponse'
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/cargo.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/cargo.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a cargo by ID
+      tags:
+      - cargos
     get:
       consumes:
       - application/json
@@ -286,7 +361,45 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/cargo.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a cargo by ID
+      tags:
+      - cargos
+    patch:
+      consumes:
+      - application/json
+      description: Updates a cargo by its ID
+      parameters:
+      - description: Cargo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Cargo object to be updated
+        in: body
+        name: cargo
+        required: true
+        schema:
+          $ref: '#/definitions/cargo.Cargo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cargo updated
+          schema:
+            $ref: '#/definitions/cargo.GetResponse'
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/cargo.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/cargo.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a cargo by ID
       tags:
       - cargos
   /login:
@@ -438,6 +551,26 @@ paths:
       tags:
       - auth
   /trucks:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all trucks in the system
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: List of trucks
+          schema:
+            $ref: '#/definitions/truck.ListResponse'
+        "404":
+          description: Trucks not found
+          schema:
+            $ref: '#/definitions/truck.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all trucks
+      tags:
+      - trucks
     post:
       consumes:
       - application/json
@@ -464,7 +597,40 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/cargo.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new truck
+      tags:
+      - trucks
+  /trucks/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a truck by their ID
+      parameters:
+      - description: Truck ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Truck found
+          schema:
+            $ref: '#/definitions/truck.GetResponse'
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/truck.ErrorResponse'
+        "404":
+          description: Truck not found
+          schema:
+            $ref: '#/definitions/truck.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a truck by ID
       tags:
       - trucks
   /users:
@@ -483,10 +649,40 @@ paths:
           description: Users not found
           schema:
             $ref: '#/definitions/user.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: List all users
       tags:
       - users
   /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User deleted
+          schema:
+            $ref: '#/definitions/user.DeleteResponse'
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+      summary: Delete a user by ID
+      tags:
+      - users
     get:
       consumes:
       - application/json

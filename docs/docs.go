@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/cargos": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieves a list of all cargos in the system",
                 "consumes": [
                     "application/json"
@@ -44,6 +49,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Creates a new cargo with the provided details",
                 "consumes": [
                     "application/json"
@@ -90,6 +100,11 @@ const docTemplate = `{
         },
         "/cargos/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieves a cargo by its ID",
                 "consumes": [
                     "application/json"
@@ -113,6 +128,109 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "Cargo found",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.GetResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Deletes a cargo by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cargos"
+                ],
+                "summary": "Delete a cargo by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Cargo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cargo deleted",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Updates a cargo by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cargos"
+                ],
+                "summary": "Update a cargo by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Cargo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Cargo object to be updated",
+                        "name": "cargo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cargo.Cargo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cargo updated",
                         "schema": {
                             "$ref": "#/definitions/cargo.GetResponse"
                         }
@@ -363,7 +481,44 @@ const docTemplate = `{
             }
         },
         "/trucks": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieves a list of all trucks in the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trucks"
+                ],
+                "summary": "List all trucks",
+                "responses": {
+                    "201": {
+                        "description": "List of trucks",
+                        "schema": {
+                            "$ref": "#/definitions/truck.ListResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Trucks not found",
+                        "schema": {
+                            "$ref": "#/definitions/truck.ErrorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Creates a new truck with the provided details",
                 "consumes": [
                     "application/json"
@@ -408,8 +563,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/trucks/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieves a truck by their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trucks"
+                ],
+                "summary": "Get a truck by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Truck ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Truck found",
+                        "schema": {
+                            "$ref": "#/definitions/truck.GetResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID",
+                        "schema": {
+                            "$ref": "#/definitions/truck.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Truck not found",
+                        "schema": {
+                            "$ref": "#/definitions/truck.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieves a list of all users in the system",
                 "consumes": [
                     "application/json"
@@ -464,6 +673,48 @@ const docTemplate = `{
                         "description": "User found",
                         "schema": {
                             "$ref": "#/definitions/user.GetResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes a user by their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete a user by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User deleted",
+                        "schema": {
+                            "$ref": "#/definitions/user.DeleteResponse"
                         }
                     },
                     "400": {
@@ -656,6 +907,16 @@ const docTemplate = `{
                 }
             }
         },
+        "cargo.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string",
+                    "example": "Груз успешно удалён"
+                }
+            }
+        },
         "cargo.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -693,6 +954,46 @@ const docTemplate = `{
                 }
             }
         },
+        "truck.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string",
+                    "example": "Невалидный формат JSON"
+                }
+            }
+        },
+        "truck.GetResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/truck.Truck"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Машина"
+                }
+            }
+        },
+        "truck.ListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/truck.Truck"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Список всех машин"
+                }
+            }
+        },
         "truck.Truck": {
             "type": "object",
             "properties": {
@@ -704,6 +1005,16 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "user.DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string",
+                    "example": "Пользователь успешно удалён"
                 }
             }
         },

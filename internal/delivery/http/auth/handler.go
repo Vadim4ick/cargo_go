@@ -5,42 +5,34 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"test-project/internal/domain/user"
-	"test-project/internal/middleware/auth"
-	"test-project/internal/redis"
-	"test-project/internal/usecase"
+	"test-project/internal/domain/auth"
+	"test-project/internal/middleware"
 	"test-project/utils"
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/jackc/pgx/v5/pgxpool"
-	"go.uber.org/zap"
 )
 
 type Handler struct {
-	svc      usecase.AuthUsecase
-	jwtSvc   *usecase.JwtUsecase
-	logger   *zap.Logger
-	redisSvc *redis.Client
+	deps auth.Deps
 }
 
-func NewHandler(svc usecase.AuthUsecase, jwtSvc *usecase.JwtUsecase, logger *zap.Logger, redisSvc *redis.Client) *Handler {
-	return &Handler{svc, jwtSvc, logger, redisSvc}
+func NewHandler(deps *auth.Deps) *Handler {
+	return &Handler{
+		deps: *deps,
+	}
 }
 
-func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger, jwtService *usecase.JwtUsecase, redisService *redis.Client) {
-	userRepo := user.NewPostgresUserRepo(db)
+func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
+	h := NewHandler(deps)
 
-	svc := usecase.NewService(userRepo, jwtService, redisService)
-	h := NewHandler(svc, jwtService, logger, redisService)
+	r.HandleFunc("/register", h.register).Methods(http.MethodPost)
+	r.HandleFunc("/login", h.login).Methods(http.MethodPost)
+	r.HandleFunc("/logout", h.logout).Methods(http.MethodPost)
+	r.HandleFunc("/refresh", h.refresh).Methods(http.MethodPost)
 
-	r.HandleFunc("/register", h.register).Methods("POST")
-	r.HandleFunc("/login", h.login).Methods("POST")
-	r.HandleFunc("/logout", h.logout).Methods("POST")
-	r.HandleFunc("/refresh", h.refresh).Methods("POST")
-
-	r.Handle("/profile", auth.JwtMiddleware(h.svc, jwtService, logger, h.profile)).Methods("GET")
-	r.Handle("/online", auth.JwtMiddleware(h.svc, jwtService, logger, h.onlineList)).Methods("GET")
+	r.Handle("/profile", middleware.JwtMiddleware(deps, h.profile)).Methods(http.MethodGet)
+	r.Handle("/online", middleware.JwtMiddleware(deps, h.onlineList)).Methods(http.MethodGet)
 }
 
 // refresh handles token refresh
@@ -56,14 +48,14 @@ func RegisterCargoRoute(r *mux.Router, db *pgxpool.Pool, logger *zap.Logger, jwt
 func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh_token")
 	if err != nil {
-		utils.JSON(w, http.StatusUnauthorized, "Refresh токен отсутствует", nil, h.logger)
+		utils.JSON(w, http.StatusUnauthorized, "Refresh токен отсутствует", nil, h.deps.Logger)
 		return
 	}
 
-	userID, err := h.jwtSvc.ValidateRefresh(cookie.Value)
+	userID, err := h.deps.JwtService.ValidateRefresh(cookie.Value)
 
 	if err != nil {
-		utils.JSON(w, http.StatusUnauthorized, "Невалидный refresh токен", nil, h.logger)
+		utils.JSON(w, http.StatusUnauthorized, "Невалидный refresh токен", nil, h.deps.Logger)
 		http.SetCookie(w, &http.Cookie{
 			Name:     "refresh_token",
 			Value:    "",
@@ -77,14 +69,14 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Генерируем новые access и refresh токены
-	newAccessToken, err := h.jwtSvc.GenerateAccess(userID)
+	newAccessToken, err := h.deps.JwtService.GenerateAccess(userID)
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации access токена", nil, h.logger)
+		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации access токена", nil, h.deps.Logger)
 		return
 	}
-	newRefreshToken, err := h.jwtSvc.GenerateRefresh(userID)
+	newRefreshToken, err := h.deps.JwtService.GenerateRefresh(userID)
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации refresh токена", nil, h.logger)
+		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации refresh токена", nil, h.deps.Logger)
 		return
 	}
 
@@ -100,7 +92,7 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 
 	utils.JSON(w, http.StatusOK, "Токен успешно обновлён", map[string]string{
 		"access_token": newAccessToken,
-	}, h.logger)
+	}, h.deps.Logger)
 }
 
 // register handles user registration
@@ -116,13 +108,13 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 	var req struct{ Email, Password string }
 	json.NewDecoder(r.Body).Decode(&req)
-	u, err := h.svc.Register(req.Email, req.Password)
+	u, err := h.deps.AuthService.Register(req.Email, req.Password)
 	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, err.Error(), nil, h.logger)
+		utils.JSON(w, http.StatusBadRequest, err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusCreated, "Пользователь успешно зарегистрирован", u, h.logger)
+	utils.JSON(w, http.StatusCreated, "Пользователь успешно зарегистрирован", u, h.deps.Logger)
 }
 
 // login handles user authentication
@@ -143,13 +135,13 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректные данные", nil, h.logger)
+		utils.JSON(w, http.StatusBadRequest, "Некорректные данные", nil, h.deps.Logger)
 		return
 	}
 
-	accessToken, refreshToken, err := h.svc.Login(req.Email, req.Password)
+	accessToken, refreshToken, err := h.deps.AuthService.Login(req.Email, req.Password)
 	if err != nil {
-		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.logger)
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
 		return
 	}
 
@@ -167,7 +159,7 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 
 	utils.JSON(w, http.StatusOK, "Пользователь успешно авторизован", map[string]string{
 		"access_token": accessToken,
-	}, h.logger)
+	}, h.deps.Logger)
 }
 
 // onlineList retrieves a list of online user IDs
@@ -182,10 +174,10 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} auth.ErrorResponse "Internal server error"
 // @Router /online [get]
 func (h *Handler) onlineList(w http.ResponseWriter, r *http.Request) {
-	ids, err := h.svc.OnlineUsers(5 * time.Minute)
+	ids, err := h.deps.AuthService.OnlineUsers(5 * time.Minute)
 
 	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, fmt.Sprintf("error getting online users: %v", err), nil, h.logger)
+		utils.JSON(w, http.StatusInternalServerError, fmt.Sprintf("error getting online users: %v", err), nil, h.deps.Logger)
 		return
 	}
 
@@ -193,7 +185,7 @@ func (h *Handler) onlineList(w http.ResponseWriter, r *http.Request) {
 	for i, k := range ids {
 		ids[i] = strings.TrimPrefix(k, "online:")
 	}
-	utils.JSON(w, http.StatusOK, "Список ID-шников онлайн пользователей", ids, h.logger)
+	utils.JSON(w, http.StatusOK, "Список ID-шников онлайн пользователей", ids, h.deps.Logger)
 }
 
 // logout handles user logout
@@ -215,7 +207,7 @@ func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 		MaxAge:   -1,
 	})
 
-	utils.JSON(w, http.StatusOK, "Успешный выход из системы", nil, h.logger)
+	utils.JSON(w, http.StatusOK, "Успешный выход из системы", nil, h.deps.Logger)
 }
 
 // profile handles user profile
@@ -231,26 +223,26 @@ func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} auth.ErrorResponse "Internal server error"
 // @Router /profile [get]
 func (h *Handler) profile(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value(auth.UserIDKey).(string)
+	userID, ok := r.Context().Value(middleware.UserIDKey).(string)
 
 	if !ok {
-		utils.JSON(w, http.StatusUnauthorized, "unauthorized", nil, h.logger)
+		utils.JSON(w, http.StatusUnauthorized, "unauthorized", nil, h.deps.Logger)
 		return
 	}
 
 	id, err := utils.ParseNumber(userID)
 
 	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.logger)
+		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.deps.Logger)
 		return
 	}
 
-	u, err := h.svc.GetUser(id)
+	u, err := h.deps.AuthService.GetUser(id)
 
 	if err != nil {
-		utils.JSON(w, http.StatusNotFound, err.Error(), nil, h.logger)
+		utils.JSON(w, http.StatusNotFound, err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusOK, "Профиль", u, h.logger)
+	utils.JSON(w, http.StatusOK, "Профиль", u, h.deps.Logger)
 }
