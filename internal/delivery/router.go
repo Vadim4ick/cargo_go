@@ -3,6 +3,7 @@ package router
 import (
 	"test-project/internal/delivery/http/auth"
 	"test-project/internal/delivery/http/cargo"
+	"test-project/internal/delivery/http/invitation"
 	"test-project/internal/delivery/http/truck"
 	"test-project/internal/delivery/http/user"
 	authDomain "test-project/internal/domain/auth"
@@ -38,6 +39,7 @@ func Setup(pool *pgxpool.Pool, logger *zap.Logger, jwtService *usecase.JwtUsecas
 	truck.RegisterUserRoutes(subrouter, deps)
 	cargo.RegisterCargoRoute(subrouter, deps)
 	auth.RegisterCargoRoute(subrouter, deps)
+	invitation.RegisterInvitationRoutes(subrouter, deps)
 
 	return subrouter
 }

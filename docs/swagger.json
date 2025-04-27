@@ -244,6 +244,52 @@
                 }
             }
         },
+        "/invitation": {
+            "post": {
+                "description": "Creates a new invitation with the provided details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invitations"
+                ],
+                "summary": "Create a new invitation",
+                "parameters": [
+                    {
+                        "description": "Invitation object to be created",
+                        "name": "invitation",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/invitation.Invitation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Invitation successfully created",
+                        "schema": {
+                            "$ref": "#/definitions/invitation.CreateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid JSON format",
+                        "schema": {
+                            "$ref": "#/definitions/invitation.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/invitation.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Authenticates a user and returns access and refresh tokens",
@@ -945,6 +991,52 @@
                 "message": {
                     "type": "string",
                     "example": "Список всех грузов"
+                }
+            }
+        },
+        "invitation.CreateResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/invitation.Invitation"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Приглашение успешно создано"
+                }
+            }
+        },
+        "invitation.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string",
+                    "example": "Невалидный формат JSON"
+                }
+            }
+        },
+        "invitation.Invitation": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "used": {
+                    "type": "boolean",
+                    "default": false
                 }
             }
         },

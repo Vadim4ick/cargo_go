@@ -149,6 +149,37 @@ definitions:
         example: Список всех грузов
         type: string
     type: object
+  invitation.CreateResponse:
+    properties:
+      data:
+        $ref: '#/definitions/invitation.Invitation'
+      message:
+        example: Приглашение успешно создано
+        type: string
+    type: object
+  invitation.ErrorResponse:
+    properties:
+      data: {}
+      message:
+        example: Невалидный формат JSON
+        type: string
+    type: object
+  invitation.Invitation:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      token:
+        type: string
+      used:
+        default: false
+        type: boolean
+    required:
+    - email
+    type: object
   truck.ErrorResponse:
     properties:
       data: {}
@@ -402,6 +433,36 @@ paths:
       summary: Update a cargo by ID
       tags:
       - cargos
+  /invitation:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new invitation with the provided details
+      parameters:
+      - description: Invitation object to be created
+        in: body
+        name: invitation
+        required: true
+        schema:
+          $ref: '#/definitions/invitation.Invitation'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Invitation successfully created
+          schema:
+            $ref: '#/definitions/invitation.CreateResponse'
+        "400":
+          description: Invalid JSON format
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+      summary: Create a new invitation
+      tags:
+      - invitations
   /login:
     post:
       consumes:

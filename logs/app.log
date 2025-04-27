@@ -173,3 +173,17 @@
 {"level":"INFO","ts":"2025-04-27 21:29:36","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
 {"level":"INFO","ts":"2025-04-27 21:29:39","caller":"truck/handler.go:116","msg":"HTTP response message","message":"Машина","status":201}
 {"level":"INFO","ts":"2025-04-27 21:29:41","caller":"truck/handler.go:112","msg":"HTTP response message","message":"Машина с id=2 не существует","status":404}
+{"level":"INFO","ts":"2025-04-27 21:55:25","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 21:55:25","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 21:55:59","caller":"invitation/handler.go:58","msg":"HTTP response message","message":"Невалидный формат JSON","status":400}
+{"level":"INFO","ts":"2025-04-27 21:56:07","caller":"invitation/handler.go:65","msg":"HTTP response message","message":"Email должен быть email адресом; Token обязательное поле","status":500}
+{"level":"INFO","ts":"2025-04-27 21:56:16","caller":"invitation/handler.go:65","msg":"HTTP response message","message":"Token обязательное поле","status":500}
+{"level":"INFO","ts":"2025-04-27 21:56:44","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 21:56:44","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 21:56:56","caller":"middleware/auth.go:20","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-04-27 21:57:31","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 21:57:31","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 21:57:37","caller":"invitation/handler.go:65","msg":"HTTP response message","message":"ERROR: null value in column \"token\" of relation \"invitations\" violates not-null constraint (SQLSTATE 23502)","status":500}
+{"level":"INFO","ts":"2025-04-27 21:58:30","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-27 21:58:30","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-27 21:58:32","caller":"invitation/handler.go:69","msg":"HTTP response message","message":"Приглашение успешно создано","status":201}
