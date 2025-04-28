@@ -15,6 +15,7 @@ import (
 	_ "test-project/docs"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/rs/cors"
 	"go.uber.org/zap"
 )
 
@@ -61,10 +62,21 @@ func main() {
 
 	mux := router.Setup(pool, logger, jwtService, redisService)
 
+	// Настройка CORS
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000", "https://your-frontend-domain.com"}, // Укажите разрешённые домены
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowCredentials: true, // Разрешить отправку куки и заголовков авторизации
+		MaxAge:           300,  // Кэширование CORS-запросов (в секундах)
+	})
+
+	handler := corsHandler.Handler(mux)
+
 	utils.StartInvitationCleaner(pool, logger)
 	logger.Info("Starting server on :8080")
 	fmt.Println("Swagger UI available at http://localhost:8080/api/v1/swagger/index.html")
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	if err := http.ListenAndServe(":8080", handler); err != nil {
 		logger.Fatal("Ошибка запуска сервера", zap.Error(err))
 	}
 }

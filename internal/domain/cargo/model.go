@@ -20,6 +20,20 @@ type Cargo struct {
 	TruckID string `json:"truckId" validate:"required"`
 }
 
+// request DTO с тегами для schema и validate
+// type СreateCargoForm struct {
+// 	CargoNumber        string     `schema:"cargoNumber"        validate:"required"`
+// 	Date               *time.Time `schema:"date"               validate:"omitempty"`
+// 	LoadUnloadDate     *time.Time `schema:"loadUnloadDate"     validate:"omitempty"`
+// 	Driver             string     `schema:"driver"             validate:"required"`
+// 	TransportationInfo string     `schema:"transportationInfo" validate:"required"`
+// 	PayoutAmount       *float64   `schema:"payoutAmount"       validate:"omitempty,gt=0"`
+// 	PayoutDate         *time.Time `schema:"payoutDate"         validate:"omitempty"`
+// 	PaymentStatus      *string    `schema:"paymentStatus"      validate:"omitempty"`
+// 	PayoutTerms        *string    `schema:"payoutTerms"        validate:"omitempty"`
+// 	TruckID            string     `schema:"truckId"            validate:"required"`
+// }
+
 type UpdateCargoInput struct {
 	CargoNumber        *string    `json:"cargoNumber,omitempty"`
 	Date               *time.Time `json:"date,omitempty"`

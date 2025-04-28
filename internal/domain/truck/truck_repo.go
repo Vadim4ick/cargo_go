@@ -77,7 +77,7 @@ func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]ca
 		`SELECT id, cargonumber
 		 FROM cargos
 		 WHERE truckid = $1
-		 ORDER BY createdAt DESC
+		 ORDER BY "createdAt" DESC
 		 LIMIT $2 OFFSET $3`,
 		id, limit, offset,
 	)

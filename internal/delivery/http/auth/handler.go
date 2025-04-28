@@ -31,7 +31,7 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 	r.HandleFunc("/auth/logout", h.logout).Methods(http.MethodPost)
 	r.HandleFunc("/auth/refresh", h.refresh).Methods(http.MethodPost)
 
-	r.Handle("/auth/profile", middleware.JwtMiddleware(deps, h.profile)).Methods(http.MethodGet)
+	r.Handle("/profile", middleware.JwtMiddleware(deps, h.profile)).Methods(http.MethodGet)
 	r.Handle("/auth/online", middleware.JwtMiddleware(deps, h.onlineList)).Methods(http.MethodGet)
 }
 
