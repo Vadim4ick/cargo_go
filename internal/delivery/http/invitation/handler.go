@@ -61,6 +61,12 @@ func (h *Handler) CREATE(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_, err := h.deps.AuthService.FindByEmail(cargo.Email)
+	if err == nil {
+		utils.JSON(w, http.StatusBadRequest, "Пользователь с таким email уже существует", nil, h.deps.Logger)
+		return
+	}
+
 	inviteToken, err := h.deps.JwtService.GenerateInvite(cargo.Email)
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)

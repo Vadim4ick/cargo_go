@@ -1,10 +1,14 @@
 package utils
 
 import (
+	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
+	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 )
 
@@ -37,4 +41,44 @@ func JSON(w http.ResponseWriter, status int, message string, data interface{}, l
 
 func ParseNumber(s string) (int, error) {
 	return strconv.Atoi(s)
+}
+
+const deleteExpiredInvitationsQuery = `
+	DELETE FROM invitations
+	WHERE "createdAt" + INTERVAL '5 minutes' < NOW()
+`
+
+func StartInvitationCleaner(db *pgxpool.Pool, logger *zap.Logger) {
+	go func() {
+		// Сразу при старте удаляем старые инвайты
+		start := time.Now()
+		_, err := db.Exec(context.Background(), deleteExpiredInvitationsQuery)
+		duration := time.Since(start)
+
+		if err != nil {
+			logger.Fatal("Ошибка первичной очистки устаревших приглашений", zap.Error(err))
+		} else {
+			logger.Info("Первичная очистка устаревших приглашений выполнена",
+				zap.Duration("duration", duration),
+			)
+		}
+
+		// Создаем тикер для последующих чисток
+		ticker := time.NewTicker(5 * time.Minute)
+		defer ticker.Stop()
+
+		for range ticker.C {
+			start := time.Now()
+			_, err := db.Exec(context.Background(), deleteExpiredInvitationsQuery)
+			duration := time.Since(start)
+
+			if err != nil {
+				log.Println("Ошибка очистки устаревших приглашений:", err)
+			} else {
+				logger.Info("Очистка устаревших приглашений выполнена",
+					zap.Duration("duration", duration),
+				)
+			}
+		}
+	}()
 }

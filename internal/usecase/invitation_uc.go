@@ -5,6 +5,8 @@ import (
 	"strings"
 	invitationDomain "test-project/internal/domain/invitation"
 	"test-project/internal/validator"
+
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 type InvitationUsecase interface {
@@ -25,5 +27,15 @@ func (u *invitationUsecase) CreateInvitation(invitation invitationDomain.Invitat
 		return invitationDomain.Invitation{}, errors.New(strings.Join(errs, "; "))
 	}
 
-	return u.repo.Create(invitation)
+	invitation, err := u.repo.Create(invitation)
+	if err != nil {
+		// обработка ошибки дубликата
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return invitationDomain.Invitation{}, errors.New("Приглашение для этого email уже отправлено")
+		}
+		return invitationDomain.Invitation{}, err
+	}
+
+	return invitation, nil
 }

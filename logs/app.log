@@ -1,215 +1,41 @@
-{"level":"INFO","ts":"2025-04-27 01:50:29","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 01:50:29","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 01:50:30","caller":"utils/utils.go:26","msg":"HTTP response message","message":"Список ID-шников онлайн пользователей","status":200}
-{"level":"INFO","ts":"2025-04-27 01:50:32","caller":"utils/utils.go:26","msg":"HTTP response message","message":"Список ID-шников онлайн пользователей","status":200}
-{"level":"INFO","ts":"2025-04-27 01:51:19","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 01:51:19","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 01:52:12","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 01:52:12","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 01:53:37","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 01:53:37","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:00:28","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:00:28","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:00:36","caller":"utils/utils.go:26","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 02:00:56","caller":"utils/utils.go:26","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
-{"level":"INFO","ts":"2025-04-27 02:01:08","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:01:11","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:01:12","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:01:13","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:04:22","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:04:22","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:04:23","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:05:51","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:05:51","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:06:03","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:06:08","caller":"utils/utils.go:26","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 02:06:09","caller":"utils/utils.go:26","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 02:06:26","caller":"utils/utils.go:26","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
-{"level":"INFO","ts":"2025-04-27 02:06:38","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:04","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:07:04","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:07:04","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:04","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:05","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:05","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:06","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:06","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:06","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:06","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:07","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:07","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:07","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:07","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:07","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:07","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:08","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:08","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:08","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:08","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:08","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:09","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:09","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:09","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:09","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:09","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:09","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:10","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:10","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:10","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:10","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:10","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:11","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:07:11","caller":"utils/utils.go:26","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:09:23","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:09:23","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:09:24","caller":"user/handler.go:52","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:10:41","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:10:41","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:10:41","caller":"user/handler.go:52","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:10:42","caller":"user/handler.go:52","msg":"HTTP response message","message":"can't scan into dest[5]: cannot scan text (OID 25) in text format into *time.Time","status":404}
-{"level":"INFO","ts":"2025-04-27 02:13:15","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:13:15","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:13:16","caller":"user/handler.go:56","msg":"HTTP response message","message":"Список пользователей","status":201}
-{"level":"INFO","ts":"2025-04-27 02:14:32","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:14:32","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:14:33","caller":"user/handler.go:56","msg":"HTTP response message","message":"Список пользователей","status":201}
-{"level":"INFO","ts":"2025-04-27 02:14:49","caller":"middleware/auth.go:22","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 02:15:36","caller":"user/handler.go:56","msg":"HTTP response message","message":"Список пользователей","status":201}
-{"level":"INFO","ts":"2025-04-27 02:15:37","caller":"user/handler.go:56","msg":"HTTP response message","message":"Список пользователей","status":201}
-{"level":"INFO","ts":"2025-04-27 02:16:33","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:16:33","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:16:38","caller":"middleware/auth.go:22","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 02:16:55","caller":"auth/handler.go:160","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
-{"level":"INFO","ts":"2025-04-27 02:17:08","caller":"user/handler.go:56","msg":"HTTP response message","message":"Список пользователей","status":201}
-{"level":"INFO","ts":"2025-04-27 02:17:20","caller":"cargo/handler.go:119","msg":"HTTP response message","message":"груз с id=0 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 02:17:23","caller":"cargo/handler.go:123","msg":"HTTP response message","message":"Данные о грузе","status":200}
-{"level":"INFO","ts":"2025-04-27 02:18:07","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:18:07","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:18:19","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:18:19","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:18:25","caller":"middleware/auth.go:22","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 02:18:26","caller":"middleware/auth.go:22","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 02:18:44","caller":"auth/handler.go:160","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
-{"level":"INFO","ts":"2025-04-27 02:18:56","caller":"cargo/handler.go:93","msg":"HTTP response message","message":"Список всех грузов","status":200}
-{"level":"INFO","ts":"2025-04-27 02:20:50","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:20:50","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:21:01","caller":"cargo/handler.go:123","msg":"HTTP response message","message":"Данные о грузе","status":200}
-{"level":"INFO","ts":"2025-04-27 02:21:20","caller":"cargo/handler.go:157","msg":"HTTP response message","message":"ERROR: column \"updatedAt\" of relation \"cargos\" does not exist (SQLSTATE 42703)","status":500}
-{"level":"INFO","ts":"2025-04-27 02:29:04","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:29:04","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:29:12","caller":"cargo/handler.go:157","msg":"HTTP response message","message":"ERROR: column \"updatedAt\" of relation \"cargos\" does not exist (SQLSTATE 42703)","status":500}
-{"level":"INFO","ts":"2025-04-27 02:30:06","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:30:06","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:30:11","caller":"cargo/handler.go:157","msg":"HTTP response message","message":"ERROR: null value in column \"driver\" of relation \"cargos\" violates not-null constraint (SQLSTATE 23502)","status":500}
-{"level":"INFO","ts":"2025-04-27 02:31:17","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:31:17","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:31:19","caller":"cargo/handler.go:157","msg":"HTTP response message","message":"ERROR: column \"cargo_number\" of relation \"cargos\" does not exist (SQLSTATE 42703)","status":500}
-{"level":"INFO","ts":"2025-04-27 02:31:21","caller":"cargo/handler.go:157","msg":"HTTP response message","message":"ERROR: column \"cargo_number\" of relation \"cargos\" does not exist (SQLSTATE 42703)","status":500}
-{"level":"INFO","ts":"2025-04-27 02:31:55","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 02:31:55","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 02:31:56","caller":"cargo/handler.go:161","msg":"HTTP response message","message":"Груз успешно обновлен","status":200}
-{"level":"INFO","ts":"2025-04-27 02:32:03","caller":"cargo/handler.go:161","msg":"HTTP response message","message":"Груз успешно обновлен","status":200}
-{"level":"FATAL","ts":"2025-04-27 20:51:54","caller":"cmd/main.go:48","msg":"Не удалось проверить подключение к базе данных","error":"failed to connect to `user=test database=test`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused","stacktrace":"main.main\n\t/Users/mac/Desktop/golang/cmd/main.go:48\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:283"}
-{"level":"FATAL","ts":"2025-04-27 20:52:54","caller":"cmd/main.go:48","msg":"Не удалось проверить подключение к базе данных","error":"failed to connect to `user=test database=test`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused","stacktrace":"main.main\n\t/Users/mac/Desktop/golang/cmd/main.go:48\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:283"}
-{"level":"FATAL","ts":"2025-04-27 20:52:57","caller":"cmd/main.go:48","msg":"Не удалось проверить подключение к базе данных","error":"failed to connect to `user=test database=test`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused","stacktrace":"main.main\n\t/Users/mac/Desktop/golang/cmd/main.go:48\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:283"}
-{"level":"INFO","ts":"2025-04-27 20:55:58","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 20:55:58","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 20:56:17","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 20:56:17","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:03:17","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:03:17","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:03:46","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:03:46","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:03:51","caller":"middleware/auth.go:20","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 21:05:05","caller":"auth/handler.go:160","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
-{"level":"INFO","ts":"2025-04-27 21:05:18","caller":"cargo/handler.go:192","msg":"HTTP response message","message":"Груз успешно удален","status":200}
-{"level":"INFO","ts":"2025-04-27 21:05:21","caller":"cargo/handler.go:192","msg":"HTTP response message","message":"Груз успешно удален","status":200}
-{"level":"INFO","ts":"2025-04-27 21:09:27","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:09:27","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:09:29","caller":"cargo/handler.go:188","msg":"HTTP response message","message":"груз с id=5 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:09:31","caller":"cargo/handler.go:188","msg":"HTTP response message","message":"груз с id=5 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:09:33","caller":"cargo/handler.go:188","msg":"HTTP response message","message":"груз с id=3 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:09:35","caller":"cargo/handler.go:188","msg":"HTTP response message","message":"груз с id=2 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:09:37","caller":"cargo/handler.go:199","msg":"HTTP response message","message":"Груз успешно удален","status":200}
-{"level":"INFO","ts":"2025-04-27 21:09:40","caller":"cargo/handler.go:188","msg":"HTTP response message","message":"груз с id=3 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:09:42","caller":"cargo/handler.go:188","msg":"HTTP response message","message":"груз с id=1 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:10:32","caller":"cargo/handler.go:158","msg":"HTTP response message","message":"груз с id=1 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:10:37","caller":"cargo/handler.go:158","msg":"HTTP response message","message":"груз с id=1 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:10:51","caller":"cargo/handler.go:158","msg":"HTTP response message","message":"груз с id=1 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:12:43","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:12:43","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:12:46","caller":"cargo/handler.go:159","msg":"HTTP response message","message":"груз с id=1 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:12:49","caller":"cargo/handler.go:189","msg":"HTTP response message","message":"груз с id=1 не существует","status":500}
-{"level":"INFO","ts":"2025-04-27 21:19:05","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:19:05","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:19:10","caller":"middleware/auth.go:20","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 21:19:27","caller":"auth/handler.go:160","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
-{"level":"INFO","ts":"2025-04-27 21:19:45","caller":"user/handler.go:58","msg":"HTTP response message","message":"Список пользователей","status":201}
-{"level":"INFO","ts":"2025-04-27 21:19:53","caller":"user/handler.go:108","msg":"HTTP response message","message":"Пользователь с id=5 не существует","status":404}
-{"level":"INFO","ts":"2025-04-27 21:19:57","caller":"user/handler.go:112","msg":"HTTP response message","message":"Пользователь с id= 3 успешно удален","status":201}
-{"level":"INFO","ts":"2025-04-27 21:20:00","caller":"user/handler.go:112","msg":"HTTP response message","message":"Пользователь с id= 2 успешно удален","status":201}
-{"level":"INFO","ts":"2025-04-27 21:20:02","caller":"user/handler.go:108","msg":"HTTP response message","message":"Пользователь с id=4 не существует","status":404}
-{"level":"INFO","ts":"2025-04-27 21:20:05","caller":"user/handler.go:58","msg":"HTTP response message","message":"Список пользователей","status":201}
-{"level":"INFO","ts":"2025-04-27 21:23:14","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:23:14","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:23:40","caller":"middleware/auth.go:20","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 21:24:09","caller":"auth/handler.go:160","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
-{"level":"INFO","ts":"2025-04-27 21:24:20","caller":"truck/handler.go:82","msg":"HTTP response message","message":"number of field descriptions must equal number of destinations, got 3 and 2","status":404}
-{"level":"INFO","ts":"2025-04-27 21:24:43","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:24:43","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:24:43","caller":"truck/handler.go:86","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-27 21:24:44","caller":"truck/handler.go:86","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-27 21:24:48","caller":"truck/handler.go:86","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-27 21:25:01","caller":"truck/handler.go:86","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-27 21:25:01","caller":"truck/handler.go:86","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-27 21:25:02","caller":"truck/handler.go:86","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-27 21:28:03","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:28:03","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:28:21","caller":"auth/handler.go:160","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
-{"level":"INFO","ts":"2025-04-27 21:28:36","caller":"truck/handler.go:87","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-27 21:28:41","caller":"truck/handler.go:112","msg":"HTTP response message","message":"no rows in result set","status":404}
-{"level":"INFO","ts":"2025-04-27 21:28:45","caller":"truck/handler.go:116","msg":"HTTP response message","message":"Машина","status":201}
-{"level":"INFO","ts":"2025-04-27 21:29:36","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:29:36","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:29:39","caller":"truck/handler.go:116","msg":"HTTP response message","message":"Машина","status":201}
-{"level":"INFO","ts":"2025-04-27 21:29:41","caller":"truck/handler.go:112","msg":"HTTP response message","message":"Машина с id=2 не существует","status":404}
-{"level":"INFO","ts":"2025-04-27 21:55:25","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:55:25","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:55:59","caller":"invitation/handler.go:58","msg":"HTTP response message","message":"Невалидный формат JSON","status":400}
-{"level":"INFO","ts":"2025-04-27 21:56:07","caller":"invitation/handler.go:65","msg":"HTTP response message","message":"Email должен быть email адресом; Token обязательное поле","status":500}
-{"level":"INFO","ts":"2025-04-27 21:56:16","caller":"invitation/handler.go:65","msg":"HTTP response message","message":"Token обязательное поле","status":500}
-{"level":"INFO","ts":"2025-04-27 21:56:44","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:56:44","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:56:56","caller":"middleware/auth.go:20","msg":"HTTP response message","message":"missing token","status":401}
-{"level":"INFO","ts":"2025-04-27 21:57:31","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:57:31","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:57:37","caller":"invitation/handler.go:65","msg":"HTTP response message","message":"ERROR: null value in column \"token\" of relation \"invitations\" violates not-null constraint (SQLSTATE 23502)","status":500}
-{"level":"INFO","ts":"2025-04-27 21:58:30","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 21:58:30","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 21:58:32","caller":"invitation/handler.go:69","msg":"HTTP response message","message":"Приглашение успешно создано","status":201}
-{"level":"INFO","ts":"2025-04-27 23:06:00","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:06:00","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:06:07","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:06:07","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:06:40","caller":"invitation/handler.go:66","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
-{"level":"INFO","ts":"2025-04-27 23:09:41","caller":"invitation/handler.go:77","msg":"HTTP response message","message":"Приглашение успешно создано","status":201}
-{"level":"INFO","ts":"2025-04-27 23:25:00","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:25:00","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:25:17","caller":"invitation/handler.go:77","msg":"HTTP response message","message":"Приглашение успешно создано","status":201}
-{"level":"INFO","ts":"2025-04-27 23:34:44","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:34:44","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:38:41","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:38:41","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:38:47","caller":"invitation/handler.go:75","msg":"HTTP response message","message":"Token обязательное поле","status":500}
-{"level":"INFO","ts":"2025-04-27 23:41:36","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:41:36","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:41:39","caller":"invitation/handler.go:77","msg":"HTTP response message","message":"ERROR: column \"invitelink\" of relation \"invitations\" does not exist (SQLSTATE 42703)","status":500}
-{"level":"INFO","ts":"2025-04-27 23:42:16","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:42:16","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:42:17","caller":"invitation/handler.go:79","msg":"HTTP response message","message":"ERROR: column \"invitelink\" of relation \"invitations\" does not exist (SQLSTATE 42703)","status":500}
-{"level":"INFO","ts":"2025-04-27 23:43:33","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:43:33","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:43:34","caller":"invitation/handler.go:79","msg":"HTTP response message","message":"ERROR: INSERT has more target columns than expressions (SQLSTATE 42601)","status":500}
-{"level":"INFO","ts":"2025-04-27 23:44:04","caller":"cmd/main.go:50","msg":"Успешное подключение к базе данных"}
-{"level":"INFO","ts":"2025-04-27 23:44:04","caller":"cmd/main.go:63","msg":"Starting server on :8080"}
-{"level":"INFO","ts":"2025-04-27 23:44:07","caller":"invitation/handler.go:90","msg":"HTTP response message","message":"Приглашение успешно отправлено. Время жизни 5 минут","status":201}
+{"level":"INFO","ts":"2025-04-28 19:45:02","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 19:45:02","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 19:45:02","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002267209}
+{"level":"FATAL","ts":"2025-04-28 19:56:55","caller":"cmd/main.go:49","msg":"Не удалось проверить подключение к базе данных","error":"failed to connect to `user=test database=test`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused","stacktrace":"main.main\n\t/Users/mac/Desktop/golang/cmd/main.go:49\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:283"}
+{"level":"INFO","ts":"2025-04-28 19:57:28","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 19:57:28","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 19:57:29","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.009710917}
+{"level":"INFO","ts":"2025-04-28 19:57:53","caller":"invitation/handler.go:96","msg":"HTTP response message","message":"Приглашение успешно отправлено. Время жизни 5 минут","status":201}
+{"level":"INFO","ts":"2025-04-28 19:57:56","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 19:59:16","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 19:59:16","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 19:59:16","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001049708}
+{"level":"INFO","ts":"2025-04-28 19:59:18","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:00:45","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:00:45","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:00:45","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001126792}
+{"level":"INFO","ts":"2025-04-28 20:00:48","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:02:20","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:02:20","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:02:20","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001903041}
+{"level":"INFO","ts":"2025-04-28 20:02:23","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:02:54","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:02:54","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:02:54","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001902166}
+{"level":"INFO","ts":"2025-04-28 20:02:56","caller":"invitation/handler.go:96","msg":"HTTP response message","message":"Приглашение успешно отправлено. Время жизни 5 минут","status":201}
+{"level":"INFO","ts":"2025-04-28 20:03:02","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:03:26","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:03:26","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:03:26","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001022042}
+{"level":"INFO","ts":"2025-04-28 20:03:28","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:03:29","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:03:29","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:03:29","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:03:30","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:03:46","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:03:47","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:03:48","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"invitations_email_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-28 20:05:00","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:05:00","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:05:00","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001848291}
+{"level":"INFO","ts":"2025-04-28 20:05:03","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"Приглашение для этого email уже отправлено","status":500}

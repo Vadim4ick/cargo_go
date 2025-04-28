@@ -18,6 +18,7 @@ type AuthUsecase interface {
 	OnlineUsers(since time.Duration) ([]string, error)
 
 	GetUser(id int) (userDomain.User, error)
+	FindByEmail(email string) (userDomain.User, error)
 }
 
 type usecase struct {
@@ -65,6 +66,10 @@ func (u *usecase) Login(email, password string) (string, string, error) {
 	}
 
 	return accessToken, refreshToken, nil
+}
+
+func (u *usecase) FindByEmail(email string) (userDomain.User, error) {
+	return u.repo.FindByEmail(email)
 }
 
 func (u *usecase) TouchOnline(userID string) error {

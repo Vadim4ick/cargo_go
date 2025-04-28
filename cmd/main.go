@@ -10,6 +10,7 @@ import (
 	"test-project/internal/redis"
 	"test-project/internal/usecase"
 	logger "test-project/pkg"
+	"test-project/utils"
 
 	_ "test-project/docs"
 
@@ -60,6 +61,7 @@ func main() {
 
 	mux := router.Setup(pool, logger, jwtService, redisService)
 
+	utils.StartInvitationCleaner(pool, logger)
 	logger.Info("Starting server on :8080")
 	fmt.Println("Swagger UI available at http://localhost:8080/swagger/index.html")
 	if err := http.ListenAndServe(":8080", mux); err != nil {
