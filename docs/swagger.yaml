@@ -65,6 +65,9 @@ definitions:
       email:
         example: john.doe@example.com
         type: string
+      inviteToken:
+        example: token
+        type: string
       password:
         example: securepass
         type: string
@@ -149,10 +152,18 @@ definitions:
         example: Список всех грузов
         type: string
     type: object
+  invitation.CreateRequest:
+    properties:
+      email:
+        example: firulvv@mail.ru
+        type: string
+    required:
+    - email
+    type: object
   invitation.CreateResponse:
     properties:
       data:
-        $ref: '#/definitions/invitation.Invitation'
+        type: string
       message:
         example: Приглашение успешно создано
         type: string
@@ -163,23 +174,6 @@ definitions:
       message:
         example: Невалидный формат JSON
         type: string
-    type: object
-  invitation.Invitation:
-    properties:
-      createdAt:
-        type: string
-      email:
-        type: string
-      id:
-        type: integer
-      token:
-        type: string
-      used:
-        default: false
-        type: boolean
-    required:
-    - email
-    - token
     type: object
   truck.ErrorResponse:
     properties:
@@ -445,7 +439,7 @@ paths:
         name: invitation
         required: true
         schema:
-          $ref: '#/definitions/invitation.Invitation'
+          $ref: '#/definitions/invitation.CreateRequest'
       produces:
       - application/json
       responses:

@@ -20,8 +20,9 @@ import (
 // }
 
 type RegisterRequest struct {
-	Email    string `json:"email" example:"john.doe@example.com"`
-	Password string `json:"password" example:"securepass"`
+	Email       string `json:"email" example:"john.doe@example.com"`
+	Password    string `json:"password" example:"securepass"`
+	InviteToken string `json:"inviteToken" example:"token"`
 }
 
 type LoginRequest struct {

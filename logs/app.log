@@ -45,3 +45,33 @@
 {"level":"INFO","ts":"2025-04-28 20:13:27","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
 {"level":"INFO","ts":"2025-04-28 20:13:27","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
 {"level":"INFO","ts":"2025-04-28 20:13:27","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001018042}
+{"level":"INFO","ts":"2025-04-28 20:15:46","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:15:46","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:15:46","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001287959}
+{"level":"INFO","ts":"2025-04-28 20:20:46","caller":"utils/utils.go:78","msg":"Очистка устаревших приглашений выполнена","duration":0.003230666}
+{"level":"INFO","ts":"2025-04-28 20:22:54","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:22:54","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:22:54","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.0019175}
+{"level":"INFO","ts":"2025-04-28 20:23:11","caller":"auth/handler.go:115","msg":"HTTP response message","message":"token is malformed: token contains an invalid number of segments","status":400}
+{"level":"INFO","ts":"2025-04-28 20:25:56","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:25:56","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:25:56","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001449792}
+{"level":"INFO","ts":"2025-04-28 20:26:23","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:26:23","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:26:23","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.000889792}
+{"level":"INFO","ts":"2025-04-28 20:26:46","caller":"invitation/handler.go:96","msg":"HTTP response message","message":"Приглашение успешно отправлено. Время жизни 5 минут","status":201}
+{"level":"INFO","ts":"2025-04-28 20:27:22","caller":"auth/handler.go:125","msg":"HTTP response message","message":"Пользователь успешно зарегистрирован","status":201}
+{"level":"INFO","ts":"2025-04-28 20:27:38","caller":"user/handler.go:112","msg":"HTTP response message","message":"Пользователь с id= 4 успешно удален","status":201}
+{"level":"INFO","ts":"2025-04-28 20:28:44","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:28:44","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:28:44","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001143125}
+{"level":"INFO","ts":"2025-04-28 20:28:55","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"Приглашение для этого email уже отправлено","status":500}
+{"level":"INFO","ts":"2025-04-28 20:29:34","caller":"auth/handler.go:127","msg":"HTTP response message","message":"Пользователь успешно зарегистрирован","status":201}
+{"level":"INFO","ts":"2025-04-28 20:30:44","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:30:44","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:30:44","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001724584}
+{"level":"INFO","ts":"2025-04-28 20:30:51","caller":"auth/handler.go:120","msg":"HTTP response message","message":"Указана неверная почта которая была указана при приглашении","status":400}
+{"level":"INFO","ts":"2025-04-28 20:30:57","caller":"auth/handler.go:126","msg":"HTTP response message","message":"Пользователь с таким email уже существует","status":400}
+{"level":"INFO","ts":"2025-04-28 20:31:02","caller":"user/handler.go:112","msg":"HTTP response message","message":"Пользователь с id= 5 успешно удален","status":201}
+{"level":"INFO","ts":"2025-04-28 20:31:06","caller":"auth/handler.go:130","msg":"HTTP response message","message":"Пользователь успешно зарегистрирован","status":201}
+{"level":"INFO","ts":"2025-04-28 20:31:11","caller":"user/handler.go:112","msg":"HTTP response message","message":"Пользователь с id= 6 успешно удален","status":201}

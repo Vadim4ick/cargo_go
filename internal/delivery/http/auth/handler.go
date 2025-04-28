@@ -106,8 +106,21 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} auth.ErrorResponse "Invalid input"
 // @Router /register [post]
 func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
-	var req struct{ Email, Password string }
+	var req struct{ Email, InviteToken, Password string }
 	json.NewDecoder(r.Body).Decode(&req)
+
+	res, err := h.deps.JwtService.ValidateInvite(req.InviteToken)
+
+	if err != nil {
+		utils.JSON(w, http.StatusBadRequest, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	if res != req.Email {
+		utils.JSON(w, http.StatusBadRequest, "Указана неверная почта которая была указана при приглашении", nil, h.deps.Logger)
+		return
+	}
+
 	u, err := h.deps.AuthService.Register(req.Email, req.Password)
 	if err != nil {
 		utils.JSON(w, http.StatusBadRequest, err.Error(), nil, h.deps.Logger)

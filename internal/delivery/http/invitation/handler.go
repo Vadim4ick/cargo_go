@@ -48,7 +48,7 @@ func RegisterInvitationRoutes(r *mux.Router, deps *auth.Deps) {
 // @Tags invitations
 // @Accept json
 // @Produce json
-// @Param invitation body invitation.Invitation true "Invitation object to be created"
+// @Param invitation body invitation.CreateRequest true "Invitation object to be created"
 // @Success 201 {object} invitation.CreateResponse "Invitation successfully created"
 // @Failure 400 {object} invitation.ErrorResponse "Invalid JSON format"
 // @Failure 500 {object} invitation.ErrorResponse "Internal server error"

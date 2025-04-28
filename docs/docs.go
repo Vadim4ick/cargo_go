@@ -270,7 +270,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/invitation.Invitation"
+                            "$ref": "#/definitions/invitation.CreateRequest"
                         }
                     }
                 ],
@@ -876,6 +876,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "john.doe@example.com"
                 },
+                "inviteToken": {
+                    "type": "string",
+                    "example": "token"
+                },
                 "password": {
                     "type": "string",
                     "example": "securepass"
@@ -1000,11 +1004,23 @@ const docTemplate = `{
                 }
             }
         },
+        "invitation.CreateRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "firulvv@mail.ru"
+                }
+            }
+        },
         "invitation.CreateResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/invitation.Invitation"
+                    "type": "string"
                 },
                 "message": {
                     "type": "string",
@@ -1019,31 +1035,6 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Невалидный формат JSON"
-                }
-            }
-        },
-        "invitation.Invitation": {
-            "type": "object",
-            "required": [
-                "email",
-                "token"
-            ],
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "token": {
-                    "type": "string"
-                },
-                "used": {
-                    "type": "boolean",
-                    "default": false
                 }
             }
         },
