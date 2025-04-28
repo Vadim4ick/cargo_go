@@ -3,7 +3,6 @@ package utils
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -50,35 +49,29 @@ const deleteExpiredInvitationsQuery = `
 
 func StartInvitationCleaner(db *pgxpool.Pool, logger *zap.Logger) {
 	go func() {
-		// Сразу при старте удаляем старые инвайты
-		start := time.Now()
-		_, err := db.Exec(context.Background(), deleteExpiredInvitationsQuery)
-		duration := time.Since(start)
-
-		if err != nil {
-			logger.Fatal("Ошибка первичной очистки устаревших приглашений", zap.Error(err))
-		} else {
-			logger.Info("Первичная очистка устаревших приглашений выполнена",
-				zap.Duration("duration", duration),
-			)
-		}
-
-		// Создаем тикер для последующих чисток
 		ticker := time.NewTicker(5 * time.Minute)
 		defer ticker.Stop()
 
-		for range ticker.C {
-			start := time.Now()
-			_, err := db.Exec(context.Background(), deleteExpiredInvitationsQuery)
-			duration := time.Since(start)
+		// Сразу очистить при старте
+		cleanup(db, logger)
 
-			if err != nil {
-				log.Println("Ошибка очистки устаревших приглашений:", err)
-			} else {
-				logger.Info("Очистка устаревших приглашений выполнена",
-					zap.Duration("duration", duration),
-				)
+		for {
+			select {
+			case <-ticker.C:
+				cleanup(db, logger)
 			}
 		}
 	}()
+}
+
+func cleanup(db *pgxpool.Pool, logger *zap.Logger) {
+	start := time.Now()
+	_, err := db.Exec(context.Background(), deleteExpiredInvitationsQuery)
+	duration := time.Since(start)
+
+	if err != nil {
+		logger.Error("Ошибка очистки устаревших приглашений", zap.Error(err))
+	} else {
+		logger.Info("Очистка устаревших приглашений выполнена", zap.Duration("duration", duration))
+	}
 }
