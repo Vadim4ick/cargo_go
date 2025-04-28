@@ -63,7 +63,7 @@ func main() {
 
 	utils.StartInvitationCleaner(pool, logger)
 	logger.Info("Starting server on :8080")
-	fmt.Println("Swagger UI available at http://localhost:8080/swagger/index.html")
+	fmt.Println("Swagger UI available at http://localhost:8080/api/v1/swagger/index.html")
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		logger.Fatal("Ошибка запуска сервера", zap.Error(err))
 	}

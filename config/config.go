@@ -23,6 +23,9 @@ type Config struct {
 	SMTP_HOST string
 	SMTP_USER string
 	SMTP_PASS string
+
+	SWAGGER_LOGIN string
+	SWAGGER_PASS  string
 }
 
 var Envs = initConfig()
@@ -46,6 +49,9 @@ func initConfig() Config {
 		SMTP_HOST: getEnv("SMTP_HOST", "smtp.gmail.com"),
 		SMTP_USER: getEnv("SMTP_USER", "firulvv@gmail.com"),
 		SMTP_PASS: getEnv("SMTP_PASS", "rkvt hdki wksz phnp"),
+
+		SWAGGER_LOGIN: getEnv("SMTP_PASS", "admin"),
+		SWAGGER_PASS:  getEnv("SMTP_PASS", "12345"),
 	}
 }
 

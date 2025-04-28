@@ -1,6 +1,7 @@
 package router
 
 import (
+	"test-project/config"
 	"test-project/internal/delivery/http/auth"
 	"test-project/internal/delivery/http/cargo"
 	"test-project/internal/delivery/http/invitation"
@@ -8,6 +9,7 @@ import (
 	"test-project/internal/delivery/http/user"
 	authDomain "test-project/internal/domain/auth"
 	userDomain "test-project/internal/domain/user"
+	"test-project/internal/middleware"
 	"test-project/internal/redis"
 	"test-project/internal/usecase"
 
@@ -22,7 +24,12 @@ func Setup(pool *pgxpool.Pool, logger *zap.Logger, jwtService *usecase.JwtUsecas
 	r := mux.NewRouter()
 
 	subrouter := r.PathPrefix("/api/v1").Subrouter()
-	subrouter.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+
+	swaggerUsername := config.Envs.SWAGGER_LOGIN
+	swaggerPassword := config.Envs.SWAGGER_PASS
+	swaggerHandler := middleware.AuthSwagger(httpSwagger.WrapHandler, swaggerUsername, swaggerPassword)
+
+	subrouter.PathPrefix("/swagger/").Handler(swaggerHandler)
 
 	userRepo := userDomain.NewPostgresUserRepo(pool)
 	authSvc := usecase.NewService(userRepo, jwtService, redisService)

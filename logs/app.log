@@ -39,3 +39,9 @@
 {"level":"INFO","ts":"2025-04-28 20:05:00","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
 {"level":"INFO","ts":"2025-04-28 20:05:00","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001848291}
 {"level":"INFO","ts":"2025-04-28 20:05:03","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"Приглашение для этого email уже отправлено","status":500}
+{"level":"INFO","ts":"2025-04-28 20:12:15","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:12:15","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:12:15","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002090833}
+{"level":"INFO","ts":"2025-04-28 20:13:27","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:13:27","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:13:27","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001018042}
