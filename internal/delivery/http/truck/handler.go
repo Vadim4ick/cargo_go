@@ -32,15 +32,15 @@ func RegisterUserRoutes(r *mux.Router, deps *auth.Deps) {
 	svc := usecase.NewTruckUsecase(truckRepo, v)
 	h := NewHandler(svc, deps)
 
-	r.Handle("/trucks", middleware.JwtMiddleware(deps, h.Create)).Methods(http.MethodPost)
-	r.Handle("/trucks", middleware.JwtMiddleware(deps, h.GET)).Methods(http.MethodGet)
-	r.Handle("/trucks/{id}", middleware.JwtMiddleware(deps, h.GETById)).Methods(http.MethodGet)
+	r.Handle("/truck", middleware.JwtMiddleware(deps, h.Create)).Methods(http.MethodPost)
+	r.Handle("/truck", middleware.JwtMiddleware(deps, h.GET)).Methods(http.MethodGet)
+	r.Handle("/truck/{id}", middleware.JwtMiddleware(deps, h.GETById)).Methods(http.MethodGet)
 }
 
 // Create handles the creation of a new truck
 // @Summary Create a new truck
 // @Description Creates a new truck with the provided details
-// @Tags trucks
+// @Tags truck
 // @Accept json
 // @Produce json
 // @Param truck body truck.CreateRequest true "Truck object to be created"
@@ -48,7 +48,7 @@ func RegisterUserRoutes(r *mux.Router, deps *auth.Deps) {
 // @Success 201 {object} cargo.CreateResponse "Cargo successfully created"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid JSON format"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
-// @Router /trucks [post]
+// @Router /truck [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var truck truckDomain.Truck
 
@@ -70,13 +70,13 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // GET retrieves a list of all trucks
 // @Summary List all trucks
 // @Description Retrieves a list of all trucks in the system
-// @Tags trucks
+// @Tags truck
 // @Accept json
 // @Produce json
 // @Security BearerAuth
 // @Success 201 {object} truck.ListResponse "List of trucks"
 // @Failure 404 {object} truck.ErrorResponse "Trucks not found"
-// @Router /trucks [get]
+// @Router /truck [get]
 func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 	trucks, err := h.uc.ListTrucks()
 	if err != nil {
@@ -90,7 +90,7 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 // GETById retrieves a truck by ID
 // @Summary Get a truck by ID
 // @Description Retrieves a truck by their ID
-// @Tags trucks
+// @Tags truck
 // @Accept json
 // @Produce json
 // @Param id path string true "Truck ID"
@@ -98,7 +98,7 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 // @Success 201 {object} truck.GetResponse "Truck found"
 // @Failure 400 {object} truck.ErrorResponse "Invalid ID"
 // @Failure 404 {object} truck.ErrorResponse "Truck not found"
-// @Router /trucks/{id} [get]
+// @Router /truck/{id} [get]
 func (h *Handler) GETById(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 

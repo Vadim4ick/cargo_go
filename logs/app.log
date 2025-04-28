@@ -125,3 +125,21 @@
 {"level":"INFO","ts":"2025-04-28 21:45:34","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
 {"level":"INFO","ts":"2025-04-28 21:45:34","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
 {"level":"INFO","ts":"2025-04-28 21:45:34","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002841666}
+{"level":"INFO","ts":"2025-04-28 21:48:00","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:48:00","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:48:00","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002594333}
+{"level":"INFO","ts":"2025-04-28 21:48:34","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:48:34","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:48:34","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002541333}
+{"level":"INFO","ts":"2025-04-28 21:49:52","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:49:52","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:49:52","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002106584}
+{"level":"INFO","ts":"2025-04-28 21:50:29","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:50:29","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:50:29","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002563417}
+{"level":"INFO","ts":"2025-04-28 21:51:06","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:51:06","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:51:06","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.00162875}
+{"level":"INFO","ts":"2025-04-28 21:51:23","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:51:23","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:51:23","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001590917}

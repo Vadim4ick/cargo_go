@@ -26,13 +26,13 @@ func NewHandler(deps *auth.Deps) *Handler {
 func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 	h := NewHandler(deps)
 
-	r.HandleFunc("/register", h.register).Methods(http.MethodPost)
-	r.HandleFunc("/login", h.login).Methods(http.MethodPost)
-	r.HandleFunc("/logout", h.logout).Methods(http.MethodPost)
-	r.HandleFunc("/refresh", h.refresh).Methods(http.MethodPost)
+	r.HandleFunc("/auth/register", h.register).Methods(http.MethodPost)
+	r.HandleFunc("/auth/login", h.login).Methods(http.MethodPost)
+	r.HandleFunc("/auth/logout", h.logout).Methods(http.MethodPost)
+	r.HandleFunc("/auth/refresh", h.refresh).Methods(http.MethodPost)
 
-	r.Handle("/profile", middleware.JwtMiddleware(deps, h.profile)).Methods(http.MethodGet)
-	r.Handle("/online", middleware.JwtMiddleware(deps, h.onlineList)).Methods(http.MethodGet)
+	r.Handle("/auth/profile", middleware.JwtMiddleware(deps, h.profile)).Methods(http.MethodGet)
+	r.Handle("/auth/online", middleware.JwtMiddleware(deps, h.onlineList)).Methods(http.MethodGet)
 }
 
 // refresh handles token refresh
@@ -44,7 +44,7 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 // @Success 200 {object} auth.RefreshResponse "Token successfully refreshed"
 // @Failure 401 {object} auth.ErrorResponse "Invalid or missing refresh token"
 // @Failure 500 {object} auth.ErrorResponse "Internal server error"
-// @Router /refresh [post]
+// @Router /auth/refresh [post]
 func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh_token")
 	if err != nil {
@@ -104,7 +104,7 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 // @Param credentials body auth.RegisterRequest true "User credentials"
 // @Success 201 {object} auth.RegisterResponse "User successfully registered"
 // @Failure 400 {object} auth.ErrorResponse "Invalid input"
-// @Router /register [post]
+// @Router /auth/register [post]
 func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 	var req struct{ Email, InviteToken, Password string }
 	json.NewDecoder(r.Body).Decode(&req)
@@ -140,7 +140,7 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} auth.LoginResponse "User successfully authenticated"
 // @Failure 400 {object} auth.ErrorResponse "Invalid input"
 // @Failure 401 {object} auth.ErrorResponse "Unauthorized"
-// @Router /login [post]
+// @Router /auth/login [post]
 func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Email    string `json:"email"`
@@ -185,7 +185,7 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} auth.OnlineListResponse "List of online user IDs"
 // @Failure 401 {object} auth.ErrorResponse "Unauthorized"
 // @Failure 500 {object} auth.ErrorResponse "Internal server error"
-// @Router /online [get]
+// @Router /auth/online [get]
 func (h *Handler) onlineList(w http.ResponseWriter, r *http.Request) {
 	ids, err := h.deps.AuthService.OnlineUsers(5 * time.Minute)
 
@@ -208,7 +208,7 @@ func (h *Handler) onlineList(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} auth.LogoutResponse "User successfully logged out"
-// @Router /logout [post]
+// @Router /auth/logout [post]
 func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refresh_token",

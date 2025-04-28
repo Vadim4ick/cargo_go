@@ -9,7 +9,191 @@
     "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
-        "/cargos": {
+        "/auth/login": {
+            "post": {
+                "description": "Authenticates a user and returns access and refresh tokens",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User login",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully authenticated",
+                        "schema": {
+                            "$ref": "#/definitions/auth.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "description": "Logs out a user and clears the refresh token cookie",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User logout",
+                "responses": {
+                    "200": {
+                        "description": "User successfully logged out",
+                        "schema": {
+                            "$ref": "#/definitions/auth.LogoutResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/online": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieves a list of user IDs who are currently online",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "List online users",
+                "responses": {
+                    "200": {
+                        "description": "List of online user IDs",
+                        "schema": {
+                            "$ref": "#/definitions/auth.OnlineListResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "description": "Refreshes access token using refresh token stored in cookie",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh access token",
+                "responses": {
+                    "200": {
+                        "description": "Token successfully refreshed",
+                        "schema": {
+                            "$ref": "#/definitions/auth.RefreshResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid or missing refresh token",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "Registers a new user with email and password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register a new user",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User successfully registered",
+                        "schema": {
+                            "$ref": "#/definitions/auth.RegisterResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/auth.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/cargo": {
             "get": {
                 "security": [
                     {
@@ -24,7 +208,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "cargos"
+                    "cargo"
                 ],
                 "summary": "List all cargos",
                 "responses": {
@@ -56,7 +240,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "cargos"
+                    "cargo"
                 ],
                 "summary": "Create a new cargo",
                 "parameters": [
@@ -92,7 +276,7 @@
                 }
             }
         },
-        "/cargos/{id}": {
+        "/cargo/{id}": {
             "get": {
                 "security": [
                     {
@@ -107,7 +291,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "cargos"
+                    "cargo"
                 ],
                 "summary": "Get a cargo by ID",
                 "parameters": [
@@ -154,7 +338,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "cargos"
+                    "cargo"
                 ],
                 "summary": "Delete a cargo by ID",
                 "parameters": [
@@ -201,7 +385,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "cargos"
+                    "cargo"
                 ],
                 "summary": "Update a cargo by ID",
                 "parameters": [
@@ -244,7 +428,7 @@
                 }
             }
         },
-        "/invitation": {
+        "/invitation/invite": {
             "post": {
                 "description": "Creates a new invitation with the provided details",
                 "consumes": [
@@ -254,7 +438,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "invitations"
+                    "invitation"
                 ],
                 "summary": "Create a new invitation",
                 "parameters": [
@@ -285,115 +469,6 @@
                         "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/invitation.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/login": {
-            "post": {
-                "description": "Authenticates a user and returns access and refresh tokens",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "User login",
-                "parameters": [
-                    {
-                        "description": "User credentials",
-                        "name": "credentials",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/auth.LoginRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User successfully authenticated",
-                        "schema": {
-                            "$ref": "#/definitions/auth.LoginResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input",
-                        "schema": {
-                            "$ref": "#/definitions/auth.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/auth.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/logout": {
-            "post": {
-                "description": "Logs out a user and clears the refresh token cookie",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "User logout",
-                "responses": {
-                    "200": {
-                        "description": "User successfully logged out",
-                        "schema": {
-                            "$ref": "#/definitions/auth.LogoutResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/online": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieves a list of user IDs who are currently online",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "List online users",
-                "responses": {
-                    "200": {
-                        "description": "List of online user IDs",
-                        "schema": {
-                            "$ref": "#/definitions/auth.OnlineListResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/auth.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "$ref": "#/definitions/auth.ErrorResponse"
                         }
                     }
                 }
@@ -445,82 +520,7 @@
                 }
             }
         },
-        "/refresh": {
-            "post": {
-                "description": "Refreshes access token using refresh token stored in cookie",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Refresh access token",
-                "responses": {
-                    "200": {
-                        "description": "Token successfully refreshed",
-                        "schema": {
-                            "$ref": "#/definitions/auth.RefreshResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Invalid or missing refresh token",
-                        "schema": {
-                            "$ref": "#/definitions/auth.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "$ref": "#/definitions/auth.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/register": {
-            "post": {
-                "description": "Registers a new user with email and password",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Register a new user",
-                "parameters": [
-                    {
-                        "description": "User credentials",
-                        "name": "credentials",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/auth.RegisterRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "User successfully registered",
-                        "schema": {
-                            "$ref": "#/definitions/auth.RegisterResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input",
-                        "schema": {
-                            "$ref": "#/definitions/auth.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/trucks": {
+        "/truck": {
             "get": {
                 "security": [
                     {
@@ -535,7 +535,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "trucks"
+                    "truck"
                 ],
                 "summary": "List all trucks",
                 "responses": {
@@ -567,7 +567,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "trucks"
+                    "truck"
                 ],
                 "summary": "Create a new truck",
                 "parameters": [
@@ -603,7 +603,7 @@
                 }
             }
         },
-        "/trucks/{id}": {
+        "/truck/{id}": {
             "get": {
                 "security": [
                     {
@@ -618,7 +618,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "trucks"
+                    "truck"
                 ],
                 "summary": "Get a truck by ID",
                 "parameters": [

@@ -36,17 +36,17 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 	svc := usecase.NewCargoUsecase(cargoRepo, v)
 	h := NewHandler(svc, deps)
 
-	r.Handle("/cargos", middleware.JwtMiddleware(deps, h.Create)).Methods(http.MethodPost)
-	r.Handle("/cargos", middleware.JwtMiddleware(deps, h.GET)).Methods(http.MethodGet)
-	r.Handle("/cargos/{id}", middleware.JwtMiddleware(deps, h.PATH)).Methods(http.MethodPatch)
-	r.Handle("/cargos/{id}", middleware.JwtMiddleware(deps, h.GETByID)).Methods(http.MethodGet)
-	r.Handle("/cargos/{id}", middleware.JwtMiddleware(deps, h.DELETE)).Methods(http.MethodDelete)
+	r.Handle("/cargo", middleware.JwtMiddleware(deps, h.Create)).Methods(http.MethodPost)
+	r.Handle("/cargo", middleware.JwtMiddleware(deps, h.GET)).Methods(http.MethodGet)
+	r.Handle("/cargo/{id}", middleware.JwtMiddleware(deps, h.PATH)).Methods(http.MethodPatch)
+	r.Handle("/cargo/{id}", middleware.JwtMiddleware(deps, h.GETByID)).Methods(http.MethodGet)
+	r.Handle("/cargo/{id}", middleware.JwtMiddleware(deps, h.DELETE)).Methods(http.MethodDelete)
 }
 
 // Create handles the creation of a new cargo
 // @Summary Create a new cargo
 // @Description Creates a new cargo with the provided details
-// @Tags cargos
+// @Tags cargo
 // @Accept json
 // @Produce json
 // @Security BearerAuth
@@ -54,7 +54,7 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 // @Success 201 {object} cargo.CreateResponse "Cargo successfully created"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid JSON format"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
-// @Router /cargos [post]
+// @Router /cargo [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var cargo cargoDomain.Cargo
 
@@ -76,13 +76,13 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // GET retrieves a list of all cargos
 // @Summary List all cargos
 // @Description Retrieves a list of all cargos in the system
-// @Tags cargos
+// @Tags cargo
 // @Accept json
 // @Produce json
 // @Security BearerAuth
 // @Success 200 {object} cargo.ListResponse "List of cargos"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
-// @Router /cargos [get]
+// @Router /cargo [get]
 func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 	cargos, err := h.uc.ListGargos()
 
@@ -97,7 +97,7 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 // GETByID retrieves a cargo by ID
 // @Summary Get a cargo by ID
 // @Description Retrieves a cargo by its ID
-// @Tags cargos
+// @Tags cargo
 // @Accept json
 // @Produce json
 // @Param id path string true "Cargo ID"
@@ -105,7 +105,7 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} cargo.GetResponse "Cargo found"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
-// @Router /cargos/{id} [get]
+// @Router /cargo/{id} [get]
 func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
@@ -122,7 +122,7 @@ func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
 // PATH updates a cargo by ID
 // @Summary Update a cargo by ID
 // @Description Updates a cargo by its ID
-// @Tags cargos
+// @Tags cargo
 // @Accept json
 // @Produce json
 // @Param id path string true "Cargo ID"
@@ -131,7 +131,7 @@ func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} cargo.GetResponse "Cargo updated"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
-// @Router /cargos/{id} [patch]
+// @Router /cargo/{id} [patch]
 func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
@@ -155,7 +155,7 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 // DELETE deletes a cargo by ID
 // @Summary Delete a cargo by ID
 // @Description Deletes a cargo by its ID
-// @Tags cargos
+// @Tags cargo
 // @Accept json
 // @Produce json
 // @Param id path string true "Cargo ID"
@@ -163,7 +163,7 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} cargo.DeleteResponse "Cargo deleted"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
-// @Router /cargos/{id} [delete]
+// @Router /cargo/{id} [delete]
 func (h *Handler) DELETE(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 

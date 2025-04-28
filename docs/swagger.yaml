@@ -323,7 +323,126 @@ info:
   title: Cargo Project API
   version: "1.0"
 paths:
-  /cargos:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user and returns access and refresh tokens
+      parameters:
+      - description: User credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User successfully authenticated
+          schema:
+            $ref: '#/definitions/auth.LoginResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: User login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logs out a user and clears the refresh token cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User successfully logged out
+          schema:
+            $ref: '#/definitions/auth.LogoutResponse'
+      summary: User logout
+      tags:
+      - auth
+  /auth/online:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of user IDs who are currently online
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of online user IDs
+          schema:
+            $ref: '#/definitions/auth.OnlineListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List online users
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refreshes access token using refresh token stored in cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token successfully refreshed
+          schema:
+            $ref: '#/definitions/auth.RefreshResponse'
+        "401":
+          description: Invalid or missing refresh token
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: Refresh access token
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new user with email and password
+      parameters:
+      - description: User credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User successfully registered
+          schema:
+            $ref: '#/definitions/auth.RegisterResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - auth
+  /cargo:
     get:
       consumes:
       - application/json
@@ -343,7 +462,7 @@ paths:
       - BearerAuth: []
       summary: List all cargos
       tags:
-      - cargos
+      - cargo
     post:
       consumes:
       - application/json
@@ -374,8 +493,8 @@ paths:
       - BearerAuth: []
       summary: Create a new cargo
       tags:
-      - cargos
-  /cargos/{id}:
+      - cargo
+  /cargo/{id}:
     delete:
       consumes:
       - application/json
@@ -405,7 +524,7 @@ paths:
       - BearerAuth: []
       summary: Delete a cargo by ID
       tags:
-      - cargos
+      - cargo
     get:
       consumes:
       - application/json
@@ -435,7 +554,7 @@ paths:
       - BearerAuth: []
       summary: Get a cargo by ID
       tags:
-      - cargos
+      - cargo
     patch:
       consumes:
       - application/json
@@ -471,8 +590,8 @@ paths:
       - BearerAuth: []
       summary: Update a cargo by ID
       tags:
-      - cargos
-  /invitation:
+      - cargo
+  /invitation/invite:
     post:
       consumes:
       - application/json
@@ -501,77 +620,7 @@ paths:
             $ref: '#/definitions/invitation.ErrorResponse'
       summary: Create a new invitation
       tags:
-      - invitations
-  /login:
-    post:
-      consumes:
-      - application/json
-      description: Authenticates a user and returns access and refresh tokens
-      parameters:
-      - description: User credentials
-        in: body
-        name: credentials
-        required: true
-        schema:
-          $ref: '#/definitions/auth.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: User successfully authenticated
-          schema:
-            $ref: '#/definitions/auth.LoginResponse'
-        "400":
-          description: Invalid input
-          schema:
-            $ref: '#/definitions/auth.ErrorResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/auth.ErrorResponse'
-      summary: User login
-      tags:
-      - auth
-  /logout:
-    post:
-      consumes:
-      - application/json
-      description: Logs out a user and clears the refresh token cookie
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: User successfully logged out
-          schema:
-            $ref: '#/definitions/auth.LogoutResponse'
-      summary: User logout
-      tags:
-      - auth
-  /online:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves a list of user IDs who are currently online
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: List of online user IDs
-          schema:
-            $ref: '#/definitions/auth.OnlineListResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/auth.ErrorResponse'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/auth.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List online users
-      tags:
-      - auth
+      - invitation
   /profile:
     get:
       consumes:
@@ -601,56 +650,7 @@ paths:
       summary: User profile
       tags:
       - auth
-  /refresh:
-    post:
-      consumes:
-      - application/json
-      description: Refreshes access token using refresh token stored in cookie
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Token successfully refreshed
-          schema:
-            $ref: '#/definitions/auth.RefreshResponse'
-        "401":
-          description: Invalid or missing refresh token
-          schema:
-            $ref: '#/definitions/auth.ErrorResponse'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/auth.ErrorResponse'
-      summary: Refresh access token
-      tags:
-      - auth
-  /register:
-    post:
-      consumes:
-      - application/json
-      description: Registers a new user with email and password
-      parameters:
-      - description: User credentials
-        in: body
-        name: credentials
-        required: true
-        schema:
-          $ref: '#/definitions/auth.RegisterRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: User successfully registered
-          schema:
-            $ref: '#/definitions/auth.RegisterResponse'
-        "400":
-          description: Invalid input
-          schema:
-            $ref: '#/definitions/auth.ErrorResponse'
-      summary: Register a new user
-      tags:
-      - auth
-  /trucks:
+  /truck:
     get:
       consumes:
       - application/json
@@ -670,7 +670,7 @@ paths:
       - BearerAuth: []
       summary: List all trucks
       tags:
-      - trucks
+      - truck
     post:
       consumes:
       - application/json
@@ -701,8 +701,8 @@ paths:
       - BearerAuth: []
       summary: Create a new truck
       tags:
-      - trucks
-  /trucks/{id}:
+      - truck
+  /truck/{id}:
     get:
       consumes:
       - application/json
@@ -732,7 +732,7 @@ paths:
       - BearerAuth: []
       summary: Get a truck by ID
       tags:
-      - trucks
+      - truck
   /users:
     get:
       consumes:

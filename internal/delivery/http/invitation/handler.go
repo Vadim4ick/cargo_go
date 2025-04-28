@@ -39,20 +39,20 @@ func RegisterInvitationRoutes(r *mux.Router, deps *auth.Deps) {
 
 	h := NewHandler(svc, deps)
 
-	r.HandleFunc("/invitation", h.CREATE).Methods(http.MethodPost)
+	r.HandleFunc("/invitation/invite", h.CREATE).Methods(http.MethodPost)
 }
 
 // CREATE handles the creation of a new invitation
 // @Summary Create a new invitation
 // @Description Creates a new invitation with the provided details
-// @Tags invitations
+// @Tags invitation
 // @Accept json
 // @Produce json
 // @Param invitation body invitation.CreateRequest true "Invitation object to be created"
 // @Success 201 {object} invitation.CreateResponse "Invitation successfully created"
 // @Failure 400 {object} invitation.ErrorResponse "Invalid JSON format"
 // @Failure 500 {object} invitation.ErrorResponse "Internal server error"
-// @Router /invitation [post]
+// @Router /invitation/invite [post]
 func (h *Handler) CREATE(w http.ResponseWriter, r *http.Request) {
 	var cargo invitationDomain.Invitation
 
