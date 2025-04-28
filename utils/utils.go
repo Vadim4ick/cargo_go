@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
+	"github.com/go-playground/form"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 )
@@ -14,6 +16,16 @@ import (
 type Response struct {
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
+}
+
+var formDecoder = form.NewDecoder()
+
+// ParseFormData парсит form-data из запроса в переданную структуру
+func ParseFormData(r *http.Request, dst interface{}) error {
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
+		return err
+	}
+	return formDecoder.Decode(dst, r.Form)
 }
 
 func JSON(w http.ResponseWriter, status int, message string, data interface{}, logger *zap.Logger) {
@@ -74,4 +86,25 @@ func cleanup(db *pgxpool.Pool, logger *zap.Logger) {
 	} else {
 		logger.Info("Очистка устаревших приглашений выполнена", zap.Duration("duration", duration))
 	}
+}
+
+func init() {
+	// Для time.Time
+	formDecoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
+		s := strings.TrimSpace(vals[0])
+		if s == "" {
+			return time.Time{}, nil
+		}
+		return time.Parse(time.RFC3339, s)
+	}, time.Time{})
+
+	// Для *time.Time
+	formDecoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
+		s := strings.TrimSpace(vals[0])
+		if s == "" {
+			return (*time.Time)(nil), nil
+		}
+		t, err := time.Parse(time.RFC3339, s)
+		return &t, err
+	}, (*time.Time)(nil))
 }

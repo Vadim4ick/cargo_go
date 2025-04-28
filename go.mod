@@ -21,6 +21,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mailru/easyjson v0.9.0 // indirect
+	github.com/neox5/go-formdata v0.1.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/rs/cors v1.11.1 // indirect
 	github.com/swaggo/files v1.0.1 // indirect
@@ -34,6 +35,8 @@ require (
 )
 
 require (
+	github.com/go-playground/form v3.1.4+incompatible
+	github.com/go-playground/form/v4 v4.2.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/gorilla/mux v1.8.1

@@ -238,9 +238,9 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Creates a new cargo with the provided details",
+                "description": "Creates a new cargo with the provided details via form-data",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -251,30 +251,85 @@ const docTemplate = `{
                 "summary": "Create a new cargo",
                 "parameters": [
                     {
-                        "description": "Cargo object to be created",
-                        "name": "cargo",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cargo.CreateRequest"
-                        }
+                        "type": "string",
+                        "description": "Номер груза",
+                        "name": "cargoNumber",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Дата (RFC3339), например 2025-04-30T08:00:00Z",
+                        "name": "date",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Дата погрузки/разгрузки (2025-04-30T08:00:00Z)",
+                        "name": "loadUnloadDate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Водитель",
+                        "name": "driver",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Информация о перевозке",
+                        "name": "transportationInfo",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Сумма выплаты, например 12345.67",
+                        "name": "payoutAmount",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Дата выплаты (RFC3339)",
+                        "name": "payoutDate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Статус оплаты",
+                        "name": "paymentStatus",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Условия выплаты",
+                        "name": "payoutTerms",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID машины (c8169351-f6d8-4058-af4a-8ead3363fd92)",
+                        "name": "truckId",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Cargo successfully created",
+                        "description": "Груз успешно создан",
                         "schema": {
                             "$ref": "#/definitions/cargo.CreateResponse"
                         }
                     },
                     "400": {
-                        "description": "Invalid JSON format",
+                        "description": "Ошибки валидации или неверный формат данных",
                         "schema": {
                             "$ref": "#/definitions/cargo.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Внутренняя ошибка сервера",
                         "schema": {
                             "$ref": "#/definitions/cargo.ErrorResponse"
                         }

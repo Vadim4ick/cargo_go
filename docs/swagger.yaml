@@ -465,28 +465,66 @@ paths:
       - cargo
     post:
       consumes:
-      - application/json
-      description: Creates a new cargo with the provided details
+      - multipart/form-data
+      description: Creates a new cargo with the provided details via form-data
       parameters:
-      - description: Cargo object to be created
-        in: body
-        name: cargo
+      - description: Номер груза
+        in: formData
+        name: cargoNumber
         required: true
-        schema:
-          $ref: '#/definitions/cargo.CreateRequest'
+        type: string
+      - description: Дата (RFC3339), например 2025-04-30T08:00:00Z
+        in: formData
+        name: date
+        type: string
+      - description: Дата погрузки/разгрузки (2025-04-30T08:00:00Z)
+        in: formData
+        name: loadUnloadDate
+        type: string
+      - description: Водитель
+        in: formData
+        name: driver
+        required: true
+        type: string
+      - description: Информация о перевозке
+        in: formData
+        name: transportationInfo
+        required: true
+        type: string
+      - description: Сумма выплаты, например 12345.67
+        in: formData
+        name: payoutAmount
+        type: number
+      - description: Дата выплаты (RFC3339)
+        in: formData
+        name: payoutDate
+        type: string
+      - description: Статус оплаты
+        in: formData
+        name: paymentStatus
+        type: string
+      - description: Условия выплаты
+        in: formData
+        name: payoutTerms
+        type: string
+      - description: ID машины (c8169351-f6d8-4058-af4a-8ead3363fd92)
+        in: formData
+        name: truckId
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "201":
-          description: Cargo successfully created
+          description: Груз успешно создан
           schema:
             $ref: '#/definitions/cargo.CreateResponse'
         "400":
-          description: Invalid JSON format
+          description: Ошибки валидации или неверный формат данных
           schema:
             $ref: '#/definitions/cargo.ErrorResponse'
         "500":
-          description: Internal server error
+          description: Внутренняя ошибка сервера
           schema:
             $ref: '#/definitions/cargo.ErrorResponse'
       security:

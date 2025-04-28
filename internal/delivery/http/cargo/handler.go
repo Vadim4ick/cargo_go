@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 	"test-project/internal/domain/auth"
 	cargoDomain "test-project/internal/domain/cargo"
 	"test-project/internal/middleware"
@@ -15,14 +16,16 @@ import (
 )
 
 type Handler struct {
-	uc   usecase.CargoUsecase
-	deps *auth.Deps
+	uc        usecase.CargoUsecase
+	deps      *auth.Deps
+	validator *validator.Validator
 }
 
-func NewHandler(uc usecase.CargoUsecase, deps *auth.Deps) *Handler {
+func NewHandler(uc usecase.CargoUsecase, deps *auth.Deps, v *validator.Validator) *Handler {
 	return &Handler{
-		uc:   uc,
-		deps: deps,
+		uc:        uc,
+		deps:      deps,
+		validator: v,
 	}
 }
 
@@ -34,7 +37,7 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 
 	cargoRepo := cargoDomain.NewPostgresCargoRepo(deps.DB)
 	svc := usecase.NewCargoUsecase(cargoRepo, v)
-	h := NewHandler(svc, deps)
+	h := NewHandler(svc, deps, v)
 
 	r.Handle("/cargo", middleware.JwtMiddleware(deps, h.Create)).Methods(http.MethodPost)
 	r.Handle("/cargo", middleware.JwtMiddleware(deps, h.GET)).Methods(http.MethodGet)
@@ -43,34 +46,47 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 	r.Handle("/cargo/{id}", middleware.JwtMiddleware(deps, h.DELETE)).Methods(http.MethodDelete)
 }
 
-// Create handles the creation of a new cargo
+// Create handles the creation of a new cargo via form-data
 // @Summary Create a new cargo
-// @Description Creates a new cargo with the provided details
+// @Description Creates a new cargo with the provided details via form-data
 // @Tags cargo
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
 // @Security BearerAuth
-// @Param cargo body cargo.CreateRequest true "Cargo object to be created"
-// @Success 201 {object} cargo.CreateResponse "Cargo successfully created"
-// @Failure 400 {object} cargo.ErrorResponse "Invalid JSON format"
-// @Failure 500 {object} cargo.ErrorResponse "Internal server error"
+// @Param cargoNumber        formData string  true  "Номер груза"
+// @Param date               formData string  false "Дата (RFC3339), например 2025-04-30T08:00:00Z"
+// @Param loadUnloadDate     formData string  false "Дата погрузки/разгрузки (2025-04-30T08:00:00Z)"
+// @Param driver             formData string  true  "Водитель"
+// @Param transportationInfo formData string  true  "Информация о перевозке"
+// @Param payoutAmount       formData number  false "Сумма выплаты, например 12345.67"
+// @Param payoutDate         formData string  false "Дата выплаты (RFC3339)"
+// @Param paymentStatus      formData string  false "Статус оплаты"
+// @Param payoutTerms        formData string  false "Условия выплаты"
+// @Param truckId            formData string  true  "ID машины (c8169351-f6d8-4058-af4a-8ead3363fd92)"
+// @Success 201 {object} cargo.CreateResponse "Груз успешно создан"
+// @Failure 400 {object} cargo.ErrorResponse  "Ошибки валидации или неверный формат данных"
+// @Failure 500 {object} cargo.ErrorResponse  "Внутренняя ошибка сервера"
 // @Router /cargo [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	var cargo cargoDomain.Cargo
-
-	if err := json.NewDecoder(r.Body).Decode(&cargo); err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil, h.deps.Logger)
+	var c cargoDomain.Cargo
+	if err := utils.ParseFormData(r, &c); err != nil {
+		utils.JSON(w, http.StatusBadRequest, "Не удалось распарсить форму: "+err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	cargo, err := h.uc.CreateCargo(cargo)
+	if errs := h.validator.Validate(c); len(errs) > 0 {
+		utils.JSON(w, http.StatusBadRequest, "Ошибки валидации: "+strings.Join(errs, "; "), nil, h.deps.Logger)
+		return
+	}
+
+	created, err := h.uc.CreateCargo(c)
 
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusCreated, "Груз успешно создан", cargo, h.deps.Logger)
+	utils.JSON(w, http.StatusCreated, "Груз успешно создан", created, h.deps.Logger)
 }
 
 // GET retrieves a list of all cargos

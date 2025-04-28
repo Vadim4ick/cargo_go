@@ -3,36 +3,22 @@ package cargo
 import "time"
 
 type Cargo struct {
-	ID string `json:"id"`
+	ID string `json:"id" form:"-"`
 
-	CargoNumber        string     `json:"cargoNumber" validate:"required"`
-	Date               *time.Time `json:"date,omitempty"`
-	LoadUnloadDate     *time.Time `json:"loadUnloadDate,omitempty"`
-	Driver             string     `json:"driver" validate:"required"`
-	TransportationInfo string     `json:"transportationInfo" validate:"required"`
-	PayoutAmount       *float64   `json:"payoutAmount,omitempty"`
-	PayoutDate         *time.Time `json:"payoutDate,omitempty"`
-	PaymentStatus      *string    `json:"paymentStatus,omitempty"`
-	PayoutTerms        *string    `json:"payoutTerms,omitempty"`
+	CargoNumber        string     `json:"cargoNumber" form:"cargoNumber" validate:"required"`
+	Date               *time.Time `json:"date,omitempty" form:"date" validate:"omitempty"`
+	LoadUnloadDate     *time.Time `json:"loadUnloadDate,omitempty" form:"loadUnloadDate" validate:"omitempty"`
+	Driver             string     `json:"driver" form:"driver" validate:"required"`
+	TransportationInfo string     `json:"transportationInfo" form:"transportationInfo" validate:"required"`
+	PayoutAmount       *float64   `json:"payoutAmount,omitempty" form:"payoutAmount" validate:"omitempty,gt=0"`
+	PayoutDate         *time.Time `json:"payoutDate,omitempty" form:"payoutDate" validate:"omitempty"`
+	PaymentStatus      *string    `json:"paymentStatus,omitempty" form:"paymentStatus" validate:"omitempty"`
+	PayoutTerms        *string    `json:"payoutTerms,omitempty" form:"payoutTerms" validate:"omitempty"`
 
-	CreatedAt time.Time `json:"createdAt"`
+	CreatedAt time.Time `json:"createdAt" form:"-"`
 
-	TruckID string `json:"truckId" validate:"required"`
+	TruckID string `json:"truckId" form:"truckId" validate:"required"`
 }
-
-// request DTO с тегами для schema и validate
-// type СreateCargoForm struct {
-// 	CargoNumber        string     `schema:"cargoNumber"        validate:"required"`
-// 	Date               *time.Time `schema:"date"               validate:"omitempty"`
-// 	LoadUnloadDate     *time.Time `schema:"loadUnloadDate"     validate:"omitempty"`
-// 	Driver             string     `schema:"driver"             validate:"required"`
-// 	TransportationInfo string     `schema:"transportationInfo" validate:"required"`
-// 	PayoutAmount       *float64   `schema:"payoutAmount"       validate:"omitempty,gt=0"`
-// 	PayoutDate         *time.Time `schema:"payoutDate"         validate:"omitempty"`
-// 	PaymentStatus      *string    `schema:"paymentStatus"      validate:"omitempty"`
-// 	PayoutTerms        *string    `schema:"payoutTerms"        validate:"omitempty"`
-// 	TruckID            string     `schema:"truckId"            validate:"required"`
-// }
 
 type UpdateCargoInput struct {
 	CargoNumber        *string    `json:"cargoNumber,omitempty"`

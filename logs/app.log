@@ -1,8 +1,0 @@
-{"level":"INFO","ts":"2025-04-29 00:02:49","caller":"truck/handler.go:89","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-29 00:02:49","caller":"truck/handler.go:150","msg":"HTTP response message","message":"Список грузов","status":201}
-{"level":"INFO","ts":"2025-04-29 00:02:49","caller":"auth/handler.go:253","msg":"HTTP response message","message":"Профиль","status":200}
-{"level":"INFO","ts":"2025-04-29 00:02:52","caller":"cargo/handler.go:62","msg":"HTTP response message","message":"Невалидный формат JSON","status":400}
-{"level":"INFO","ts":"2025-04-29 00:03:25","caller":"auth/handler.go:253","msg":"HTTP response message","message":"Профиль","status":200}
-{"level":"INFO","ts":"2025-04-29 00:03:25","caller":"truck/handler.go:89","msg":"HTTP response message","message":"Список машин","status":201}
-{"level":"INFO","ts":"2025-04-29 00:03:25","caller":"truck/handler.go:150","msg":"HTTP response message","message":"Список грузов","status":201}
-{"level":"INFO","ts":"2025-04-29 00:04:40","caller":"utils/utils.go:75","msg":"Очистка устаревших приглашений выполнена","duration":0.005451167}
