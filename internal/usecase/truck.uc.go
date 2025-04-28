@@ -3,6 +3,7 @@ package usecase
 import (
 	"errors"
 	"strings"
+	"test-project/internal/domain/cargo"
 	truckDomain "test-project/internal/domain/truck"
 	"test-project/internal/validator"
 )
@@ -11,6 +12,7 @@ type TruckUsecase interface {
 	CreateTruck(input truckDomain.Truck) (truckDomain.Truck, error)
 	ListTrucks() ([]truckDomain.Truck, error)
 	GetTruck(id string) (truckDomain.Truck, error)
+	GetTruckCargos(id string, limit int, page int) ([]cargo.Cargo, error)
 }
 
 type truckUsecase struct {
@@ -36,4 +38,8 @@ func (u *truckUsecase) ListTrucks() ([]truckDomain.Truck, error) {
 
 func (u *truckUsecase) GetTruck(id string) (truckDomain.Truck, error) {
 	return u.repo.FindByID(id)
+}
+
+func (u *truckUsecase) GetTruckCargos(id string, limit int, page int) ([]cargo.Cargo, error) {
+	return u.repo.GetTruckCargos(id, limit, page)
 }

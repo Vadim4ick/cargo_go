@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"test-project/internal/domain/auth"
 	truckDomain "test-project/internal/domain/truck"
 	"test-project/internal/middleware"
@@ -35,6 +36,7 @@ func RegisterUserRoutes(r *mux.Router, deps *auth.Deps) {
 	r.Handle("/truck", middleware.JwtMiddleware(deps, h.Create)).Methods(http.MethodPost)
 	r.Handle("/truck", middleware.JwtMiddleware(deps, h.GET)).Methods(http.MethodGet)
 	r.Handle("/truck/{id}", middleware.JwtMiddleware(deps, h.GETById)).Methods(http.MethodGet)
+	r.Handle("/truck/{id}/cargos", middleware.JwtMiddleware(deps, h.GETCargos)).Methods(http.MethodGet)
 }
 
 // Create handles the creation of a new truck
@@ -110,4 +112,40 @@ func (h *Handler) GETById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.JSON(w, http.StatusCreated, "Машина", truck, h.deps.Logger)
+}
+
+// GETCargos retrieves a list of cargos by truck ID
+// @Summary Get a list of cargos by truck ID
+// @Description Retrieves a list of cargos by their truck ID
+// @Tags truck
+// @Accept json
+// @Produce json
+// @Param id path string true "Truck ID"
+// @Param limit query int false "Limit number of cargos per page"
+// @Param page query int false "Page number for pagination"
+// @Security BearerAuth
+// @Success 201 {object} cargo.ListResponse "List of cargos"
+// @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
+// @Failure 404 {object} cargo.ErrorResponse "Truck not found"
+// @Router /truck/{id}/cargos [get]
+func (h *Handler) GETCargos(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	// Пагинация
+	query := r.URL.Query()
+	limitStr := query.Get("limit")
+	pageStr := query.Get("page")
+
+	// Можешь распарсить строки в int
+	limit, _ := strconv.Atoi(limitStr)
+	page, _ := strconv.Atoi(pageStr)
+
+	cargos, err := h.uc.GetTruckCargos(id, limit, page)
+
+	if err != nil {
+		utils.JSON(w, http.StatusNotFound, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	utils.JSON(w, http.StatusCreated, "Список грузов", cargos, h.deps.Logger)
 }

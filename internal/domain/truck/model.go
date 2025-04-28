@@ -1,6 +1,9 @@
 package truck
 
-import "time"
+import (
+	"test-project/internal/domain/cargo"
+	"time"
+)
 
 type Truck struct {
 	ID        string    `json:"id"`
@@ -12,6 +15,7 @@ type TruckRepository interface {
 	Create(truck Truck) (Truck, error)
 	FindAll() ([]Truck, error)
 	FindByID(id string) (Truck, error)
+	GetTruckCargos(id string, limit int, page int) ([]cargo.Cargo, error)
 }
 
 type CreateRequest struct {

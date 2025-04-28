@@ -733,6 +733,45 @@ paths:
       summary: Get a truck by ID
       tags:
       - truck
+  /truck/{id}/cargos:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of cargos by their truck ID
+      parameters:
+      - description: Truck ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Limit number of cargos per page
+        in: query
+        name: limit
+        type: integer
+      - description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: List of cargos
+          schema:
+            $ref: '#/definitions/cargo.ListResponse'
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/cargo.ErrorResponse'
+        "404":
+          description: Truck not found
+          schema:
+            $ref: '#/definitions/cargo.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of cargos by truck ID
+      tags:
+      - truck
   /users:
     get:
       consumes:

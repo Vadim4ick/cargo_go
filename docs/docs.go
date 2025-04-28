@@ -658,6 +658,67 @@ const docTemplate = `{
                 }
             }
         },
+        "/truck/{id}/cargos": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieves a list of cargos by their truck ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "truck"
+                ],
+                "summary": "Get a list of cargos by truck ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Truck ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit number of cargos per page",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number for pagination",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "List of cargos",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.ListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Truck not found",
+                        "schema": {
+                            "$ref": "#/definitions/cargo.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "security": [

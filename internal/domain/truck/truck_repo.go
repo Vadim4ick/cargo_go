@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"test-project/internal/domain/cargo"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -59,4 +60,40 @@ func (r *PostgresTruckRepo) FindByID(id string) (Truck, error) {
 	}
 
 	return t, err
+}
+
+func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]cargo.Cargo, error) {
+	if limit <= 0 {
+		limit = 10 // дефолтный лимит, если вдруг не передали
+	}
+	if page <= 0 {
+		page = 1 // дефолтная страница
+	}
+
+	offset := (page - 1) * limit
+
+	rows, err := r.db.Query(
+		context.Background(),
+		`SELECT id, cargonumber
+		 FROM cargos
+		 WHERE truckid = $1
+		 ORDER BY createdAt DESC
+		 LIMIT $2 OFFSET $3`,
+		id, limit, offset,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var cargos []cargo.Cargo
+	for rows.Next() {
+		var c cargo.Cargo
+		if err := rows.Scan(&c.ID, &c.CargoNumber); err != nil {
+			return nil, err
+		}
+		cargos = append(cargos, c)
+	}
+
+	return cargos, nil
 }
