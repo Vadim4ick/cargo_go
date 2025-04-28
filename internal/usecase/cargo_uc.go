@@ -10,10 +10,10 @@ import (
 
 type CargoUsecase interface {
 	CreateCargo(input cargoDomain.Cargo) (cargoDomain.Cargo, error)
-	PatchCargo(input cargoDomain.UpdateCargoInput, id int) (cargoDomain.Cargo, error)
+	PatchCargo(input cargoDomain.UpdateCargoInput, id string) (cargoDomain.Cargo, error)
 	ListGargos() ([]cargoDomain.Cargo, error)
-	DeleteCargo(id int) error
-	GetCargo(id int) (cargoDomain.Cargo, error)
+	DeleteCargo(id string) error
+	GetCargo(id string) (cargoDomain.Cargo, error)
 }
 
 type cargoUsecase struct {
@@ -37,7 +37,7 @@ func (u *cargoUsecase) ListGargos() ([]cargoDomain.Cargo, error) {
 	return u.repo.FindAll()
 }
 
-func (u *cargoUsecase) GetCargo(id int) (cargoDomain.Cargo, error) {
+func (u *cargoUsecase) GetCargo(id string) (cargoDomain.Cargo, error) {
 	cargo, err := u.repo.FindByID(id)
 
 	if err != nil {
@@ -47,11 +47,11 @@ func (u *cargoUsecase) GetCargo(id int) (cargoDomain.Cargo, error) {
 	return cargo, err
 }
 
-func (u *cargoUsecase) PatchCargo(input cargoDomain.UpdateCargoInput, id int) (cargoDomain.Cargo, error) {
+func (u *cargoUsecase) PatchCargo(input cargoDomain.UpdateCargoInput, id string) (cargoDomain.Cargo, error) {
 	return u.repo.Update(input, id)
 }
 
-func (u *cargoUsecase) DeleteCargo(id int) error {
+func (u *cargoUsecase) DeleteCargo(id string) error {
 	_, err := u.repo.FindByID(id)
 
 	if err != nil {

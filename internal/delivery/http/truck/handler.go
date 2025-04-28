@@ -100,11 +100,7 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 // @Failure 404 {object} truck.ErrorResponse "Truck not found"
 // @Router /trucks/{id} [get]
 func (h *Handler) GETById(w http.ResponseWriter, r *http.Request) {
-	id, err := utils.ParseNumber(mux.Vars(r)["id"])
-	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.deps.Logger)
-		return
-	}
+	id := mux.Vars(r)["id"]
 
 	truck, err := h.uc.GetTruck(id)
 

@@ -3,7 +3,7 @@ package truck
 import "time"
 
 type Truck struct {
-	ID        int       `json:"id"`
+	ID        string    `json:"id"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"createdAt"`
 }
@@ -11,7 +11,7 @@ type Truck struct {
 type TruckRepository interface {
 	Create(truck Truck) (Truck, error)
 	FindAll() ([]Truck, error)
-	FindByID(id int) (Truck, error)
+	FindByID(id string) (Truck, error)
 }
 
 type CreateResponse struct {

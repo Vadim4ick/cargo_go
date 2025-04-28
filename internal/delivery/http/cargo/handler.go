@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"strconv"
 	"test-project/internal/domain/auth"
 	cargoDomain "test-project/internal/domain/cargo"
 	"test-project/internal/middleware"
@@ -108,12 +107,7 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
 // @Router /cargos/{id} [get]
 func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
-	id, err := utils.ParseNumber(mux.Vars(r)["id"])
-
-	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.deps.Logger)
-		return
-	}
+	id := mux.Vars(r)["id"]
 
 	cargo, err := h.uc.GetCargo(id)
 
@@ -139,12 +133,7 @@ func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
 // @Router /cargos/{id} [patch]
 func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
-	id, err := utils.ParseNumber(mux.Vars(r)["id"])
-
-	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.deps.Logger)
-		return
-	}
+	id := mux.Vars(r)["id"]
 
 	var updateCargo cargoDomain.UpdateCargoInput
 
@@ -176,19 +165,14 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
 // @Router /cargos/{id} [delete]
 func (h *Handler) DELETE(w http.ResponseWriter, r *http.Request) {
-	id, err := utils.ParseNumber(mux.Vars(r)["id"])
+	id := mux.Vars(r)["id"]
 
-	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.deps.Logger)
-		return
-	}
-
-	err = h.uc.DeleteCargo(id)
+	err := h.uc.DeleteCargo(id)
 
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusOK, "Груз с id= "+strconv.Itoa(id)+" успешно удален", nil, h.deps.Logger)
+	utils.JSON(w, http.StatusOK, "Груз с id= "+id+" успешно удален", nil, h.deps.Logger)
 }

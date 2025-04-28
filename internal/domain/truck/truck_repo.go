@@ -46,7 +46,7 @@ func (r *PostgresTruckRepo) FindAll() ([]Truck, error) {
 	return trucks, nil
 }
 
-func (r *PostgresTruckRepo) FindByID(id int) (Truck, error) {
+func (r *PostgresTruckRepo) FindByID(id string) (Truck, error) {
 	var t Truck
 	err := r.db.QueryRow(context.Background(), "SELECT id, name FROM trucks WHERE id = $1", id).Scan(&t.ID, &t.Name)
 

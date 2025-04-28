@@ -3,7 +3,6 @@ package user
 import (
 	"log"
 	"net/http"
-	"strconv"
 	"test-project/internal/domain/auth"
 	"test-project/internal/domain/user"
 	"test-project/internal/middleware"
@@ -70,11 +69,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // @Failure 404 {object} user.ErrorResponse "User not found"
 // @Router /users/{id} [get]
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
-	id, err := utils.ParseNumber(mux.Vars(r)["id"])
-	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.deps.Logger)
-		return
-	}
+	id := mux.Vars(r)["id"]
 
 	user, err := h.uc.GetUser(id)
 	if err != nil {
@@ -97,17 +92,14 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Failure 404 {object} user.ErrorResponse "User not found"
 // @Router /users/{id} [delete]
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
-	id, err := utils.ParseNumber(mux.Vars(r)["id"])
-	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.deps.Logger)
-		return
-	}
+	id := mux.Vars(r)["id"]
 
-	err = h.uc.DeleteUser(id)
+	err := h.uc.DeleteUser(id)
+
 	if err != nil {
 		utils.JSON(w, http.StatusNotFound, err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	utils.JSON(w, http.StatusCreated, "Пользователь с id= "+strconv.Itoa(id)+" успешно удален", nil, h.deps.Logger)
+	utils.JSON(w, http.StatusCreated, "Пользователь с id= "+id+" успешно удален", nil, h.deps.Logger)
 }

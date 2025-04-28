@@ -39,7 +39,7 @@ func (r *PostgresUserRepo) FindAll() ([]User, error) {
 	return users, nil
 }
 
-func (r *PostgresUserRepo) FindByID(id int) (User, error) {
+func (r *PostgresUserRepo) FindByID(id string) (User, error) {
 	var u User
 	err := r.db.QueryRow(
 		context.Background(),
@@ -104,7 +104,7 @@ func (r *PostgresUserRepo) FindByEmail(email string) (User, error) {
 	return u, nil
 }
 
-func (r *PostgresUserRepo) Delete(id int) error {
+func (r *PostgresUserRepo) Delete(id string) error {
 	_, err := r.db.Exec(context.Background(), "DELETE FROM users WHERE id = $1", id)
 	return err
 }

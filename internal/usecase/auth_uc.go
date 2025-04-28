@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"errors"
-	"strconv"
 	"time"
 
 	userDomain "test-project/internal/domain/user"
@@ -17,7 +16,7 @@ type AuthUsecase interface {
 	TouchOnline(userID string) error
 	OnlineUsers(since time.Duration) ([]string, error)
 
-	GetUser(id int) (userDomain.User, error)
+	GetUser(id string) (userDomain.User, error)
 	FindByEmail(email string) (userDomain.User, error)
 }
 
@@ -53,14 +52,12 @@ func (u *usecase) Login(email, password string) (string, string, error) {
 		return "", "", errors.New("Неверный пароль")
 	}
 
-	uidStr := strconv.Itoa(user.ID)
-
-	accessToken, err := u.jwt.GenerateAccess(uidStr)
+	accessToken, err := u.jwt.GenerateAccess(user.ID)
 	if err != nil {
 		return "", "", err
 	}
 
-	refreshToken, err := u.jwt.GenerateRefresh(uidStr)
+	refreshToken, err := u.jwt.GenerateRefresh(user.ID)
 	if err != nil {
 		return "", "", err
 	}
@@ -82,6 +79,6 @@ func (u *usecase) OnlineUsers(since time.Duration) ([]string, error) {
 	return u.redis.Keys("online:*")
 }
 
-func (s *usecase) GetUser(id int) (userDomain.User, error) {
+func (s *usecase) GetUser(id string) (userDomain.User, error) {
 	return s.repo.FindByID(id)
 }

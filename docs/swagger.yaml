@@ -91,7 +91,7 @@ definitions:
       driver:
         type: string
       id:
-        type: integer
+        type: string
       loadUnloadDate:
         type: string
       paymentStatus:
@@ -105,7 +105,7 @@ definitions:
       transportationInfo:
         type: string
       truckId:
-        type: integer
+        type: string
     required:
     - cargoNumber
     - driver
@@ -207,7 +207,7 @@ definitions:
       createdAt:
         type: string
       id:
-        type: integer
+        type: string
       name:
         type: string
     type: object
@@ -258,7 +258,7 @@ definitions:
       email:
         type: string
       id:
-        type: integer
+        type: string
       password:
         minLength: 6
         type: string

@@ -243,14 +243,7 @@ func (h *Handler) profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := utils.ParseNumber(userID)
-
-	if err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Некорректный id", nil, h.deps.Logger)
-		return
-	}
-
-	u, err := h.deps.AuthService.GetUser(id)
+	u, err := h.deps.AuthService.GetUser(userID)
 
 	if err != nil {
 		utils.JSON(w, http.StatusNotFound, err.Error(), nil, h.deps.Logger)

@@ -84,7 +84,7 @@ func (r *PostgresCargoRepo) FindAll() ([]Cargo, error) {
 	return cargos, nil
 }
 
-func (r *PostgresCargoRepo) FindByID(id int) (Cargo, error) {
+func (r *PostgresCargoRepo) FindByID(id string) (Cargo, error) {
 	var c Cargo
 	err := r.db.QueryRow(context.Background(), `SELECT * FROM cargos WHERE id=$1`, id).Scan(
 		&c.ID,
@@ -110,7 +110,7 @@ func (r *PostgresCargoRepo) FindByID(id int) (Cargo, error) {
 	return c, nil
 }
 
-func (r *PostgresCargoRepo) Update(c UpdateCargoInput, id int) (Cargo, error) {
+func (r *PostgresCargoRepo) Update(c UpdateCargoInput, id string) (Cargo, error) {
 	query := "UPDATE cargos SET "
 	args := []interface{}{}
 	i := 1
@@ -185,7 +185,7 @@ func (r *PostgresCargoRepo) Update(c UpdateCargoInput, id int) (Cargo, error) {
 	return cargo, nil
 }
 
-func (r *PostgresCargoRepo) Delete(id int) error {
+func (r *PostgresCargoRepo) Delete(id string) error {
 	_, err := r.db.Exec(context.Background(), "DELETE FROM cargos WHERE id=$1", id)
 	return err
 }

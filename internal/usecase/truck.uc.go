@@ -10,7 +10,7 @@ import (
 type TruckUsecase interface {
 	CreateTruck(input truckDomain.Truck) (truckDomain.Truck, error)
 	ListTrucks() ([]truckDomain.Truck, error)
-	GetTruck(id int) (truckDomain.Truck, error)
+	GetTruck(id string) (truckDomain.Truck, error)
 }
 
 type truckUsecase struct {
@@ -34,6 +34,6 @@ func (u *truckUsecase) ListTrucks() ([]truckDomain.Truck, error) {
 	return u.repo.FindAll()
 }
 
-func (u *truckUsecase) GetTruck(id int) (truckDomain.Truck, error) {
+func (u *truckUsecase) GetTruck(id string) (truckDomain.Truck, error) {
 	return u.repo.FindByID(id)
 }

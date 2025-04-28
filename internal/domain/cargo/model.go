@@ -3,7 +3,7 @@ package cargo
 import "time"
 
 type Cargo struct {
-	ID int `json:"id"`
+	ID string `json:"id"`
 
 	CargoNumber        string     `json:"cargoNumber" validate:"required"`
 	Date               *time.Time `json:"date,omitempty"`
@@ -17,7 +17,7 @@ type Cargo struct {
 
 	CreatedAt time.Time `json:"createdAt"`
 
-	TruckID int `json:"truckId" validate:"required"`
+	TruckID string `json:"truckId" validate:"required"`
 }
 
 type UpdateCargoInput struct {
@@ -30,15 +30,15 @@ type UpdateCargoInput struct {
 	PayoutDate         *time.Time `json:"payoutDate,omitempty"`
 	PaymentStatus      *string    `json:"paymentStatus,omitempty"`
 	PayoutTerms        *string    `json:"payoutTerms,omitempty"`
-	TruckID            *int       `json:"truckId,omitempty"`
+	TruckID            *string    `json:"truckId,omitempty"`
 }
 
 type CargoRepository interface {
 	Create(cargo Cargo) (Cargo, error)
 	FindAll() ([]Cargo, error)
-	FindByID(id int) (Cargo, error)
-	Update(cargo UpdateCargoInput, id int) (Cargo, error)
-	Delete(id int) error
+	FindByID(id string) (Cargo, error)
+	Update(cargo UpdateCargoInput, id string) (Cargo, error)
+	Delete(id string) error
 }
 
 type CreateResponse struct {

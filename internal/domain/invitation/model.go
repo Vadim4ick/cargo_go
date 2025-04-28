@@ -3,7 +3,7 @@ package invitation
 import "time"
 
 type Invitation struct {
-	ID int `json:"id"`
+	ID string `json:"id"`
 
 	Email string `json:"email" validate:"required,email"`
 	Token string `json:"token" validate:"required"`

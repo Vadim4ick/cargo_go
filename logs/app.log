@@ -75,3 +75,27 @@
 {"level":"INFO","ts":"2025-04-28 20:31:02","caller":"user/handler.go:112","msg":"HTTP response message","message":"Пользователь с id= 5 успешно удален","status":201}
 {"level":"INFO","ts":"2025-04-28 20:31:06","caller":"auth/handler.go:130","msg":"HTTP response message","message":"Пользователь успешно зарегистрирован","status":201}
 {"level":"INFO","ts":"2025-04-28 20:31:11","caller":"user/handler.go:112","msg":"HTTP response message","message":"Пользователь с id= 6 успешно удален","status":201}
+{"level":"INFO","ts":"2025-04-28 20:34:24","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 20:34:24","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 20:34:24","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.00141775}
+{"level":"INFO","ts":"2025-04-28 20:34:44","caller":"invitation/handler.go:96","msg":"HTTP response message","message":"Приглашение успешно отправлено. Время жизни 5 минут","status":201}
+{"level":"INFO","ts":"2025-04-28 20:34:49","caller":"invitation/handler.go:85","msg":"HTTP response message","message":"Приглашение для этого email уже отправлено","status":500}
+{"level":"INFO","ts":"2025-04-28 21:03:08","caller":"middleware/auth.go:20","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-04-28 21:04:02","caller":"utils/utils.go:78","msg":"Очистка устаревших приглашений выполнена","duration":0.010368583}
+{"level":"INFO","ts":"2025-04-28 21:17:04","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:17:04","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:17:04","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.003465875}
+{"level":"INFO","ts":"2025-04-28 21:28:45","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:28:45","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:28:45","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001565708}
+{"level":"INFO","ts":"2025-04-28 21:29:06","caller":"invitation/handler.go:96","msg":"HTTP response message","message":"Приглашение успешно отправлено. Время жизни 5 минут","status":201}
+{"level":"INFO","ts":"2025-04-28 21:29:25","caller":"auth/handler.go:130","msg":"HTTP response message","message":"Пользователь успешно зарегистрирован","status":201}
+{"level":"INFO","ts":"2025-04-28 21:29:49","caller":"auth/handler.go:173","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
+{"level":"INFO","ts":"2025-04-28 21:30:11","caller":"truck/handler.go:67","msg":"HTTP response message","message":"Машина успешно создана","status":201}
+{"level":"INFO","ts":"2025-04-28 21:30:19","caller":"truck/handler.go:87","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-04-28 21:32:15","caller":"truck/handler.go:87","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-04-28 21:33:45","caller":"utils/utils.go:78","msg":"Очистка устаревших приглашений выполнена","duration":0.006460708}
+{"level":"INFO","ts":"2025-04-28 21:33:46","caller":"cargo/handler.go:62","msg":"HTTP response message","message":"Невалидный формат JSON","status":400}
+{"level":"INFO","ts":"2025-04-28 21:34:07","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:34:07","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:34:07","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.003338333}

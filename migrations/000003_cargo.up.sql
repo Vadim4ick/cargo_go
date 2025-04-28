@@ -1,5 +1,5 @@
 CREATE TABLE cargos (
-  id SERIAL PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   cargoNumber         TEXT UNIQUE NOT NULL,
   date                 TIMESTAMP,
@@ -13,6 +13,6 @@ CREATE TABLE cargos (
 
   "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-  truckId INTEGER NOT NULL,
+  truckId UUID NOT NULL,
   CONSTRAINT fk_truck FOREIGN KEY (truckId) REFERENCES trucks(id) ON DELETE CASCADE
 );

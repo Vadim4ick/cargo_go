@@ -10,7 +10,7 @@ const (
 )
 
 type User struct {
-	ID        int       `json:"id"`
+	ID        string    `json:"id"`
 	Username  string    `json:"username" validate:"required,min=3"`
 	Email     string    `json:"email" validate:"required,email"`
 	Password  string    `json:"password" validate:"required,min=6"`
@@ -20,9 +20,9 @@ type User struct {
 
 type UserRepository interface {
 	FindAll() ([]User, error)
-	FindByID(id int) (User, error)
+	FindByID(id string) (User, error)
 	Create(user User) (User, error)
-	Delete(id int) error
+	Delete(id string) error
 	FindByEmail(email string) (User, error)
 }
 

@@ -9,8 +9,8 @@ import (
 
 type UserUsecase interface {
 	ListUsers() ([]userDomain.User, error)
-	GetUser(id int) (userDomain.User, error)
-	DeleteUser(id int) error
+	GetUser(id string) (userDomain.User, error)
+	DeleteUser(id string) error
 	CreateUser(input userDomain.User) (userDomain.User, error)
 }
 
@@ -27,7 +27,7 @@ func (u *userUsecase) ListUsers() ([]userDomain.User, error) {
 	return u.repo.FindAll()
 }
 
-func (u *userUsecase) GetUser(id int) (userDomain.User, error) {
+func (u *userUsecase) GetUser(id string) (userDomain.User, error) {
 	return u.repo.FindByID(id)
 }
 
@@ -39,7 +39,7 @@ func (u *userUsecase) CreateUser(input userDomain.User) (userDomain.User, error)
 	return u.repo.Create(input)
 }
 
-func (u *userUsecase) DeleteUser(id int) error {
+func (u *userUsecase) DeleteUser(id string) error {
 	_, err := u.repo.FindByID(id)
 
 	if err != nil {

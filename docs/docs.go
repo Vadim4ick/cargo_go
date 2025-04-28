@@ -920,7 +920,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "loadUnloadDate": {
                     "type": "string"
@@ -941,7 +941,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "truckId": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1085,7 +1085,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -1165,7 +1165,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "password": {
                     "type": "string",

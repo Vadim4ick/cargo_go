@@ -914,7 +914,7 @@
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "loadUnloadDate": {
                     "type": "string"
@@ -935,7 +935,7 @@
                     "type": "string"
                 },
                 "truckId": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1079,7 +1079,7 @@
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -1159,7 +1159,7 @@
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "password": {
                     "type": "string",
