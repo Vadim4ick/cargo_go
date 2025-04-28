@@ -10,10 +10,10 @@ definitions:
   auth.LoginRequest:
     properties:
       email:
-        example: john.doe@example.com
+        example: firulvv@mail.ru
         type: string
       password:
-        example: securepass
+        example: "123456"
         type: string
     type: object
   auth.LoginResponse:
@@ -63,13 +63,13 @@ definitions:
   auth.RegisterRequest:
     properties:
       email:
-        example: john.doe@example.com
+        example: firulvv@mail.ru
         type: string
       inviteToken:
         example: token
         type: string
       password:
-        example: securepass
+        example: "123456"
         type: string
     type: object
   auth.RegisterResponse:
@@ -105,6 +105,44 @@ definitions:
       transportationInfo:
         type: string
       truckId:
+        type: string
+    required:
+    - cargoNumber
+    - driver
+    - transportationInfo
+    - truckId
+    type: object
+  cargo.CreateRequest:
+    properties:
+      cargoNumber:
+        example: "1234"
+        type: string
+      date:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      driver:
+        example: Иванов Иван Иванович
+        type: string
+      loadUnloadDate:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      paymentStatus:
+        example: paid
+        type: string
+      payoutAmount:
+        example: 1000
+        type: number
+      payoutDate:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      payoutTerms:
+        example: cash
+        type: string
+      transportationInfo:
+        example: Грузоперевозка
+        type: string
+      truckId:
+        example: "1"
         type: string
     required:
     - cargoNumber
@@ -173,6 +211,12 @@ definitions:
       data: {}
       message:
         example: Невалидный формат JSON
+        type: string
+    type: object
+  truck.CreateRequest:
+    properties:
+      name:
+        example: Машина
         type: string
     type: object
   truck.ErrorResponse:
@@ -310,7 +354,7 @@ paths:
         name: cargo
         required: true
         schema:
-          $ref: '#/definitions/cargo.Cargo'
+          $ref: '#/definitions/cargo.CreateRequest'
       produces:
       - application/json
       responses:
@@ -341,7 +385,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -371,7 +415,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -401,13 +445,13 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       - description: Cargo object to be updated
         in: body
         name: cargo
         required: true
         schema:
-          $ref: '#/definitions/cargo.Cargo'
+          $ref: '#/definitions/cargo.CreateRequest'
       produces:
       - application/json
       responses:
@@ -637,7 +681,7 @@ paths:
         name: truck
         required: true
         schema:
-          $ref: '#/definitions/truck.Truck'
+          $ref: '#/definitions/truck.CreateRequest'
       produces:
       - application/json
       responses:
@@ -668,7 +712,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -720,7 +764,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -748,7 +792,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:

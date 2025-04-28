@@ -41,6 +41,19 @@ type CargoRepository interface {
 	Delete(id string) error
 }
 
+type CreateRequest struct {
+	CargoNumber        string     `json:"cargoNumber" validate:"required" example:"1234"`
+	Driver             string     `json:"driver" validate:"required" example:"Иванов Иван Иванович"`
+	TransportationInfo string     `json:"transportationInfo" validate:"required" example:"Грузоперевозка"`
+	TruckID            string     `json:"truckId" validate:"required" example:"1"`
+	Date               *time.Time `json:"date,omitempty" example:"2023-01-01T00:00:00Z"`
+	LoadUnloadDate     *time.Time `json:"loadUnloadDate,omitempty" example:"2023-01-01T00:00:00Z"`
+	PayoutAmount       *float64   `json:"payoutAmount,omitempty" example:"1000"`
+	PayoutDate         *time.Time `json:"payoutDate,omitempty" example:"2023-01-01T00:00:00Z"`
+	PaymentStatus      *string    `json:"paymentStatus,omitempty" example:"paid"`
+	PayoutTerms        *string    `json:"payoutTerms,omitempty" example:"cash"`
+}
+
 type CreateResponse struct {
 	Message string `json:"message" example:"Груз успешно создан"`
 	Data    Cargo  `json:"data"`

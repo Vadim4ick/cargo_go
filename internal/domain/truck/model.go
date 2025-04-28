@@ -14,6 +14,10 @@ type TruckRepository interface {
 	FindByID(id string) (Truck, error)
 }
 
+type CreateRequest struct {
+	Name string `json:"name" example:"Машина"`
+}
+
 type CreateResponse struct {
 	Message string `json:"message" example:"Машина успешно создана"`
 	Data    Truck  `json:"data"`

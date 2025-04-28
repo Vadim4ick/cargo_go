@@ -99,3 +99,29 @@
 {"level":"INFO","ts":"2025-04-28 21:34:07","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
 {"level":"INFO","ts":"2025-04-28 21:34:07","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
 {"level":"INFO","ts":"2025-04-28 21:34:07","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.003338333}
+{"level":"INFO","ts":"2025-04-28 21:35:05","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:35:05","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:35:05","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.001720084}
+{"level":"INFO","ts":"2025-04-28 21:37:58","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:37:58","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:37:58","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.00259625}
+{"level":"INFO","ts":"2025-04-28 21:39:00","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:39:00","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:39:00","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.00226275}
+{"level":"INFO","ts":"2025-04-28 21:39:07","caller":"auth/handler.go:173","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
+{"level":"INFO","ts":"2025-04-28 21:39:27","caller":"truck/handler.go:87","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-04-28 21:39:42","caller":"cargo/handler.go:73","msg":"HTTP response message","message":"Груз успешно создан","status":201}
+{"level":"INFO","ts":"2025-04-28 21:40:41","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:40:41","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:40:41","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.003281958}
+{"level":"INFO","ts":"2025-04-28 21:40:48","caller":"auth/handler.go:173","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
+{"level":"INFO","ts":"2025-04-28 21:41:03","caller":"cargo/handler.go:94","msg":"HTTP response message","message":"Список всех грузов","status":200}
+{"level":"INFO","ts":"2025-04-28 21:41:59","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:41:59","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:41:59","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002509291}
+{"level":"INFO","ts":"2025-04-28 21:42:13","caller":"auth/handler.go:173","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
+{"level":"INFO","ts":"2025-04-28 21:42:30","caller":"cargo/handler.go:94","msg":"HTTP response message","message":"Список всех грузов","status":200}
+{"level":"INFO","ts":"2025-04-28 21:42:47","caller":"cargo/handler.go:152","msg":"HTTP response message","message":"Груз успешно обновлен","status":200}
+{"level":"INFO","ts":"2025-04-28 21:45:34","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-28 21:45:34","caller":"cmd/main.go:65","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-28 21:45:34","caller":"utils/utils.go:61","msg":"Первичная очистка устаревших приглашений выполнена","duration":0.002841666}

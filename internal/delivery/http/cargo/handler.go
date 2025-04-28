@@ -50,7 +50,7 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param cargo body cargo.Cargo true "Cargo object to be created"
+// @Param cargo body cargo.CreateRequest true "Cargo object to be created"
 // @Success 201 {object} cargo.CreateResponse "Cargo successfully created"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid JSON format"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
@@ -100,7 +100,7 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 // @Tags cargos
 // @Accept json
 // @Produce json
-// @Param id path int true "Cargo ID"
+// @Param id path string true "Cargo ID"
 // @Security BearerAuth
 // @Success 200 {object} cargo.GetResponse "Cargo found"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
@@ -125,9 +125,9 @@ func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
 // @Tags cargos
 // @Accept json
 // @Produce json
-// @Param id path int true "Cargo ID"
+// @Param id path string true "Cargo ID"
 // @Security BearerAuth
-// @Param cargo body cargo.Cargo true "Cargo object to be updated"
+// @Param cargo body cargo.CreateRequest true "Cargo object to be updated"
 // @Success 200 {object} cargo.GetResponse "Cargo updated"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
@@ -158,7 +158,7 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 // @Tags cargos
 // @Accept json
 // @Produce json
-// @Param id path int true "Cargo ID"
+// @Param id path string true "Cargo ID"
 // @Security BearerAuth
 // @Success 200 {object} cargo.DeleteResponse "Cargo deleted"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid ID"

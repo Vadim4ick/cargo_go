@@ -43,7 +43,7 @@ func RegisterUserRoutes(r *mux.Router, deps *auth.Deps) {
 // @Tags trucks
 // @Accept json
 // @Produce json
-// @Param truck body truck.Truck true "Truck object to be created"
+// @Param truck body truck.CreateRequest true "Truck object to be created"
 // @Security BearerAuth
 // @Success 201 {object} cargo.CreateResponse "Cargo successfully created"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid JSON format"
@@ -93,7 +93,7 @@ func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
 // @Tags trucks
 // @Accept json
 // @Produce json
-// @Param id path int true "Truck ID"
+// @Param id path string true "Truck ID"
 // @Security BearerAuth
 // @Success 201 {object} truck.GetResponse "Truck found"
 // @Failure 400 {object} truck.ErrorResponse "Invalid ID"

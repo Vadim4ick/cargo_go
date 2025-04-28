@@ -72,7 +72,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/cargo.Cargo"
+                            "$ref": "#/definitions/cargo.CreateRequest"
                         }
                     }
                 ],
@@ -118,7 +118,7 @@ const docTemplate = `{
                 "summary": "Get a cargo by ID",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Cargo ID",
                         "name": "id",
                         "in": "path",
@@ -165,7 +165,7 @@ const docTemplate = `{
                 "summary": "Delete a cargo by ID",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Cargo ID",
                         "name": "id",
                         "in": "path",
@@ -212,7 +212,7 @@ const docTemplate = `{
                 "summary": "Update a cargo by ID",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Cargo ID",
                         "name": "id",
                         "in": "path",
@@ -224,7 +224,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/cargo.Cargo"
+                            "$ref": "#/definitions/cargo.CreateRequest"
                         }
                     }
                 ],
@@ -583,7 +583,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/truck.Truck"
+                            "$ref": "#/definitions/truck.CreateRequest"
                         }
                     }
                 ],
@@ -629,7 +629,7 @@ const docTemplate = `{
                 "summary": "Get a truck by ID",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Truck ID",
                         "name": "id",
                         "in": "path",
@@ -707,7 +707,7 @@ const docTemplate = `{
                 "summary": "Get a user by ID",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "User ID",
                         "name": "id",
                         "in": "path",
@@ -749,7 +749,7 @@ const docTemplate = `{
                 "summary": "Delete a user by ID",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "User ID",
                         "name": "id",
                         "in": "path",
@@ -795,11 +795,11 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "john.doe@example.com"
+                    "example": "firulvv@mail.ru"
                 },
                 "password": {
                     "type": "string",
-                    "example": "securepass"
+                    "example": "123456"
                 }
             }
         },
@@ -874,7 +874,7 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "john.doe@example.com"
+                    "example": "firulvv@mail.ru"
                 },
                 "inviteToken": {
                     "type": "string",
@@ -882,7 +882,7 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string",
-                    "example": "securepass"
+                    "example": "123456"
                 }
             }
         },
@@ -942,6 +942,57 @@ const docTemplate = `{
                 },
                 "truckId": {
                     "type": "string"
+                }
+            }
+        },
+        "cargo.CreateRequest": {
+            "type": "object",
+            "required": [
+                "cargoNumber",
+                "driver",
+                "transportationInfo",
+                "truckId"
+            ],
+            "properties": {
+                "cargoNumber": {
+                    "type": "string",
+                    "example": "1234"
+                },
+                "date": {
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "driver": {
+                    "type": "string",
+                    "example": "Иванов Иван Иванович"
+                },
+                "loadUnloadDate": {
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "paymentStatus": {
+                    "type": "string",
+                    "example": "paid"
+                },
+                "payoutAmount": {
+                    "type": "number",
+                    "example": 1000
+                },
+                "payoutDate": {
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "payoutTerms": {
+                    "type": "string",
+                    "example": "cash"
+                },
+                "transportationInfo": {
+                    "type": "string",
+                    "example": "Грузоперевозка"
+                },
+                "truckId": {
+                    "type": "string",
+                    "example": "1"
                 }
             }
         },
@@ -1035,6 +1086,15 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Невалидный формат JSON"
+                }
+            }
+        },
+        "truck.CreateRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Машина"
                 }
             }
         },

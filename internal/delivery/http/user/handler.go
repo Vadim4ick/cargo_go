@@ -63,7 +63,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param id path int true "User ID"
+// @Param id path string true "User ID"
 // @Success 201 {object} user.GetResponse "User found"
 // @Failure 400 {object} user.ErrorResponse "Invalid ID"
 // @Failure 404 {object} user.ErrorResponse "User not found"
@@ -86,7 +86,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param id path int true "User ID"
+// @Param id path string true "User ID"
 // @Success 201 {object} user.DeleteResponse "User deleted"
 // @Failure 400 {object} user.ErrorResponse "Invalid ID"
 // @Failure 404 {object} user.ErrorResponse "User not found"
