@@ -125,52 +125,6 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	utils.JSON(w, http.StatusCreated, "Груз успешно создан", created, h.deps.Logger)
 }
 
-// GET retrieves a list of all cargos
-// @Summary List all cargos
-// @Description Retrieves a list of all cargos in the system
-// @Tags cargo
-// @Accept json
-// @Produce json
-// @Security BearerAuth
-// @Success 200 {object} cargo.ListResponse "List of cargos"
-// @Failure 500 {object} cargo.ErrorResponse "Internal server error"
-// @Router /cargo [get]
-func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
-	cargos, err := h.uc.ListGargos()
-
-	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
-		return
-	}
-
-	utils.JSON(w, http.StatusOK, "Список всех грузов", cargos, h.deps.Logger)
-}
-
-// GETByID retrieves a cargo by ID
-// @Summary Get a cargo by ID
-// @Description Retrieves a cargo by its ID
-// @Tags cargo
-// @Accept json
-// @Produce json
-// @Param id path string true "Cargo ID"
-// @Security BearerAuth
-// @Success 200 {object} cargo.GetResponse "Cargo found"
-// @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
-// @Failure 500 {object} cargo.ErrorResponse "Internal server error"
-// @Router /cargo/{id} [get]
-func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-
-	cargo, err := h.uc.GetCargo(id)
-
-	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
-		return
-	}
-
-	utils.JSON(w, http.StatusOK, "Данные о грузе", cargo, h.deps.Logger)
-}
-
 // PATH updates a cargo by ID
 // @Summary Update a cargo by ID
 // @Description Updates a cargo by its ID
@@ -229,6 +183,52 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.JSON(w, http.StatusOK, "Груз успешно обновлен", cargo, h.deps.Logger)
+}
+
+// GET retrieves a list of all cargos
+// @Summary List all cargos
+// @Description Retrieves a list of all cargos in the system
+// @Tags cargo
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} cargo.ListResponse "List of cargos"
+// @Failure 500 {object} cargo.ErrorResponse "Internal server error"
+// @Router /cargo [get]
+func (h *Handler) GET(w http.ResponseWriter, r *http.Request) {
+	cargos, err := h.uc.ListGargos()
+
+	if err != nil {
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	utils.JSON(w, http.StatusOK, "Список всех грузов", cargos, h.deps.Logger)
+}
+
+// GETByID retrieves a cargo by ID
+// @Summary Get a cargo by ID
+// @Description Retrieves a cargo by its ID
+// @Tags cargo
+// @Accept json
+// @Produce json
+// @Param id path string true "Cargo ID"
+// @Security BearerAuth
+// @Success 200 {object} cargo.GetResponse "Cargo found"
+// @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
+// @Failure 500 {object} cargo.ErrorResponse "Internal server error"
+// @Router /cargo/{id} [get]
+func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	cargo, err := h.uc.GetCargo(id)
+
+	if err != nil {
+		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	utils.JSON(w, http.StatusOK, "Данные о грузе", cargo, h.deps.Logger)
 }
 
 // DELETE deletes a cargo by ID
