@@ -17,7 +17,8 @@ type Cargo struct {
 
 	CreatedAt time.Time `json:"createdAt" form:"-"`
 
-	TruckID string `json:"truckId" form:"truckId" validate:"required"`
+	TruckID     string       `json:"truckId" form:"truckId" validate:"required"`
+	CargoPhotos []CargoPhoto `json:"cargoPhotos"`
 }
 
 type CargoPhoto struct {

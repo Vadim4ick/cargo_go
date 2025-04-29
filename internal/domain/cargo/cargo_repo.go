@@ -92,6 +92,14 @@ func (r *PostgresCargoRepo) FindAll() ([]Cargo, error) {
 		); err != nil {
 			return nil, err
 		}
+		// подтягиваем для каждого груза его фото
+		photos, err := r.FindPhotosByCargoID(c.ID)
+
+		if err != nil {
+			return nil, err
+		}
+		c.CargoPhotos = photos
+
 		cargos = append(cargos, c)
 	}
 
@@ -125,7 +133,32 @@ func (r *PostgresCargoRepo) FindByID(id string) (Cargo, error) {
 		return Cargo{}, err
 	}
 
+	photos, err := r.FindPhotosByCargoID(c.ID)
+	if err != nil {
+		return Cargo{}, err
+	}
+	c.CargoPhotos = photos
+
 	return c, nil
+}
+
+func (r *PostgresCargoRepo) FindPhotosByCargoID(cargoID string) ([]CargoPhoto, error) {
+	rows, err := r.db.Query(context.Background(),
+		`SELECT id, url, cargoId, "createdAt" FROM cargo_photos WHERE cargoId = $1`, cargoID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var photos []CargoPhoto
+	for rows.Next() {
+		var p CargoPhoto
+		if err := rows.Scan(&p.ID, &p.URL, &p.CargoID, &p.CreatedAt); err != nil {
+			return nil, err
+		}
+		photos = append(photos, p)
+	}
+	return photos, nil
 }
 
 func (r *PostgresCargoRepo) Update(c UpdateCargoInput, id string) (Cargo, error) {

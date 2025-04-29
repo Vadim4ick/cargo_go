@@ -1072,6 +1072,12 @@ const docTemplate = `{
                 "cargoNumber": {
                     "type": "string"
                 },
+                "cargoPhotos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/cargo.CargoPhoto"
+                    }
+                },
                 "createdAt": {
                     "type": "string"
                 },
@@ -1103,6 +1109,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "truckId": {
+                    "type": "string"
+                }
+            }
+        },
+        "cargo.CargoPhoto": {
+            "type": "object",
+            "properties": {
+                "cargoId": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "url": {
                     "type": "string"
                 }
             }
