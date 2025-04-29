@@ -1,0 +1,9 @@
+CREATE TABLE cargo_photos (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  url TEXT NOT NULL,
+
+  cargoId UUID NOT NULL,
+  "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_cargo FOREIGN KEY (cargoId) REFERENCES cargos(id) ON DELETE CASCADE
+);

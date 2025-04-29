@@ -20,6 +20,13 @@ type Cargo struct {
 	TruckID string `json:"truckId" form:"truckId" validate:"required"`
 }
 
+type CargoPhoto struct {
+	ID        string    `json:"id"`
+	URL       string    `json:"url"`
+	CargoID   string    `json:"cargoId"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
 type UpdateCargoInput struct {
 	CargoNumber        *string    `json:"cargoNumber,omitempty"`
 	Date               *time.Time `json:"date,omitempty"`

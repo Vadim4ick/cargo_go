@@ -1,7 +1,6 @@
 package cargo
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"strings"
@@ -177,8 +176,13 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 
 	var updateCargo cargoDomain.UpdateCargoInput
 
-	if err := json.NewDecoder(r.Body).Decode(&updateCargo); err != nil {
-		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil, h.deps.Logger)
+	if err := utils.ParseFormData(r, &updateCargo); err != nil {
+		utils.JSON(w, http.StatusBadRequest, "Не удалось распарсить форму: "+err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	if errs := h.validator.Validate(updateCargo); len(errs) > 0 {
+		utils.JSON(w, http.StatusBadRequest, "Ошибки валидации: "+strings.Join(errs, "; "), nil, h.deps.Logger)
 		return
 	}
 
