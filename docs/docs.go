@@ -446,7 +446,7 @@ const docTemplate = `{
                 ],
                 "description": "Updates a cargo by its ID",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -464,13 +464,70 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Cargo object to be updated",
-                        "name": "cargo",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cargo.CreateRequest"
-                        }
+                        "type": "string",
+                        "description": "Номер груза",
+                        "name": "cargoNumber",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Дата (RFC3339), например 2025-04-30T08:00:00Z",
+                        "name": "date",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Дата погрузки/разгрузки (2025-04-30T08:00:00Z)",
+                        "name": "loadUnloadDate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Водитель",
+                        "name": "driver",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Информация о перевозке",
+                        "name": "transportationInfo",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Сумма выплаты, например 12345.67",
+                        "name": "payoutAmount",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Дата выплаты (RFC3339)",
+                        "name": "payoutDate",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Статус оплаты",
+                        "name": "paymentStatus",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Условия выплаты",
+                        "name": "payoutTerms",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID машины (c8169351-f6d8-4058-af4a-8ead3363fd92)",
+                        "name": "truckId",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Фотографии груза (можно выбрать несколько файлов)",
+                        "name": "photos",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -1127,57 +1184,6 @@ const docTemplate = `{
                 },
                 "url": {
                     "type": "string"
-                }
-            }
-        },
-        "cargo.CreateRequest": {
-            "type": "object",
-            "required": [
-                "cargoNumber",
-                "driver",
-                "transportationInfo",
-                "truckId"
-            ],
-            "properties": {
-                "cargoNumber": {
-                    "type": "string",
-                    "example": "1234"
-                },
-                "date": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "driver": {
-                    "type": "string",
-                    "example": "Иванов Иван Иванович"
-                },
-                "loadUnloadDate": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "paymentStatus": {
-                    "type": "string",
-                    "example": "paid"
-                },
-                "payoutAmount": {
-                    "type": "number",
-                    "example": 1000
-                },
-                "payoutDate": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "payoutTerms": {
-                    "type": "string",
-                    "example": "cash"
-                },
-                "transportationInfo": {
-                    "type": "string",
-                    "example": "Грузоперевозка"
-                },
-                "truckId": {
-                    "type": "string",
-                    "example": "1"
                 }
             }
         },

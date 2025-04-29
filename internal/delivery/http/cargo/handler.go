@@ -175,11 +175,21 @@ func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
 // @Summary Update a cargo by ID
 // @Description Updates a cargo by its ID
 // @Tags cargo
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
 // @Param id path string true "Cargo ID"
 // @Security BearerAuth
-// @Param cargo body cargo.CreateRequest true "Cargo object to be updated"
+// @Param cargoNumber        formData string  false  "Номер груза"
+// @Param date               formData string  false "Дата (RFC3339), например 2025-04-30T08:00:00Z"
+// @Param loadUnloadDate     formData string  false "Дата погрузки/разгрузки (2025-04-30T08:00:00Z)"
+// @Param driver             formData string  false  "Водитель"
+// @Param transportationInfo formData string  false  "Информация о перевозке"
+// @Param payoutAmount       formData number  false "Сумма выплаты, например 12345.67"
+// @Param payoutDate         formData string  false "Дата выплаты (RFC3339)"
+// @Param paymentStatus      formData string  false "Статус оплаты"
+// @Param payoutTerms        formData string  false "Условия выплаты"
+// @Param truckId            formData string  false  "ID машины (c8169351-f6d8-4058-af4a-8ead3363fd92)"
+// @Param photos             formData file    false "Фотографии груза (можно выбрать несколько файлов)"
 // @Success 200 {object} cargo.GetResponse "Cargo updated"
 // @Failure 400 {object} cargo.ErrorResponse "Invalid ID"
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"

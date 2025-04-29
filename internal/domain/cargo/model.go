@@ -29,16 +29,16 @@ type CargoPhoto struct {
 }
 
 type UpdateCargoInput struct {
-	CargoNumber        *string    `json:"cargoNumber,omitempty"`
-	Date               *time.Time `json:"date,omitempty"`
-	LoadUnloadDate     *time.Time `json:"loadUnloadDate,omitempty"`
-	Driver             *string    `json:"driver,omitempty"`
-	TransportationInfo *string    `json:"transportationInfo,omitempty"`
-	PayoutAmount       *float64   `json:"payoutAmount,omitempty"`
-	PayoutDate         *time.Time `json:"payoutDate,omitempty"`
-	PaymentStatus      *string    `json:"paymentStatus,omitempty"`
-	PayoutTerms        *string    `json:"payoutTerms,omitempty"`
-	TruckID            *string    `json:"truckId,omitempty"`
+	CargoNumber        *string    `json:"cargoNumber,omitempty" form:"cargoNumber"`
+	Date               *time.Time `json:"date,omitempty" form:"date" `
+	LoadUnloadDate     *time.Time `json:"loadUnloadDate,omitempty" form:"loadUnloadDate"`
+	Driver             *string    `json:"driver,omitempty" form:"driver"`
+	TransportationInfo *string    `json:"transportationInfo,omitempty" form:"transportationInfo"`
+	PayoutAmount       *float64   `json:"payoutAmount,omitempty" form:"payoutAmount"`
+	PayoutDate         *time.Time `json:"payoutDate,omitempty" form:"payoutDate"`
+	PaymentStatus      *string    `json:"paymentStatus,omitempty" form:"paymentStatus"`
+	PayoutTerms        *string    `json:"payoutTerms,omitempty" form:"payoutTerms"`
+	TruckID            *string    `json:"truckId,omitempty" form:"truckId"`
 }
 
 type CargoRepository interface {

@@ -127,44 +127,6 @@ definitions:
       url:
         type: string
     type: object
-  cargo.CreateRequest:
-    properties:
-      cargoNumber:
-        example: "1234"
-        type: string
-      date:
-        example: "2023-01-01T00:00:00Z"
-        type: string
-      driver:
-        example: Иванов Иван Иванович
-        type: string
-      loadUnloadDate:
-        example: "2023-01-01T00:00:00Z"
-        type: string
-      paymentStatus:
-        example: paid
-        type: string
-      payoutAmount:
-        example: 1000
-        type: number
-      payoutDate:
-        example: "2023-01-01T00:00:00Z"
-        type: string
-      payoutTerms:
-        example: cash
-        type: string
-      transportationInfo:
-        example: Грузоперевозка
-        type: string
-      truckId:
-        example: "1"
-        type: string
-    required:
-    - cargoNumber
-    - driver
-    - transportationInfo
-    - truckId
-    type: object
   cargo.CreateResponse:
     properties:
       data:
@@ -616,7 +578,7 @@ paths:
       - cargo
     patch:
       consumes:
-      - application/json
+      - multipart/form-data
       description: Updates a cargo by its ID
       parameters:
       - description: Cargo ID
@@ -624,12 +586,50 @@ paths:
         name: id
         required: true
         type: string
-      - description: Cargo object to be updated
-        in: body
-        name: cargo
-        required: true
-        schema:
-          $ref: '#/definitions/cargo.CreateRequest'
+      - description: Номер груза
+        in: formData
+        name: cargoNumber
+        type: string
+      - description: Дата (RFC3339), например 2025-04-30T08:00:00Z
+        in: formData
+        name: date
+        type: string
+      - description: Дата погрузки/разгрузки (2025-04-30T08:00:00Z)
+        in: formData
+        name: loadUnloadDate
+        type: string
+      - description: Водитель
+        in: formData
+        name: driver
+        type: string
+      - description: Информация о перевозке
+        in: formData
+        name: transportationInfo
+        type: string
+      - description: Сумма выплаты, например 12345.67
+        in: formData
+        name: payoutAmount
+        type: number
+      - description: Дата выплаты (RFC3339)
+        in: formData
+        name: payoutDate
+        type: string
+      - description: Статус оплаты
+        in: formData
+        name: paymentStatus
+        type: string
+      - description: Условия выплаты
+        in: formData
+        name: payoutTerms
+        type: string
+      - description: ID машины (c8169351-f6d8-4058-af4a-8ead3363fd92)
+        in: formData
+        name: truckId
+        type: string
+      - description: Фотографии груза (можно выбрать несколько файлов)
+        in: formData
+        name: photos
+        type: file
       produces:
       - application/json
       responses:
