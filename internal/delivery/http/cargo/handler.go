@@ -7,6 +7,7 @@ import (
 	"strings"
 	"test-project/internal/domain/auth"
 	cargoDomain "test-project/internal/domain/cargo"
+	"test-project/internal/domain/user"
 	"test-project/internal/middleware"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
@@ -68,6 +69,17 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 // @Failure 500 {object} cargo.ErrorResponse  "Внутренняя ошибка сервера"
 // @Router /cargo [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
+	role, err := middleware.GetUserRole(r.Context())
+
+	if err != nil {
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	if role != user.RoleSuperAdmin && role != user.RoleEditor {
+		utils.JSON(w, http.StatusUnauthorized, "Недостаточно прав. Суперадминистраторы и Редакторы могут создавать груз", nil, h.deps.Logger)
+		return
+	}
 	var c cargoDomain.Cargo
 	if err := utils.ParseFormData(r, &c); err != nil {
 		utils.JSON(w, http.StatusBadRequest, "Не удалось распарсить форму: "+err.Error(), nil, h.deps.Logger)
@@ -149,6 +161,18 @@ func (h *Handler) GETByID(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
 // @Router /cargo/{id} [patch]
 func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
+	role, err := middleware.GetUserRole(r.Context())
+
+	if err != nil {
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	if role != user.RoleSuperAdmin && role != user.RoleEditor {
+		utils.JSON(w, http.StatusUnauthorized, "Недостаточно прав. Суперадминистраторы и Редакторы могут обновлять груз", nil, h.deps.Logger)
+		return
+	}
+
 	id := mux.Vars(r)["id"]
 
 	var updateCargo cargoDomain.UpdateCargoInput
@@ -181,9 +205,21 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
 // @Router /cargo/{id} [delete]
 func (h *Handler) DELETE(w http.ResponseWriter, r *http.Request) {
+	role, err := middleware.GetUserRole(r.Context())
+
+	if err != nil {
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	if role != user.RoleSuperAdmin && role != user.RoleEditor {
+		utils.JSON(w, http.StatusUnauthorized, "Недостаточно прав. Суперадминистраторы и Редакторы могут удалять груз", nil, h.deps.Logger)
+		return
+	}
+
 	id := mux.Vars(r)["id"]
 
-	err := h.uc.DeleteCargo(id)
+	err = h.uc.DeleteCargo(id)
 
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)

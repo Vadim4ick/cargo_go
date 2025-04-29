@@ -8,6 +8,8 @@ import (
 	"test-project/config"
 	"test-project/internal/domain/auth"
 	invitationDomain "test-project/internal/domain/invitation"
+	"test-project/internal/domain/user"
+	"test-project/internal/middleware"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
 	"test-project/pkg"
@@ -39,7 +41,7 @@ func RegisterInvitationRoutes(r *mux.Router, deps *auth.Deps) {
 
 	h := NewHandler(svc, deps)
 
-	r.HandleFunc("/invitation/invite", h.CREATE).Methods(http.MethodPost)
+	r.Handle("/invitation/invite", middleware.JwtMiddleware(deps, h.CREATE)).Methods(http.MethodPost)
 }
 
 // CREATE handles the creation of a new invitation
@@ -54,6 +56,18 @@ func RegisterInvitationRoutes(r *mux.Router, deps *auth.Deps) {
 // @Failure 500 {object} invitation.ErrorResponse "Internal server error"
 // @Router /invitation/invite [post]
 func (h *Handler) CREATE(w http.ResponseWriter, r *http.Request) {
+	role, err := middleware.GetUserRole(r.Context())
+
+	if err != nil {
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	if role != user.RoleSuperAdmin {
+		utils.JSON(w, http.StatusUnauthorized, "Недостаточно прав. Суперадминистраторы могут приглашать пользователей", nil, h.deps.Logger)
+		return
+	}
+
 	var cargo invitationDomain.Invitation
 
 	if err := json.NewDecoder(r.Body).Decode(&cargo); err != nil {
@@ -61,7 +75,7 @@ func (h *Handler) CREATE(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := h.deps.AuthService.FindByEmail(cargo.Email)
+	_, err = h.deps.AuthService.FindByEmail(cargo.Email)
 	if err == nil {
 		utils.JSON(w, http.StatusBadRequest, "Пользователь с таким email уже существует", nil, h.deps.Logger)
 		return

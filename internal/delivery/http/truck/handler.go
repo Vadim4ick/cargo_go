@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"test-project/internal/domain/auth"
 	truckDomain "test-project/internal/domain/truck"
+	"test-project/internal/domain/user"
 	"test-project/internal/middleware"
 	"test-project/internal/usecase"
 	"test-project/internal/validator"
@@ -52,6 +53,18 @@ func RegisterUserRoutes(r *mux.Router, deps *auth.Deps) {
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
 // @Router /truck [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
+	role, err := middleware.GetUserRole(r.Context())
+
+	if err != nil {
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	if role != user.RoleSuperAdmin && role != user.RoleEditor {
+		utils.JSON(w, http.StatusUnauthorized, "Недостаточно прав. Суперадминистраторы и редакторы могут создавать машины", nil, h.deps.Logger)
+		return
+	}
+
 	var truck truckDomain.Truck
 
 	if err := json.NewDecoder(r.Body).Decode(&truck); err != nil {
@@ -59,7 +72,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	truck, err := h.uc.CreateTruck(truck)
+	truck, err = h.uc.CreateTruck(truck)
 
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)

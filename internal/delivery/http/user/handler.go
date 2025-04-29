@@ -92,9 +92,21 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Failure 404 {object} user.ErrorResponse "User not found"
 // @Router /users/{id} [delete]
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
+	role, err := middleware.GetUserRole(r.Context())
+
+	if err != nil {
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	if role != user.RoleSuperAdmin {
+		utils.JSON(w, http.StatusUnauthorized, "Недостаточно прав. Суперадминистраторы могут удалять пользователей", nil, h.deps.Logger)
+		return
+	}
+
 	id := mux.Vars(r)["id"]
 
-	err := h.uc.DeleteUser(id)
+	err = h.uc.DeleteUser(id)
 
 	if err != nil {
 		utils.JSON(w, http.StatusNotFound, err.Error(), nil, h.deps.Logger)

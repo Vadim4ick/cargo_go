@@ -2,9 +2,11 @@ package middleware
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"strings"
 	"test-project/internal/domain/auth"
+	"test-project/internal/domain/user"
 	"test-project/utils"
 )
 
@@ -37,4 +39,16 @@ func JwtMiddleware(deps *auth.Deps, next http.HandlerFunc) http.Handler {
 
 		next(w, r.WithContext(ctx))
 	})
+}
+
+func GetUserRole(ctx context.Context) (user.Role, error) {
+	val := ctx.Value(UserRoleKey)
+	if val == nil {
+		return "", errors.New("role not found in context")
+	}
+	role, ok := val.(user.Role)
+	if !ok {
+		return "", errors.New("invalid role type in context")
+	}
+	return role, nil
 }
