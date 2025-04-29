@@ -64,8 +64,8 @@ func main() {
 
 	// Настройка CORS
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000", "https://your-frontend-domain.com"}, // Укажите разрешённые домены
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedOrigins:   []string{config.Envs.FRONT_URI}, // Укажите разрешённые домены
+		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},
 		AllowCredentials: true, // Разрешить отправку куки и заголовков авторизации
 		MaxAge:           300,  // Кэширование CORS-запросов (в секундах)
@@ -75,7 +75,7 @@ func main() {
 
 	utils.StartInvitationCleaner(pool, logger)
 	logger.Info("Starting server on :8080")
-	fmt.Println("Swagger UI available at http://localhost:8080/api/v1/swagger/index.html")
+	fmt.Printf("Swagger UI available at %s/api/v1/swagger/index.html", config.Envs.API_URI)
 	if err := http.ListenAndServe(":8080", handler); err != nil {
 		logger.Fatal("Ошибка запуска сервера", zap.Error(err))
 	}

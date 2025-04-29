@@ -11,6 +11,7 @@ type Config struct {
 	Addr         string
 	POSTGRES_URI string
 	FRONT_URI    string
+	API_URI      string
 
 	JWTSecretAccess  string
 	JWTSecretRefresh string
@@ -39,6 +40,7 @@ func initConfig() Config {
 		Addr:         getEnv("PUBLIC_HOST", "http://localhost"),
 		POSTGRES_URI: getEnv("POSTGRES_URI", "postgres://test:test@localhost:5432/test"),
 		FRONT_URI:    getEnv("FRONT_URI", "http://localhost:3000"),
+		API_URI:      getEnv("FRONT_URI", "http://localhost:8080"),
 
 		JWTSecretAccess:  getEnv("JWTSecretAccess", "secretAccess"),
 		JWTSecretRefresh: getEnv("JWTSecretRefresh", "secretRefresh"),
