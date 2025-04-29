@@ -1,0 +1,41 @@
+{"level":"INFO","ts":"2025-04-29 17:41:31","caller":"cmd/main.go:52","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-29 17:41:31","caller":"cmd/main.go:77","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-29 17:41:31","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.002226}
+{"level":"INFO","ts":"2025-04-29 17:43:06","caller":"cmd/main.go:52","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-29 17:43:06","caller":"cmd/main.go:77","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-29 17:43:06","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.001208833}
+{"level":"INFO","ts":"2025-04-29 17:43:29","caller":"auth/handler.go:174","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
+{"level":"INFO","ts":"2025-04-29 17:43:42","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-04-29 17:44:14","caller":"cargo/handler.go:111","msg":"HTTP response message","message":"ERROR: invalid input syntax for type uuid: \"0749866e-ff58-4c6d-bbd4-747976569e3\" (SQLSTATE 22P02)","status":500}
+{"level":"INFO","ts":"2025-04-29 17:45:18","caller":"cargo/handler.go:111","msg":"HTTP response message","message":"ERROR: invalid input syntax for type uuid: \"0749866e-ff58-4c6d-bbd4-747976569e3\" (SQLSTATE 22P02)","status":500}
+{"level":"INFO","ts":"2025-04-29 17:45:57","caller":"cmd/main.go:52","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-29 17:45:57","caller":"cmd/main.go:77","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-29 17:45:57","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.004167917}
+{"level":"INFO","ts":"2025-04-29 17:46:00","caller":"cargo/handler.go:111","msg":"HTTP response message","message":"ERROR: invalid input syntax for type uuid: \"0749866e-ff58-4c6d-bbd4-747976569e3\" (SQLSTATE 22P02)","status":500}
+{"level":"INFO","ts":"2025-04-29 17:46:16","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-04-29 17:47:32","caller":"cmd/main.go:52","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-29 17:47:32","caller":"cmd/main.go:77","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-29 17:47:32","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.001619875}
+{"level":"INFO","ts":"2025-04-29 17:47:34","caller":"cargo/handler.go:109","msg":"HTTP response message","message":"ERROR: invalid input syntax for type uuid: \"0749866e-ff58-4c6d-bbd4-747976569e3\" (SQLSTATE 22P02)","status":500}
+{"level":"INFO","ts":"2025-04-29 17:47:38","caller":"cargo/handler.go:109","msg":"HTTP response message","message":"ERROR: invalid input syntax for type uuid: \"0749866e-ff58-4c6d-bbd4-747976569e3\" (SQLSTATE 22P02)","status":500}
+{"level":"INFO","ts":"2025-04-29 17:47:56","caller":"cmd/main.go:52","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-29 17:47:56","caller":"cmd/main.go:77","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-29 17:47:56","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.001134583}
+{"level":"INFO","ts":"2025-04-29 17:48:29","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-04-29 17:48:35","caller":"cargo/handler.go:113","msg":"HTTP response message","message":"Груз успешно создан","status":201}
+{"level":"INFO","ts":"2025-04-29 17:48:49","caller":"cmd/main.go:52","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-29 17:48:49","caller":"cmd/main.go:77","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-29 17:48:49","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.001225709}
+{"level":"INFO","ts":"2025-04-29 17:48:56","caller":"cargo/handler.go:111","msg":"HTTP response message","message":"ERROR: duplicate key value violates unique constraint \"cargos_cargonumber_key\" (SQLSTATE 23505)","status":500}
+{"level":"INFO","ts":"2025-04-29 17:49:05","caller":"cargo/handler.go:115","msg":"HTTP response message","message":"Груз успешно создан","status":201}
+{"level":"INFO","ts":"2025-04-29 17:49:43","caller":"cargo/handler.go:136","msg":"HTTP response message","message":"Список всех грузов","status":200}
+{"level":"INFO","ts":"2025-04-29 17:49:53","caller":"cargo/handler.go:248","msg":"HTTP response message","message":"Груз с id= 193a2554-082f-4a0c-acc5-2aad213c3ac2 успешно удален","status":200}
+{"level":"INFO","ts":"2025-04-29 17:50:00","caller":"cargo/handler.go:248","msg":"HTTP response message","message":"Груз с id= 624ec952-07a1-4711-ae6c-da8862483d37 успешно удален","status":200}
+{"level":"INFO","ts":"2025-04-29 17:50:05","caller":"cargo/handler.go:136","msg":"HTTP response message","message":"Список всех грузов","status":200}
+{"level":"INFO","ts":"2025-04-29 17:53:49","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.0052355}
+{"level":"INFO","ts":"2025-04-29 17:56:48","caller":"cmd/main.go:52","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-04-29 17:56:48","caller":"cmd/main.go:77","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-04-29 17:56:48","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.002849167}
+{"level":"INFO","ts":"2025-04-29 17:56:58","caller":"auth/handler.go:174","msg":"HTTP response message","message":"Пользователь успешно авторизован","status":200}
+{"level":"INFO","ts":"2025-04-29 17:57:12","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-04-29 17:58:05","caller":"cargo/handler.go:125","msg":"HTTP response message","message":"Груз успешно создан","status":201}

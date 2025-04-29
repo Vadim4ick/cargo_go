@@ -46,6 +46,7 @@ type CargoRepository interface {
 	FindByID(id string) (Cargo, error)
 	Update(cargo UpdateCargoInput, id string) (Cargo, error)
 	Delete(id string) error
+	CreateCargoPhoto(input CargoPhoto) (CargoPhoto, error)
 }
 
 type CreateRequest struct {

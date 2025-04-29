@@ -14,6 +14,7 @@ type CargoUsecase interface {
 	ListGargos() ([]cargoDomain.Cargo, error)
 	DeleteCargo(id string) error
 	GetCargo(id string) (cargoDomain.Cargo, error)
+	CreateCargoPhoto(input cargoDomain.CargoPhoto) (cargoDomain.CargoPhoto, error)
 }
 
 type cargoUsecase struct {
@@ -59,4 +60,9 @@ func (u *cargoUsecase) DeleteCargo(id string) error {
 	}
 
 	return u.repo.Delete(id)
+}
+
+func (u *cargoUsecase) CreateCargoPhoto(input cargoDomain.CargoPhoto) (cargoDomain.CargoPhoto, error) {
+
+	return u.repo.CreateCargoPhoto(input)
 }

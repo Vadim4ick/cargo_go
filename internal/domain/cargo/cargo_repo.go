@@ -48,6 +48,24 @@ func (r *PostgresCargoRepo) Create(c Cargo) (Cargo, error) {
 	return c, nil
 }
 
+func (r *PostgresCargoRepo) CreateCargoPhoto(p CargoPhoto) (CargoPhoto, error) {
+	err := r.db.QueryRow(context.Background(),
+		`INSERT INTO cargo_photos (url, cargoId) 
+		 VALUES ($1, $2)
+		 RETURNING id, url, cargoId, "createdAt"`,
+		p.URL, p.CargoID,
+	).Scan(
+		&p.ID,
+		&p.URL,
+		&p.CargoID,
+		&p.CreatedAt,
+	)
+	if err != nil {
+		return CargoPhoto{}, err
+	}
+	return p, nil
+}
+
 func (r *PostgresCargoRepo) FindAll() ([]Cargo, error) {
 	rows, err := r.db.Query(context.Background(), `SELECT * FROM cargos`)
 	if err != nil {

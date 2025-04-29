@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"test-project/config"
 	"test-project/internal/domain/auth"
 	cargoDomain "test-project/internal/domain/cargo"
 	"test-project/internal/domain/user"
@@ -63,6 +64,7 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 // @Param paymentStatus      formData string  false "Статус оплаты"
 // @Param payoutTerms        formData string  false "Условия выплаты"
 // @Param truckId            formData string  true  "ID машины (c8169351-f6d8-4058-af4a-8ead3363fd92)"
+// @Param photos             formData file    false "Фотографии груза (можно выбрать несколько файлов)"
 // @Success 201 {object} cargo.CreateResponse "Груз успешно создан"
 // @Failure 400 {object} cargo.ErrorResponse  "Ошибки валидации или неверный формат данных"
 // @Failure 500 {object} cargo.ErrorResponse  "Внутренняя ошибка сервера"
@@ -90,11 +92,34 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	form := r.MultipartForm
+	files := form.File["photos"]
+
+	photoURLs, err := utils.SaveUploadedFiles(files, config.Envs.PATH_IMAGE)
+
+	if err != nil {
+		utils.JSON(w, http.StatusInternalServerError, "Ошибка загрузки файлов: "+err.Error(), nil, h.deps.Logger)
+		return
+	}
+
 	created, err := h.uc.CreateCargo(c)
 
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
 		return
+	}
+
+	for _, url := range photoURLs {
+		photo := cargoDomain.CargoPhoto{
+			URL:     url,
+			CargoID: created.ID,
+		}
+
+		_, err := h.uc.CreateCargoPhoto(photo)
+		if err != nil {
+			utils.JSON(w, http.StatusInternalServerError, "Ошибка сохранения фото: "+err.Error(), nil, h.deps.Logger)
+			return
+		}
 	}
 
 	utils.JSON(w, http.StatusCreated, "Груз успешно создан", created, h.deps.Logger)

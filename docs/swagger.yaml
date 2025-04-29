@@ -514,6 +514,10 @@ paths:
         name: truckId
         required: true
         type: string
+      - description: Фотографии груза (можно выбрать несколько файлов)
+        in: formData
+        name: photos
+        type: file
       produces:
       - application/json
       responses:

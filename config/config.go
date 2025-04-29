@@ -26,6 +26,8 @@ type Config struct {
 
 	SWAGGER_LOGIN string
 	SWAGGER_PASS  string
+
+	PATH_IMAGE string
 }
 
 var Envs = initConfig()
@@ -52,6 +54,8 @@ func initConfig() Config {
 
 		SWAGGER_LOGIN: getEnv("SMTP_PASS", "admin"),
 		SWAGGER_PASS:  getEnv("SMTP_PASS", "12345"),
+
+		PATH_IMAGE: getEnv("PATH_IMAGE", "./uploads"),
 	}
 }
 

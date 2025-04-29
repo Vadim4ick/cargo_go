@@ -313,6 +313,12 @@ const docTemplate = `{
                         "name": "truckId",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Фотографии груза (можно выбрать несколько файлов)",
+                        "name": "photos",
+                        "in": "formData"
                     }
                 ],
                 "responses": {

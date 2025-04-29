@@ -3,12 +3,18 @@ package utils
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"io"
+	"mime/multipart"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/go-playground/form"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 )
@@ -86,6 +92,51 @@ func cleanup(db *pgxpool.Pool, logger *zap.Logger) {
 	} else {
 		logger.Info("Очистка устаревших приглашений выполнена", zap.Duration("duration", duration))
 	}
+}
+
+func SaveUploadedFiles(files []*multipart.FileHeader, uploadDir string) ([]string, error) {
+	var uploadedPaths []string
+
+	for _, fileHeader := range files {
+		file, err := fileHeader.Open()
+		if err != nil {
+			return nil, fmt.Errorf("ошибка открытия файла: %w", err)
+		}
+		defer file.Close()
+
+		// Генерируем уникальное имя файла
+		newFileName := generateUniqueFileName(fileHeader.Filename)
+
+		// Путь для сохранения
+		path := filepath.Join(uploadDir, newFileName)
+
+		// Создаем папку если нужно
+		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
+			return nil, fmt.Errorf("ошибка создания папки: %w", err)
+		}
+
+		// Создаем файл
+		out, err := os.Create(path)
+		if err != nil {
+			return nil, fmt.Errorf("ошибка создания файла: %w", err)
+		}
+		defer out.Close()
+
+		// Копируем содержимое
+		_, err = io.Copy(out, file)
+		if err != nil {
+			return nil, fmt.Errorf("ошибка копирования содержимого файла: %w", err)
+		}
+
+		uploadedPaths = append(uploadedPaths, path)
+	}
+
+	return uploadedPaths, nil
+}
+
+func generateUniqueFileName(originalName string) string {
+	ext := filepath.Ext(originalName)
+	return fmt.Sprintf("%s_%d%s", uuid.New().String(), time.Now().UnixNano(), ext)
 }
 
 func init() {
