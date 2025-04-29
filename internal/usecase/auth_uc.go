@@ -52,12 +52,12 @@ func (u *usecase) Login(email, password string) (string, string, error) {
 		return "", "", errors.New("Неверный пароль")
 	}
 
-	accessToken, err := u.jwt.GenerateAccess(user.ID)
+	accessToken, err := u.jwt.GenerateAccess(user.ID, user.Role)
 	if err != nil {
 		return "", "", err
 	}
 
-	refreshToken, err := u.jwt.GenerateRefresh(user.ID)
+	refreshToken, err := u.jwt.GenerateRefresh(user.ID, user.Role)
 	if err != nil {
 		return "", "", err
 	}

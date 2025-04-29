@@ -53,7 +53,7 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID, err := h.deps.JwtService.ValidateRefresh(cookie.Value)
+	userID, role, err := h.deps.JwtService.ValidateRefresh(cookie.Value)
 
 	if err != nil {
 		utils.JSON(w, http.StatusUnauthorized, "Невалидный refresh токен", nil, h.deps.Logger)
@@ -70,12 +70,12 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Генерируем новые access и refresh токены
-	newAccessToken, err := h.deps.JwtService.GenerateAccess(userID)
+	newAccessToken, err := h.deps.JwtService.GenerateAccess(userID, role)
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации access токена", nil, h.deps.Logger)
 		return
 	}
-	newRefreshToken, err := h.deps.JwtService.GenerateRefresh(userID)
+	newRefreshToken, err := h.deps.JwtService.GenerateRefresh(userID, role)
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, "Ошибка генерации refresh токена", nil, h.deps.Logger)
 		return
@@ -273,7 +273,7 @@ func (h *Handler) validateToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := h.deps.JwtService.ValidateAccess(parts[1])
+	_, _, err := h.deps.JwtService.ValidateAccess(parts[1])
 
 	if err != nil {
 		utils.JSON(w, http.StatusUnauthorized, err.Error(), map[string]bool{"isValid": false}, h.deps.Logger)

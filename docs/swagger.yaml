@@ -290,11 +290,13 @@ definitions:
   user.Role:
     enum:
     - USER
-    - ADMIN
+    - EDITOR
+    - SUPERADMIN
     type: string
     x-enum-varnames:
     - RoleUser
-    - RoleAdmin
+    - RoleEditor
+    - RoleSuperAdmin
   user.User:
     properties:
       createdAt:

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"test-project/internal/domain/user"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -24,9 +25,10 @@ func NewJWTService(secretAccess, secretRefresh string, accessExp, refreshExp tim
 }
 
 // Генерация Access Token
-func (j *JwtUsecase) GenerateAccess(userID string) (string, error) {
+func (j *JwtUsecase) GenerateAccess(userID string, role user.Role) (string, error) {
 	claims := jwt.MapClaims{
 		"sub":  userID,
+		"role": role,
 		"exp":  time.Now().Add(j.accessExp).Unix(),
 		"type": "access",
 	}
@@ -35,9 +37,10 @@ func (j *JwtUsecase) GenerateAccess(userID string) (string, error) {
 }
 
 // Генерация Refresh Token
-func (j *JwtUsecase) GenerateRefresh(userID string) (string, error) {
+func (j *JwtUsecase) GenerateRefresh(userID string, role user.Role) (string, error) {
 	claims := jwt.MapClaims{
 		"sub":  userID,
+		"role": role,
 		"exp":  time.Now().Add(j.refreshExp).Unix(),
 		"type": "refresh",
 	}
@@ -57,7 +60,7 @@ func (j *JwtUsecase) GenerateInvite(email string) (string, error) {
 }
 
 // Валидация Access Token
-func (j *JwtUsecase) ValidateAccess(tokenStr string) (string, error) {
+func (j *JwtUsecase) ValidateAccess(tokenStr string) (string, user.Role, error) {
 	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
 		return j.secretAccess, nil
 	})
@@ -65,21 +68,30 @@ func (j *JwtUsecase) ValidateAccess(tokenStr string) (string, error) {
 		// if errors.Is(err, jwt.ErrTokenExpired) {
 		// 	return "", errors.New("token is expired")
 		// }
-		return "", errors.New("token is expired")
+		return "", "", errors.New("token is expired")
 	}
 
 	if !token.Valid {
-		return "", errors.New("invalid token")
+		return "", "", errors.New("invalid token")
 	}
 	claims := token.Claims.(jwt.MapClaims)
 	if claims["type"] != "access" {
-		return "", errors.New("invalid token type")
+		return "", "", errors.New("invalid token type")
 	}
-	return claims["sub"].(string), nil
+
+	sub, _ := claims["sub"].(string)
+	roleStr, ok := claims["role"].(string)
+	if !ok {
+		return "", "", errors.New("invalid role claim")
+	}
+
+	role := user.Role(roleStr)
+
+	return sub, role, nil
 }
 
 // Валидация Refresh Token
-func (j *JwtUsecase) ValidateRefresh(tokenStr string) (string, error) {
+func (j *JwtUsecase) ValidateRefresh(tokenStr string) (string, user.Role, error) {
 	t, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
 		return j.secretRefresh, nil
 	})
@@ -88,19 +100,27 @@ func (j *JwtUsecase) ValidateRefresh(tokenStr string) (string, error) {
 		// if errors.Is(err, jwt.ErrTokenExpired) {
 		// 	return "", errors.New("token is expired")
 		// }
-		return "", errors.New("token is expired")
+		return "", "", errors.New("token is expired")
 	}
 
 	if !t.Valid {
-		return "", err
+		return "", "", err
 	}
 
 	claims := t.Claims.(jwt.MapClaims)
 
 	if claims["type"] != "refresh" {
-		return "", errors.New("invalid token type")
+		return "", "", errors.New("invalid token type")
 	}
-	return claims["sub"].(string), nil
+
+	sub, _ := claims["sub"].(string)
+	roleStr, ok := claims["role"].(string)
+	if !ok {
+		return "", "", errors.New("invalid role claim")
+	}
+
+	role := user.Role(roleStr)
+	return sub, role, nil
 }
 
 // Валидация Invite Token

@@ -10,7 +10,10 @@ import (
 
 type ctxKey string
 
-const UserIDKey ctxKey = "userID"
+const (
+	UserIDKey   ctxKey = "userID"
+	UserRoleKey ctxKey = "userRole"
+)
 
 func JwtMiddleware(deps *auth.Deps, next http.HandlerFunc) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -20,15 +23,17 @@ func JwtMiddleware(deps *auth.Deps, next http.HandlerFunc) http.Handler {
 			utils.JSON(w, http.StatusUnauthorized, "missing token", nil, deps.Logger)
 			return
 		}
-		uid, err := deps.JwtService.ValidateAccess(parts[1])
+		uid, role, err := deps.JwtService.ValidateAccess(parts[1])
 		if err != nil {
 			utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, deps.Logger)
 			return
 		}
+
 		// помечаем онлайн
 		deps.AuthService.TouchOnline(uid)
 		// передаём в ctx
 		ctx := context.WithValue(r.Context(), UserIDKey, uid)
+		ctx = context.WithValue(ctx, UserRoleKey, role)
 
 		next(w, r.WithContext(ctx))
 	})

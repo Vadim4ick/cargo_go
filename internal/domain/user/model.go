@@ -5,9 +5,14 @@ import "time"
 type Role string
 
 const (
-	RoleUser  Role = "USER"
-	RoleAdmin Role = "ADMIN"
+	RoleUser       Role = "USER"
+	RoleEditor     Role = "EDITOR"
+	RoleSuperAdmin Role = "SUPERADMIN"
 )
+
+var AllRoles = []Role{
+	RoleUser, RoleEditor, RoleSuperAdmin,
+}
 
 type User struct {
 	ID        string    `json:"id"`

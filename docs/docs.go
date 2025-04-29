@@ -1359,11 +1359,13 @@ const docTemplate = `{
             "type": "string",
             "enum": [
                 "USER",
-                "ADMIN"
+                "EDITOR",
+                "SUPERADMIN"
             ],
             "x-enum-varnames": [
                 "RoleUser",
-                "RoleAdmin"
+                "RoleEditor",
+                "RoleSuperAdmin"
             ]
         },
         "user.User": {
