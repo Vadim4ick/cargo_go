@@ -31,6 +31,7 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 	r.HandleFunc("/auth/logout", h.logout).Methods(http.MethodPost)
 	r.HandleFunc("/auth/refresh", h.refresh).Methods(http.MethodPost)
 
+	r.Handle("/validate-token", middleware.JwtMiddleware(deps, h.validateToken)).Methods(http.MethodPost)
 	r.Handle("/profile", middleware.JwtMiddleware(deps, h.profile)).Methods(http.MethodGet)
 	r.Handle("/auth/online", middleware.JwtMiddleware(deps, h.onlineList)).Methods(http.MethodGet)
 }
@@ -251,4 +252,33 @@ func (h *Handler) profile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.JSON(w, http.StatusOK, "Профиль", u, h.deps.Logger)
+}
+
+// validateToken handles token validation
+// @Summary Validate token
+// @Description Validates an access token
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} auth.ErrorResponse "Token is valid"
+// @Failure 401 {object} auth.ErrorResponse "Unauthorized"
+// @Failure 500 {object} auth.ErrorResponse "Internal server error"
+// @Router /validate-token [post]
+func (h *Handler) validateToken(w http.ResponseWriter, r *http.Request) {
+	authHeader := r.Header.Get("Authorization")
+	parts := strings.SplitN(authHeader, " ", 2)
+	if len(parts) != 2 {
+		utils.JSON(w, http.StatusUnauthorized, "missing token", map[string]bool{"isValid": false}, h.deps.Logger)
+		return
+	}
+
+	_, err := h.deps.JwtService.ValidateAccess(parts[1])
+
+	if err != nil {
+		utils.JSON(w, http.StatusUnauthorized, err.Error(), map[string]bool{"isValid": false}, h.deps.Logger)
+		return
+	}
+
+	utils.JSON(w, http.StatusOK, "token is valid", map[string]bool{"isValid": true}, h.deps.Logger)
 }

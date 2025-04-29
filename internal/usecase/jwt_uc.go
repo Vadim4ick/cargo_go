@@ -58,13 +58,20 @@ func (j *JwtUsecase) GenerateInvite(email string) (string, error) {
 
 // Валидация Access Token
 func (j *JwtUsecase) ValidateAccess(tokenStr string) (string, error) {
-	t, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
 		return j.secretAccess, nil
 	})
-	if err != nil || !t.Valid {
-		return "", err
+	if err != nil {
+		// if errors.Is(err, jwt.ErrTokenExpired) {
+		// 	return "", errors.New("token is expired")
+		// }
+		return "", errors.New("token is expired")
 	}
-	claims := t.Claims.(jwt.MapClaims)
+
+	if !token.Valid {
+		return "", errors.New("invalid token")
+	}
+	claims := token.Claims.(jwt.MapClaims)
 	if claims["type"] != "access" {
 		return "", errors.New("invalid token type")
 	}
@@ -77,7 +84,14 @@ func (j *JwtUsecase) ValidateRefresh(tokenStr string) (string, error) {
 		return j.secretRefresh, nil
 	})
 
-	if err != nil || !t.Valid {
+	if err != nil {
+		// if errors.Is(err, jwt.ErrTokenExpired) {
+		// 	return "", errors.New("token is expired")
+		// }
+		return "", errors.New("token is expired")
+	}
+
+	if !t.Valid {
 		return "", err
 	}
 

@@ -888,6 +888,31 @@ paths:
       summary: Get a user by ID
       tags:
       - users
+  /validate-token:
+    post:
+      consumes:
+      - application/json
+      description: Validates an access token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token is valid
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Validate token
+      tags:
+      - auth
 securityDefinitions:
   BearerAuth:
     description: Bearer token for authenticated requests

@@ -74,7 +74,7 @@ func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]ca
 
 	rows, err := r.db.Query(
 		context.Background(),
-		`SELECT id, cargonumber
+		`SELECT *
 		 FROM cargos
 		 WHERE truckid = $1
 		 ORDER BY "createdAt" DESC
@@ -89,7 +89,20 @@ func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]ca
 	var cargos []cargo.Cargo
 	for rows.Next() {
 		var c cargo.Cargo
-		if err := rows.Scan(&c.ID, &c.CargoNumber); err != nil {
+		if err := rows.Scan(
+			&c.ID,
+			&c.CargoNumber,
+			&c.Date,
+			&c.LoadUnloadDate,
+			&c.Driver,
+			&c.TransportationInfo,
+			&c.PayoutAmount,
+			&c.PayoutDate,
+			&c.PaymentStatus,
+			&c.PayoutTerms,
+			&c.CreatedAt,
+			&c.TruckID,
+		); err != nil {
 			return nil, err
 		}
 		cargos = append(cargos, c)

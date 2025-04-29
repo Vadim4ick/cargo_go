@@ -22,7 +22,7 @@ func JwtMiddleware(deps *auth.Deps, next http.HandlerFunc) http.Handler {
 		}
 		uid, err := deps.JwtService.ValidateAccess(parts[1])
 		if err != nil {
-			utils.JSON(w, http.StatusUnauthorized, "invalid token", nil, deps.Logger)
+			utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, deps.Logger)
 			return
 		}
 		// помечаем онлайн
