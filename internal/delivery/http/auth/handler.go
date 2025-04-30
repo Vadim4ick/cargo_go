@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"test-project/config"
 	"test-project/internal/domain/auth"
 	"test-project/internal/middleware"
 	"test-project/utils"
@@ -60,11 +61,12 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, &http.Cookie{
 			Name:     "refresh_token",
 			Value:    "",
-			Path:     "/",   // такой же path как при установке
-			HttpOnly: true,  // тоже такой же
-			Secure:   false, // такой же как при установке
+			Path:     "/",
+			HttpOnly: true,
+			Secure:   config.Envs.APP_ENV == "production",
 			SameSite: http.SameSiteLaxMode,
 			MaxAge:   -1,
+			Domain:   config.GetCookieDomain(),
 		})
 		return
 	}
@@ -84,11 +86,12 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refresh_token",
 		Value:    newRefreshToken,
-		Path:     "/",   // доступен во всём приложении
-		HttpOnly: true,  // недоступен из JS
-		Secure:   false, // true на HTTPS
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   config.Envs.APP_ENV == "production",
 		SameSite: http.SameSiteLaxMode,
-		MaxAge:   int((30 * 24 * time.Hour).Seconds()), // 30 дней
+		MaxAge:   int((7 * 24 * time.Hour).Seconds()), // 7 дней
+		Domain:   config.GetCookieDomain(),
 	})
 
 	utils.JSON(w, http.StatusOK, "Токен успешно обновлён", map[string]string{
@@ -166,9 +169,10 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 		Value:    refreshToken,
 		Path:     "/",
 		HttpOnly: true,
-		Secure:   false, // true если HTTPS
+		Secure:   config.Envs.APP_ENV == "production",
 		SameSite: http.SameSiteLaxMode,
-		MaxAge:   int((30 * 24 * time.Hour).Seconds()), // 30 дней
+		MaxAge:   int((7 * 24 * time.Hour).Seconds()),
+		Domain:   config.GetCookieDomain(),
 	})
 
 	utils.JSON(w, http.StatusOK, "Пользователь успешно авторизован", map[string]string{
@@ -216,9 +220,10 @@ func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 		Value:    "",
 		Path:     "/",
 		HttpOnly: true,
-		Secure:   false, // true если HTTPS
+		Secure:   config.Envs.APP_ENV == "production",
 		SameSite: http.SameSiteLaxMode,
 		MaxAge:   -1,
+		Domain:   config.GetCookieDomain(),
 	})
 
 	utils.JSON(w, http.StatusOK, "Успешный выход из системы", nil, h.deps.Logger)

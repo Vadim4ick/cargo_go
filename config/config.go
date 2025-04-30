@@ -29,6 +29,7 @@ type Config struct {
 	SWAGGER_PASS  string
 
 	PATH_IMAGE string
+	APP_ENV    string
 }
 
 var Envs = initConfig()
@@ -37,7 +38,7 @@ func initConfig() Config {
 	godotenv.Load()
 
 	return Config{
-		Addr:         getEnv("PUBLIC_HOST", "http://localhost"),
+		APP_ENV:      getEnv("APP_ENV", "develop"),
 		POSTGRES_URI: getEnv("POSTGRES_URI", "postgres://test:test@localhost:5432/test"),
 		FRONT_URI:    getEnv("FRONT_URI", "http://localhost:3000"),
 		API_URI:      getEnv("API_URI", "http://localhost:8080"),
@@ -66,4 +67,11 @@ func getEnv(key, fallback string) string {
 	}
 
 	return fallback
+}
+
+func GetCookieDomain() string {
+	if Envs.APP_ENV == "production" {
+		return ".myakos.ru"
+	}
+	return "localhost"
 }

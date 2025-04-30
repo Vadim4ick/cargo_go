@@ -25,12 +25,11 @@
 #             docker-compose build
 #             docker-compose up -d
 
-name: Deploy to VPS
+name: Deploy Go App via Portainer
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
@@ -40,7 +39,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy to VPS via SSH
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -48,6 +47,23 @@ jobs:
           key: ${{ secrets.VPS_DEPLOY_KEY }}
           script: |
             cd /opt/cargo_go
+
+            echo "📦 Pulling latest code"
             git pull origin main
-            docker build -t go_app:latest .
-            docker compose -f /opt/cargo_go/docker-compose.yml up -d --no-deps --build app
+
+            echo "🐳 Building new image"
+            docker build -t cargo-go-app:latest .
+
+            echo "🧼 Stopping old container if exists"
+            docker stop go_app || true
+            docker rm go_app || true
+
+            echo "🚀 Running new container"
+            docker run -d \
+              --name go_app \
+              --network cargo-go_default \
+              -p 8080:8080 \
+              --env-file /opt/cargo_go/.env \
+              -v cargo_go_pgdata:/var/lib/postgresql/data \
+              -v cargo_go_redis:/data \
+              cargo-go-app:latest
