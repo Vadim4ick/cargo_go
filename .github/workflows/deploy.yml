@@ -1,3 +1,30 @@
+# name: Deploy to VPS
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Deploy to VPS via SSH
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: ${{ secrets.VPS_HOST }}
+#           username: root
+#           key: ${{ secrets.VPS_DEPLOY_KEY }}
+#           script: |
+#             cd /root/cargo_go
+#             git pull origin main
+#             docker-compose build
+#             docker-compose up -d
+
 name: Deploy to VPS
 
 on:
@@ -20,7 +47,7 @@ jobs:
           username: root
           key: ${{ secrets.VPS_DEPLOY_KEY }}
           script: |
-            cd /root/cargo_go
+            cd /opt/cargo_go
             git pull origin main
-            docker-compose build
-            docker-compose up -d
+            docker build -t go_app:latest .
+            docker compose -f /data/compose/cargo-go.yml up -d --no-deps --build app
