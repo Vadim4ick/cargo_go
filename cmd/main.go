@@ -45,7 +45,6 @@ func main() {
 	}
 	defer pool.Close()
 
-	// Проверка подключения к базе данных
 	if err := pool.Ping(context.Background()); err != nil {
 		logger.Fatal("Не удалось проверить подключение к базе данных", zap.Error(err))
 	}
