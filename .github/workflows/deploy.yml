@@ -24,7 +24,6 @@
 #             git pull origin main
 #             docker-compose build
 #             docker-compose up -d
-
 name: Deploy to VPS
 
 on:
