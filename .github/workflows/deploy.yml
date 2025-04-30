@@ -24,6 +24,7 @@
 #             git pull origin main
 #             docker-compose build
 #             docker-compose up -d
+
 name: Deploy to VPS
 
 on:
@@ -49,4 +50,4 @@ jobs:
             cd /opt/cargo_go
             git pull origin main
             docker build -t go_app:latest .
-            docker compose -f /data/compose/cargo-go.yml up -d --no-deps --build app
+            docker compose -f /opt/cargo_go/docker-compose.yml up -d --no-deps --build app
