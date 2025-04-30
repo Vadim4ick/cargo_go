@@ -26,7 +26,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DB_URL=postgres://test:test@db:5432/test?sslmode=disable
+      - POSTGRES_URI=postgres://test:test@db:5432/test?sslmode=disable
 
 volumes:
   pgdata:
