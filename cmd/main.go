@@ -49,7 +49,6 @@ func main() {
 		logger.Fatal("Не удалось проверить подключение к базе данных", zap.Error(err))
 	}
 	logger.Info("Успешное подключение к базе данных")
-
 	jwtService := usecase.NewJWTService(
 		config.Envs.JWTSecretAccess,
 		config.Envs.JWTSecretRefresh,
