@@ -66,7 +66,7 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 			Secure:   config.Envs.APP_ENV == "production",
 			SameSite: http.SameSiteLaxMode,
 			MaxAge:   -1,
-			Domain:   config.GetCookieDomain(),
+			Domain:   ".myakos.ru",
 		})
 		return
 	}
@@ -91,7 +91,7 @@ func (h *Handler) refresh(w http.ResponseWriter, r *http.Request) {
 		Secure:   config.Envs.APP_ENV == "production",
 		SameSite: http.SameSiteLaxMode,
 		MaxAge:   int((7 * 24 * time.Hour).Seconds()), // 7 дней
-		Domain:   config.GetCookieDomain(),
+		Domain:   ".myakos.ru",
 	})
 
 	utils.JSON(w, http.StatusOK, "Токен успешно обновлён", map[string]string{
@@ -172,7 +172,7 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 		Secure:   config.Envs.APP_ENV == "production",
 		SameSite: http.SameSiteLaxMode,
 		MaxAge:   int((7 * 24 * time.Hour).Seconds()),
-		Domain:   config.GetCookieDomain(),
+		Domain:   ".myakos.ru",
 	})
 
 	utils.JSON(w, http.StatusOK, "Пользователь успешно авторизован", map[string]string{
@@ -223,7 +223,7 @@ func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 		Secure:   config.Envs.APP_ENV == "production",
 		SameSite: http.SameSiteLaxMode,
 		MaxAge:   -1,
-		Domain:   config.GetCookieDomain(),
+		Domain:   ".myakos.ru",
 	})
 
 	utils.JSON(w, http.StatusOK, "Успешный выход из системы", nil, h.deps.Logger)

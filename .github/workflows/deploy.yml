@@ -25,45 +25,45 @@
 #             docker-compose build
 #             docker-compose up -d
 
-name: Deploy Go App via Portainer
+# name: Deploy Go App via Portainer
 
-on:
-  push:
-    branches: [main]
+# on:
+#   push:
+#     branches: [main]
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: root
-          key: ${{ secrets.VPS_DEPLOY_KEY }}
-          script: |
-            cd /opt/cargo_go
+#       - name: Deploy to VPS
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: ${{ secrets.VPS_HOST }}
+#           username: root
+#           key: ${{ secrets.VPS_DEPLOY_KEY }}
+#           script: |
+#             cd /opt/cargo_go
 
-            echo "📦 Pulling latest code"
-            git pull origin main
+#             echo "📦 Pulling latest code"
+#             git pull origin main
 
-            echo "🐳 Building new image"
-            docker build -t cargo-go-app:latest .
+#             echo "🐳 Building new image"
+#             docker build -t cargo-go-app:latest .
 
-            echo "🧼 Stopping old container if exists"
-            docker stop go_app || true
-            docker rm go_app || true
+#             echo "🧼 Stopping old container if exists"
+#             docker stop go_app || true
+#             docker rm go_app || true
 
-            echo "🚀 Running new container"
-            docker run -d \
-              --name go_app \
-              --network cargo-go_default \
-              -p 8080:8080 \
-              --env-file /opt/cargo_go/.env \
-              -v cargo_go_pgdata:/var/lib/postgresql/data \
-              -v cargo_go_redis:/data \
-              cargo-go-app:latest
+#             echo "🚀 Running new container"
+#             docker run -d \
+#               --name go_app \
+#               --network cargo-go_default \
+#               -p 8080:8080 \
+#               --env-file /opt/cargo_go/.env \
+#               -v cargo_go_pgdata:/var/lib/postgresql/data \
+#               -v cargo_go_redis:/data \
+#               cargo-go-app:latest
