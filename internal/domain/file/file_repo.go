@@ -6,19 +6,9 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type Repo interface {
-	Create(ctx context.Context, rec Record) error
-	DeleteByIDs(ctx context.Context, ids []string) ([]Record, error)
-	GetByOwner(ctx context.Context, table, ownerID string) ([]Record, error)
-}
-
-type Record struct {
-	ID, OwnerID, OwnerTable, URL string
-}
-
 type pgRepo struct{ db *pgxpool.Pool }
 
-func NewRepo(db *pgxpool.Pool) Repo { return &pgRepo{db} }
+func NewRepo(db *pgxpool.Pool) Repository { return &pgRepo{db} }
 
 func (r *pgRepo) Create(ctx context.Context, rec Record) error {
 	_, err := r.db.Exec(ctx,

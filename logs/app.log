@@ -1,1 +1,107 @@
 {"level":"INFO","ts":"2025-05-01 15:22:48","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.011862}
+{"level":"INFO","ts":"2025-05-01 16:06:38","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-05-01 16:06:38","caller":"cmd/main.go:75","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-05-01 16:06:38","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.00457575}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"middleware/auth.go:25","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"middleware/auth.go:25","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"middleware/auth.go:25","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:06:44","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:06:45","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:06:48","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:06:48","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:06:48","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:06:56","caller":"cargo/handler.go:211","msg":"HTTP response message","message":"Груз успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:06:56","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:07:04","caller":"cargo/handler.go:211","msg":"HTTP response message","message":"Груз успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:07:04","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:07:08","caller":"cargo/handler.go:211","msg":"HTTP response message","message":"Груз успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:07:08","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:07:26","caller":"cargo/handler.go:211","msg":"HTTP response message","message":"Груз успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:07:26","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:07:47","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:07:47","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:07:47","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:18","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:08:18","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:18","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:27","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:27","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:27","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:08:36","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:36","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:08:36","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:48","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:48","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:48","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:08:58","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:08:58","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:08:58","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:06","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:06","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:06","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:09:21","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:09:21","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:21","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:43","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:43","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:09:43","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:48","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:48","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:09:48","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:10:39","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:10:52","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:11:03","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:11:08","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:11:08","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:11:08","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:11:08","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:11:38","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.013532375}
+{"level":"INFO","ts":"2025-05-01 16:12:17","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:12:17","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"middleware/auth.go:25","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"middleware/auth.go:25","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"middleware/auth.go:25","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:12:32","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:13:20","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:13:34","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:13:36","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:13:36","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:13:36","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:14:00","caller":"cargo/handler.go:211","msg":"HTTP response message","message":"Груз успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:14:00","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:14:14","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:14:26","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:14:26","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:14:26","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:14:44","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:14:47","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:14:52","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:14:55","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:14:55","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:14:55","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:15:16","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:15:16","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:15:16","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:15:18","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:15:19","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:15:19","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:15:19","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:15:55","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:15:55","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:15:55","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:16:01","caller":"truck/handler.go:102","msg":"HTTP response message","message":"Список машин","status":201}
+{"level":"INFO","ts":"2025-05-01 16:16:01","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:16:01","caller":"truck/handler.go:163","msg":"HTTP response message","message":"Список грузов","status":201}
+{"level":"INFO","ts":"2025-05-01 16:16:03","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:16:04","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:16:05","caller":"user/handler.go:57","msg":"HTTP response message","message":"Список пользователей","status":201}

@@ -1,22 +1,23 @@
-package file
+package usecase
 
 import (
 	"context"
 	"mime/multipart"
+	"test-project/internal/domain/file"
 
 	"github.com/google/uuid"
 )
 
-type Service struct {
-	st   Storage
-	repo Repo
+type FileService struct {
+	st   file.Storage
+	repo file.Repository
 }
 
-func NewService(st Storage, repo Repo) *Service {
-	return &Service{st: st, repo: repo}
+func NewFileService(st file.Storage, repo file.Repository) *FileService {
+	return &FileService{st: st, repo: repo}
 }
 
-func (s *Service) UploadMany(
+func (s *FileService) UploadMany(
 	ctx context.Context,
 	ownerTable, ownerID string,
 	fhs []*multipart.FileHeader,
@@ -30,7 +31,7 @@ func (s *Service) UploadMany(
 			return err
 		}
 
-		rec := Record{
+		rec := file.Record{
 			ID:         uuid.NewString(),
 			OwnerID:    ownerID,
 			OwnerTable: ownerTable,
@@ -44,7 +45,7 @@ func (s *Service) UploadMany(
 	return nil
 }
 
-func (s *Service) DeleteMany(ctx context.Context, ids []string) error {
+func (s *FileService) DeleteMany(ctx context.Context, ids []string) error {
 	recs, err := s.repo.DeleteByIDs(ctx, ids)
 	if err != nil {
 		return err

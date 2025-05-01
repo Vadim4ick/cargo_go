@@ -12,8 +12,8 @@ import (
 	"test-project/internal/delivery/http/truck"
 	"test-project/internal/delivery/http/user"
 	authDomain "test-project/internal/domain/auth"
+	"test-project/internal/domain/file"
 	userDomain "test-project/internal/domain/user"
-	"test-project/internal/file"
 	"test-project/internal/middleware"
 	"test-project/internal/redis"
 	"test-project/internal/usecase"
@@ -63,7 +63,7 @@ func Setup(pool *pgxpool.Pool, logger *zap.Logger, jwtService *usecase.JwtUsecas
 	authSvc := usecase.NewService(userRepo, jwtService, redisService)
 
 	fs := file.Local{Dir: "./uploads", BaseURL: "/uploads"}
-	fileSvc := file.NewService(fs, file.NewRepo(pool))
+	fileSvc := usecase.NewFileService(fs, file.NewRepo(pool))
 
 	deps := &authDomain.Deps{
 		Logger:      logger,
