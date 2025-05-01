@@ -240,3 +240,26 @@ func (r *PostgresCargoRepo) Delete(id string) error {
 	_, err := r.db.Exec(context.Background(), "DELETE FROM cargos WHERE id=$1", id)
 	return err
 }
+
+func (r *PostgresCargoRepo) DeleteCargoPhotos(ids []string) error {
+	_, err := r.db.Exec(context.Background(), "DELETE FROM cargo_photos WHERE id=ANY($1)", ids)
+	return err
+}
+
+func (r *PostgresCargoRepo) GetCargoPhotosByIDs(ids []string) ([]CargoPhoto, error) {
+	rows, err := r.db.Query(context.Background(), "SELECT * FROM cargo_photos WHERE id=ANY($1)", ids)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var photos []CargoPhoto
+	for rows.Next() {
+		var p CargoPhoto
+		if err := rows.Scan(&p.ID, &p.URL, &p.CargoID, &p.CreatedAt); err != nil {
+			return nil, err
+		}
+		photos = append(photos, p)
+	}
+	return photos, nil
+}

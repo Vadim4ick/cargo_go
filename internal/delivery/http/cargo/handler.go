@@ -3,7 +3,10 @@ package cargo
 import (
 	"fmt"
 	"log"
+	"mime/multipart"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strings"
 	"test-project/config"
 	"test-project/internal/domain/auth"
@@ -176,8 +179,16 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	form := r.MultipartForm
-	files := form.File["photos"]
+	var deletedIDs []string
+	if r.MultipartForm != nil {
+		deletedIDs = r.MultipartForm.Value["deletedIds"]
+	}
+
+	var files []*multipart.FileHeader
+
+	if r.MultipartForm != nil {
+		files = r.MultipartForm.File["photos"]
+	}
 
 	fmt.Println(files)
 
@@ -195,7 +206,26 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if len(deletedIDs) > 0 {
+		photos, err := h.uc.GetCargoPhotosByIDs(deletedIDs)
+		if err != nil {
+			utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
+			return
+		}
+
+		if err := h.uc.DeleteCargoPhotos(deletedIDs); err != nil {
+			utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
+			return
+		}
+
+		// удаляем физические файлы
+		for _, p := range photos {
+			_ = os.Remove(filepath.Join(config.Envs.PATH_IMAGE, p.URL))
+		}
+	}
+
 	for _, url := range photoURLs {
+
 		photo := cargoDomain.CargoPhoto{
 			URL:     url,
 			CargoID: cargo.ID,
