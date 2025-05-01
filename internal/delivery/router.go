@@ -13,6 +13,7 @@ import (
 	"test-project/internal/delivery/http/user"
 	authDomain "test-project/internal/domain/auth"
 	userDomain "test-project/internal/domain/user"
+	"test-project/internal/file"
 	"test-project/internal/middleware"
 	"test-project/internal/redis"
 	"test-project/internal/usecase"
@@ -61,10 +62,14 @@ func Setup(pool *pgxpool.Pool, logger *zap.Logger, jwtService *usecase.JwtUsecas
 	userRepo := userDomain.NewPostgresUserRepo(pool)
 	authSvc := usecase.NewService(userRepo, jwtService, redisService)
 
+	fs := file.Local{Dir: "./uploads", BaseURL: "/uploads"}
+	fileSvc := file.NewService(fs, file.NewRepo(pool))
+
 	deps := &authDomain.Deps{
 		Logger:      logger,
 		JwtService:  jwtService,
 		AuthService: authSvc,
+		FileService: fileSvc,
 		Redis:       redisService,
 		DB:          pool,
 	}

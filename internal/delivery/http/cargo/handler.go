@@ -1,12 +1,8 @@
 package cargo
 
 import (
-	"fmt"
 	"log"
-	"mime/multipart"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 	"test-project/config"
 	"test-project/internal/domain/auth"
@@ -153,92 +149,66 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} cargo.ErrorResponse "Internal server error"
 // @Router /cargo/{id} [patch]
 func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
-	role, err := middleware.GetUserRole(r.Context())
+	// 0. контекст запроса
+	ctx := r.Context()
 
+	// 1. авторизация
+	role, err := middleware.GetUserRole(ctx)
 	if err != nil {
 		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
 		return
 	}
-
 	if role != user.RoleSuperAdmin && role != user.RoleEditor {
-		utils.JSON(w, http.StatusUnauthorized, "Недостаточно прав. Суперадминистраторы и Редакторы могут обновлять груз", nil, h.deps.Logger)
+		utils.JSON(w, http.StatusUnauthorized,
+			"Недостаточно прав. Суперадминистраторы и Редакторы могут обновлять груз",
+			nil, h.deps.Logger)
 		return
 	}
 
+	// 2. парсим id и форму
 	id := mux.Vars(r)["id"]
 
 	var updateCargo cargoDomain.UpdateCargoInput
-
 	if err := utils.ParseFormData(r, &updateCargo); err != nil {
 		utils.JSON(w, http.StatusBadRequest, "Не удалось распарсить форму: "+err.Error(), nil, h.deps.Logger)
 		return
 	}
-
 	if errs := h.validator.Validate(updateCargo); len(errs) > 0 {
 		utils.JSON(w, http.StatusBadRequest, "Ошибки валидации: "+strings.Join(errs, "; "), nil, h.deps.Logger)
 		return
 	}
 
-	var deletedIDs []string
-	if r.MultipartForm != nil {
-		deletedIDs = r.MultipartForm.Value["deletedIds"]
-	}
-
-	var files []*multipart.FileHeader
-
-	if r.MultipartForm != nil {
-		files = r.MultipartForm.File["photos"]
-	}
-
-	fmt.Println(files)
-
-	photoURLs, err := utils.SaveUploadedFiles(files, config.Envs.PATH_IMAGE)
-
-	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, "Ошибка загрузки файлов: "+err.Error(), nil, h.deps.Logger)
+	// 3. вытаскиваем файлы и deletedIds
+	if err := r.ParseMultipartForm(32 << 20); err != nil { // 32 МБ
+		utils.JSON(w, http.StatusBadRequest, "multipart parse: "+err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	cargo, err := h.uc.PatchCargo(updateCargo, id)
+	deletedIDs := r.MultipartForm.Value["deletedIds"]
+	files := r.MultipartForm.File["photos"]
 
+	// 4. работаем с файловым сервисом
+	if len(deletedIDs) > 0 {
+		if err := h.deps.FileService.DeleteMany(ctx, deletedIDs); err != nil {
+			utils.JSON(w, http.StatusInternalServerError, "delete files: "+err.Error(), nil, h.deps.Logger)
+			return
+		}
+	}
+	if len(files) > 0 {
+		if err := h.deps.FileService.UploadMany(ctx, "cargos", id, files); err != nil {
+			utils.JSON(w, http.StatusInternalServerError, "upload files: "+err.Error(), nil, h.deps.Logger)
+			return
+		}
+	}
+
+	// 5. обновляем сам груз
+	cargo, err := h.uc.PatchCargo(updateCargo, id)
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
 		return
 	}
 
-	if len(deletedIDs) > 0 {
-		photos, err := h.uc.GetCargoPhotosByIDs(deletedIDs)
-		if err != nil {
-			utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
-			return
-		}
-
-		if err := h.uc.DeleteCargoPhotos(deletedIDs); err != nil {
-			utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
-			return
-		}
-
-		// удаляем физические файлы
-		for _, p := range photos {
-			_ = os.Remove(filepath.Join(config.Envs.PATH_IMAGE, p.URL))
-		}
-	}
-
-	for _, url := range photoURLs {
-
-		photo := cargoDomain.CargoPhoto{
-			URL:     url,
-			CargoID: cargo.ID,
-		}
-
-		_, err := h.uc.CreateCargoPhoto(photo)
-		if err != nil {
-			utils.JSON(w, http.StatusInternalServerError, "Ошибка сохранения фото: "+err.Error(), nil, h.deps.Logger)
-			return
-		}
-	}
-
-	utils.JSON(w, http.StatusOK, "Груз успешно обновлен", cargo, h.deps.Logger)
+	utils.JSON(w, http.StatusOK, "Груз успешно обновлён", cargo, h.deps.Logger)
 }
 
 // GET retrieves a list of all cargos

@@ -2,6 +2,7 @@ package truck
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"test-project/internal/domain/cargo"
@@ -62,57 +63,10 @@ func (r *PostgresTruckRepo) FindByID(id string) (Truck, error) {
 	return t, err
 }
 
-// func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]cargo.Cargo, error) {
-// 	if limit <= 0 {
-// 		limit = 10 // дефолтный лимит, если вдруг не передали
-// 	}
-// 	if page <= 0 {
-// 		page = 1 // дефолтная страница
-// 	}
+func (r *PostgresTruckRepo) GetTruckCargos(
+	id string, limit, page int,
+) ([]cargo.Cargo, error) {
 
-// 	offset := (page - 1) * limit
-
-// 	rows, err := r.db.Query(
-// 		context.Background(),
-// 		`SELECT *
-// 		 FROM cargos
-// 		 WHERE truckid = $1
-// 		 ORDER BY "createdAt" DESC
-// 		 LIMIT $2 OFFSET $3`,
-// 		id, limit, offset,
-// 	)
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer rows.Close()
-
-// 	var cargos []cargo.Cargo
-// 	for rows.Next() {
-// 		var c cargo.Cargo
-// 		if err := rows.Scan(
-// 			&c.ID,
-// 			&c.CargoNumber,
-// 			&c.Date,
-// 			&c.LoadUnloadDate,
-// 			&c.Driver,
-// 			&c.TransportationInfo,
-// 			&c.PayoutAmount,
-// 			&c.PayoutDate,
-// 			&c.PaymentStatus,
-// 			&c.PayoutTerms,
-// 			&c.CreatedAt,
-// 			&c.TruckID,
-// 		); err != nil {
-// 			return nil, err
-// 		}
-// 		cargos = append(cargos, c)
-// 	}
-
-// 	return cargos, nil
-// }
-
-func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]cargo.Cargo, error) {
 	if limit <= 0 {
 		limit = 10
 	}
@@ -121,51 +75,48 @@ func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]ca
 	}
 	offset := (page - 1) * limit
 
-	const sql = `
-	SELECT
-		c.id,
-		c.cargonumber            AS "cargoNumber",
-		c.date,
-		c.loadunloaddate         AS "loadUnloadDate",
-		c.driver,
-		c.transportationinfo     AS "transportationInfo",
-		c.payoutamount           AS "payoutAmount",
-		c.payoutdate             AS "payoutDate",
-		c.paymentstatus          AS "paymentStatus",
-		c.payoutterms            AS "payoutTerms",
-		c."createdAt"            AS "createdAt",
-		c.truckid                AS "truckId",
-		COALESCE(
-		  json_agg(
-			json_build_object(
-			  'id',    cp.id,
-			  'url',   cp.url
-			)
-		  ) FILTER (WHERE cp.id IS NOT NULL),
-		  '[]'
-		) AS photos_json
-	FROM cargos c
-	LEFT JOIN cargo_photos cp
-	  ON cp.cargoid = c.id
-	WHERE c.truckid = $1
-	GROUP BY
-		c.id,
-		c.cargonumber,
-		c.date,
-		c.loadunloaddate,
-		c.driver,
-		c.transportationinfo,
-		c.payoutamount,
-		c.payoutdate,
-		c.paymentstatus,
-		c.payoutterms,
-		c."createdAt",
-		c.truckid
-	ORDER BY c."createdAt" DESC
-	LIMIT $2 OFFSET $3;
-	`
+	const q = `
+SELECT
+	c.id,
+	c.cargonumber          AS "cargoNumber",
+	c.date,
+	c.loadunloaddate       AS "loadUnloadDate",
+	c.driver,
+	c.transportationinfo   AS "transportationInfo",
+	c.payoutamount         AS "payoutAmount",
+	c.payoutdate           AS "payoutDate",
+	c.paymentstatus        AS "paymentStatus",
+	c.payoutterms          AS "payoutTerms",
+	c."createdAt",
+	c.truckid              AS "truckId",
 
-	rows, err := r.db.Query(context.Background(), sql, id, limit, offset)
+	/* -- агрегируем все файлы, привязанные к cargo -- */
+	COALESCE(
+	  json_agg(
+	    json_build_object(
+	      'id',         f.id,
+	      'url',        f.url,
+	      'cargoId',    f.owner_id,
+	      'createdAt',  f.created_at
+	    )
+	    ORDER BY f.created_at
+	  ) FILTER (WHERE f.id IS NOT NULL),
+	  '[]'
+	) AS photos_json
+
+FROM cargos c
+LEFT JOIN files f
+  ON     f.owner_table = 'cargos'
+     AND f.owner_id    = c.id
+
+WHERE c.truckid = $1
+GROUP BY c.id
+ORDER BY c."createdAt" DESC
+LIMIT  $2
+OFFSET $3;
+`
+
+	rows, err := r.db.Query(context.Background(), q, id, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +124,11 @@ func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]ca
 
 	var cargos []cargo.Cargo
 	for rows.Next() {
-		var c cargo.Cargo
+		var (
+			c          cargo.Cargo
+			photosJSON []byte
+		)
+
 		if err := rows.Scan(
 			&c.ID,
 			&c.CargoNumber,
@@ -187,15 +142,21 @@ func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]ca
 			&c.PayoutTerms,
 			&c.CreatedAt,
 			&c.TruckID,
-			&c.CargoPhotos, // <— не забыли снять массив!
+			&photosJSON, // JSON-массив из запроса
 		); err != nil {
 			return nil, err
 		}
+
+		// распаковываем JSON в срез CargoPhoto
+		if err := json.Unmarshal(photosJSON, &c.CargoPhotos); err != nil {
+			return nil, err
+		}
+
 		cargos = append(cargos, c)
 	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
 
+	if rows.Err() != nil {
+		return nil, rows.Err()
+	}
 	return cargos, nil
 }

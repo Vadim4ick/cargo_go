@@ -2,6 +2,7 @@ package auth
 
 import (
 	"test-project/internal/domain/user"
+	"test-project/internal/file"
 	"test-project/internal/redis"
 	"test-project/internal/usecase"
 
@@ -60,4 +61,5 @@ type Deps struct {
 	AuthService usecase.AuthUsecase
 	Redis       *redis.Client
 	DB          *pgxpool.Pool
+	FileService *file.Service
 }
