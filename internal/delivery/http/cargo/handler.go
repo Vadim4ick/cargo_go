@@ -1,6 +1,7 @@
 package cargo
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -175,11 +176,36 @@ func (h *Handler) PATH(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	form := r.MultipartForm
+	files := form.File["photos"]
+
+	fmt.Println(files)
+
+	photoURLs, err := utils.SaveUploadedFiles(files, config.Envs.PATH_IMAGE)
+
+	if err != nil {
+		utils.JSON(w, http.StatusInternalServerError, "Ошибка загрузки файлов: "+err.Error(), nil, h.deps.Logger)
+		return
+	}
+
 	cargo, err := h.uc.PatchCargo(updateCargo, id)
 
 	if err != nil {
 		utils.JSON(w, http.StatusInternalServerError, err.Error(), nil, h.deps.Logger)
 		return
+	}
+
+	for _, url := range photoURLs {
+		photo := cargoDomain.CargoPhoto{
+			URL:     url,
+			CargoID: cargo.ID,
+		}
+
+		_, err := h.uc.CreateCargoPhoto(photo)
+		if err != nil {
+			utils.JSON(w, http.StatusInternalServerError, "Ошибка сохранения фото: "+err.Error(), nil, h.deps.Logger)
+			return
+		}
 	}
 
 	utils.JSON(w, http.StatusOK, "Груз успешно обновлен", cargo, h.deps.Logger)

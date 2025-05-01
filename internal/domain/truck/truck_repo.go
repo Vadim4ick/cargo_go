@@ -62,25 +62,110 @@ func (r *PostgresTruckRepo) FindByID(id string) (Truck, error) {
 	return t, err
 }
 
+// func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]cargo.Cargo, error) {
+// 	if limit <= 0 {
+// 		limit = 10 // дефолтный лимит, если вдруг не передали
+// 	}
+// 	if page <= 0 {
+// 		page = 1 // дефолтная страница
+// 	}
+
+// 	offset := (page - 1) * limit
+
+// 	rows, err := r.db.Query(
+// 		context.Background(),
+// 		`SELECT *
+// 		 FROM cargos
+// 		 WHERE truckid = $1
+// 		 ORDER BY "createdAt" DESC
+// 		 LIMIT $2 OFFSET $3`,
+// 		id, limit, offset,
+// 	)
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer rows.Close()
+
+// 	var cargos []cargo.Cargo
+// 	for rows.Next() {
+// 		var c cargo.Cargo
+// 		if err := rows.Scan(
+// 			&c.ID,
+// 			&c.CargoNumber,
+// 			&c.Date,
+// 			&c.LoadUnloadDate,
+// 			&c.Driver,
+// 			&c.TransportationInfo,
+// 			&c.PayoutAmount,
+// 			&c.PayoutDate,
+// 			&c.PaymentStatus,
+// 			&c.PayoutTerms,
+// 			&c.CreatedAt,
+// 			&c.TruckID,
+// 		); err != nil {
+// 			return nil, err
+// 		}
+// 		cargos = append(cargos, c)
+// 	}
+
+// 	return cargos, nil
+// }
+
 func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]cargo.Cargo, error) {
 	if limit <= 0 {
-		limit = 10 // дефолтный лимит, если вдруг не передали
+		limit = 10
 	}
 	if page <= 0 {
-		page = 1 // дефолтная страница
+		page = 1
 	}
-
 	offset := (page - 1) * limit
 
-	rows, err := r.db.Query(
-		context.Background(),
-		`SELECT *
-		 FROM cargos
-		 WHERE truckid = $1
-		 ORDER BY "createdAt" DESC
-		 LIMIT $2 OFFSET $3`,
-		id, limit, offset,
-	)
+	const sql = `
+	SELECT
+		c.id,
+		c.cargonumber            AS "cargoNumber",
+		c.date,
+		c.loadunloaddate         AS "loadUnloadDate",
+		c.driver,
+		c.transportationinfo     AS "transportationInfo",
+		c.payoutamount           AS "payoutAmount",
+		c.payoutdate             AS "payoutDate",
+		c.paymentstatus          AS "paymentStatus",
+		c.payoutterms            AS "payoutTerms",
+		c."createdAt"            AS "createdAt",
+		c.truckid                AS "truckId",
+		COALESCE(
+		  json_agg(
+			json_build_object(
+			  'id',    cp.id,
+			  'url',   cp.url
+			)
+		  ) FILTER (WHERE cp.id IS NOT NULL),
+		  '[]'
+		) AS photos_json
+	FROM cargos c
+	LEFT JOIN cargo_photos cp
+	  ON cp.cargoid = c.id
+	WHERE c.truckid = $1
+	GROUP BY
+		c.id,
+		c.cargonumber,
+		c.date,
+		c.loadunloaddate,
+		c.driver,
+		c.transportationinfo,
+		c.payoutamount,
+		c.payoutdate,
+		c.paymentstatus,
+		c.payoutterms,
+		c."createdAt",
+		c.truckid
+	ORDER BY c."createdAt" DESC
+	LIMIT $2 OFFSET $3;
+	`
+
+	rows, err := r.db.Query(context.Background(), sql, id, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -102,10 +187,14 @@ func (r *PostgresTruckRepo) GetTruckCargos(id string, limit int, page int) ([]ca
 			&c.PayoutTerms,
 			&c.CreatedAt,
 			&c.TruckID,
+			&c.CargoPhotos, // <— не забыли снять массив!
 		); err != nil {
 			return nil, err
 		}
 		cargos = append(cargos, c)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return cargos, nil

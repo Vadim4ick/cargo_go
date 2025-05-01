@@ -1,6 +1,10 @@
 package router
 
 import (
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
 	"test-project/config"
 	"test-project/internal/delivery/http/auth"
 	"test-project/internal/delivery/http/cargo"
@@ -23,7 +27,30 @@ import (
 func Setup(pool *pgxpool.Pool, logger *zap.Logger, jwtService *usecase.JwtUsecase, redisService *redis.Client) *mux.Router {
 	r := mux.NewRouter()
 
+	// 2) Статика: всё из ./uploads по /api/v1/uploads/*
+	_, err := os.ReadDir("./uploads")
+	if err != nil {
+		log.Fatalf("не удалось прочитать папку uploads: %v", err)
+	}
+
 	subrouter := r.PathPrefix("/api/v1").Subrouter()
+
+	// Настройка статического файлового сервера для папки uploads
+	// Маршрут /api/v1/uploads/ будет обслуживать файлы из ./uploads
+	fileServer := http.FileServer(http.Dir("./uploads"))
+	subrouter.PathPrefix("/uploads/").Handler(http.StripPrefix("/api/v1/uploads/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Устанавливаем заголовок Content-Disposition для скачивания
+		filename := filepath.Base(r.URL.Path)
+		w.Header().Set("Content-Disposition", `attachment; filename="`+filename+`"`)
+
+		// Устанавливаем CORS-заголовки
+		w.Header().Set("Access-Control-Allow-Origin", config.Envs.FRONT_URI) // Укажите ваш фронтенд URL, например, http://localhost:3000
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		// Обслуживаем файл
+		fileServer.ServeHTTP(w, r)
+	})))
 
 	swaggerUsername := config.Envs.SWAGGER_LOGIN
 	swaggerPassword := config.Envs.SWAGGER_PASS
