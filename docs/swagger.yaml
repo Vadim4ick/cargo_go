@@ -274,6 +274,31 @@ definitions:
     - RoleUser
     - RoleEditor
     - RoleSuperAdmin
+  user.UpdateRequest:
+    properties:
+      role:
+        enum:
+        - USER
+        - EDITOR
+        - SUPERADMIN
+        example: USER
+        type: string
+      username:
+        example: username
+        minLength: 3
+        type: string
+    required:
+    - role
+    - username
+    type: object
+  user.UpdateResponse:
+    properties:
+      data:
+        $ref: '#/definitions/user.User'
+      message:
+        example: Пользователь
+        type: string
+    type: object
   user.User:
     properties:
       createdAt:
@@ -907,6 +932,40 @@ paths:
           schema:
             $ref: '#/definitions/user.ErrorResponse'
       summary: Get a user by ID
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Updates a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User object to be updated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User updated
+          schema:
+            $ref: '#/definitions/user.UpdateResponse'
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+      summary: Update a user by ID
       tags:
       - users
   /validate-token:

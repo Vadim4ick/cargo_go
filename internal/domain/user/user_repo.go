@@ -20,7 +20,18 @@ func NewPostgresUserRepo(db *pgxpool.Pool) UserRepository {
 }
 
 func (r *PostgresUserRepo) FindAll() ([]User, error) {
-	rows, err := r.db.Query(context.Background(), `SELECT id, username, email, password, role, "createdAt" FROM users`)
+	const q = `
+	SELECT id,
+		   username,
+		   email,
+		   password,
+		   role,
+		   "createdAt"
+	FROM   users
+	ORDER  BY "createdAt" ASC;
+`
+
+	rows, err := r.db.Query(context.Background(), q)
 
 	if err != nil {
 		return nil, err
@@ -107,4 +118,16 @@ func (r *PostgresUserRepo) FindByEmail(email string) (User, error) {
 func (r *PostgresUserRepo) Delete(id string) error {
 	_, err := r.db.Exec(context.Background(), "DELETE FROM users WHERE id = $1", id)
 	return err
+}
+
+func (r *PostgresUserRepo) Update(id string, u UpdateUser) error {
+	_, err := r.db.Exec(context.Background(),
+		`UPDATE users SET username = $1, role = $2 WHERE id = $3`,
+		u.Username, u.Role, id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -955,6 +955,57 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "patch": {
+                "description": "Updates a user by their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update a user by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User object to be updated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.UpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User updated",
+                        "schema": {
+                            "$ref": "#/definitions/user.UpdateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
             }
         },
         "/validate-token": {
@@ -1402,6 +1453,41 @@ const docTemplate = `{
                 "RoleEditor",
                 "RoleSuperAdmin"
             ]
+        },
+        "user.UpdateRequest": {
+            "type": "object",
+            "required": [
+                "role",
+                "username"
+            ],
+            "properties": {
+                "role": {
+                    "type": "string",
+                    "enum": [
+                        "USER",
+                        "EDITOR",
+                        "SUPERADMIN"
+                    ],
+                    "example": "USER"
+                },
+                "username": {
+                    "type": "string",
+                    "minLength": 3,
+                    "example": "username"
+                }
+            }
+        },
+        "user.UpdateResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/user.User"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Пользователь"
+                }
+            }
         },
         "user.User": {
             "type": "object",

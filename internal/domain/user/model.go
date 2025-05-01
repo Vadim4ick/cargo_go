@@ -23,12 +23,18 @@ type User struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
+type UpdateUser struct {
+	Username string `json:"username" validate:"required,min=3"`
+	Role     string `json:"role" validate:"required,oneof=USER EDITOR SUPERADMIN"`
+}
+
 type UserRepository interface {
 	FindAll() ([]User, error)
 	FindByID(id string) (User, error)
 	Create(user User) (User, error)
 	Delete(id string) error
 	FindByEmail(email string) (User, error)
+	Update(id string, user UpdateUser) error
 }
 
 type ListResponse struct {
@@ -37,6 +43,16 @@ type ListResponse struct {
 }
 
 type GetResponse struct {
+	Message string `json:"message" example:"Пользователь"`
+	Data    User   `json:"data"`
+}
+
+type UpdateRequest struct {
+	Username string `json:"username" validate:"required,min=3" example:"username"`
+	Role     string `json:"role" validate:"required,oneof=USER EDITOR SUPERADMIN" example:"USER"`
+}
+
+type UpdateResponse struct {
 	Message string `json:"message" example:"Пользователь"`
 	Data    User   `json:"data"`
 }

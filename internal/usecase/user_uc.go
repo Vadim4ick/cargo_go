@@ -12,6 +12,7 @@ type UserUsecase interface {
 	GetUser(id string) (userDomain.User, error)
 	DeleteUser(id string) error
 	CreateUser(input userDomain.User) (userDomain.User, error)
+	UpdateUser(id string, input userDomain.UpdateUser) error
 }
 
 type userUsecase struct {
@@ -47,4 +48,14 @@ func (u *userUsecase) DeleteUser(id string) error {
 	}
 
 	return u.repo.Delete(id)
+}
+
+func (u *userUsecase) UpdateUser(id string, input userDomain.UpdateUser) error {
+	_, err := u.repo.FindByID(id)
+
+	if err != nil {
+		return err
+	}
+
+	return u.repo.Update(id, input)
 }

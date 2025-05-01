@@ -105,3 +105,54 @@
 {"level":"INFO","ts":"2025-05-01 16:16:03","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
 {"level":"INFO","ts":"2025-05-01 16:16:04","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
 {"level":"INFO","ts":"2025-05-01 16:16:05","caller":"user/handler.go:57","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:16:34","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-05-01 16:16:34","caller":"cmd/main.go:75","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-05-01 16:16:34","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.0028525}
+{"level":"INFO","ts":"2025-05-01 16:22:39","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-05-01 16:22:39","caller":"cmd/main.go:75","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-05-01 16:22:39","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.003905458}
+{"level":"INFO","ts":"2025-05-01 16:22:40","caller":"middleware/auth.go:25","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-05-01 16:22:40","caller":"middleware/auth.go:25","msg":"HTTP response message","message":"missing token","status":401}
+{"level":"INFO","ts":"2025-05-01 16:22:40","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:22:40","caller":"auth/handler.go:97","msg":"HTTP response message","message":"Токен успешно обновлён","status":200}
+{"level":"INFO","ts":"2025-05-01 16:22:40","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:22:40","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:22:45","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:22:45","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:22:46","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:22:47","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:22:48","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:22:52","caller":"user/handler.go:148","msg":"HTTP response message","message":"Пользователь с id= df66380a-1e60-4f00-9844-d9b5fa6313a9 успешно обновлен","status":201}
+{"level":"INFO","ts":"2025-05-01 16:22:52","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:23:10","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:23:12","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:23:12","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:23:15","caller":"user/handler.go:148","msg":"HTTP response message","message":"Пользователь с id= 98183ecf-7d58-4df3-9458-d90e7c984c1e успешно обновлен","status":201}
+{"level":"INFO","ts":"2025-05-01 16:23:15","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:23:30","caller":"user/handler.go:148","msg":"HTTP response message","message":"Пользователь с id= 98183ecf-7d58-4df3-9458-d90e7c984c1e успешно обновлен","status":201}
+{"level":"INFO","ts":"2025-05-01 16:23:30","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:23:41","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:23:42","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:23:42","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:23:56","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:23:56","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:24:33","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-05-01 16:24:33","caller":"cmd/main.go:75","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-05-01 16:24:33","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.004340625}
+{"level":"INFO","ts":"2025-05-01 16:24:33","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:24:33","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:24:34","caller":"auth/handler.go:288","msg":"HTTP response message","message":"token is valid","status":200}
+{"level":"INFO","ts":"2025-05-01 16:24:35","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:24:35","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:24:39","caller":"user/handler.go:148","msg":"HTTP response message","message":"Пользователь с id= 98183ecf-7d58-4df3-9458-d90e7c984c1e успешно обновлен","status":201}
+{"level":"INFO","ts":"2025-05-01 16:24:39","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:24:50","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:24:50","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:24:58","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-05-01 16:24:58","caller":"cmd/main.go:75","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-05-01 16:24:58","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.002701708}
+{"level":"INFO","ts":"2025-05-01 16:25:23","caller":"user/handler.go:59","msg":"HTTP response message","message":"Список пользователей","status":201}
+{"level":"INFO","ts":"2025-05-01 16:25:23","caller":"auth/handler.go:259","msg":"HTTP response message","message":"Профиль","status":200}
+{"level":"INFO","ts":"2025-05-01 16:27:02","caller":"cmd/main.go:51","msg":"Успешное подключение к базе данных"}
+{"level":"INFO","ts":"2025-05-01 16:27:02","caller":"cmd/main.go:75","msg":"Starting server on :8080"}
+{"level":"INFO","ts":"2025-05-01 16:27:02","caller":"utils/utils.go:93","msg":"Очистка устаревших приглашений выполнена","duration":0.003247792}

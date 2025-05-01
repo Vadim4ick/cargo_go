@@ -1,6 +1,7 @@
 package user
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"test-project/internal/domain/auth"
@@ -35,6 +36,7 @@ func RegisterUserRoutes(r *mux.Router, deps *auth.Deps) {
 	r.Handle("/users", middleware.JwtMiddleware(deps, h.List)).Methods(http.MethodGet)
 	r.HandleFunc("/users/{id}", h.Get).Methods(http.MethodGet)
 	r.HandleFunc("/users/{id}", h.Delete).Methods(http.MethodDelete)
+	r.HandleFunc("/users/{id}", h.PATCH).Methods(http.MethodPatch)
 }
 
 // List retrieves a list of all users
@@ -114,4 +116,34 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.JSON(w, http.StatusCreated, "Пользователь с id= "+id+" успешно удален", nil, h.deps.Logger)
+}
+
+// PATCH updates a user by ID
+// @Summary Update a user by ID
+// @Description Updates a user by their ID
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Param user body user.UpdateRequest true "User object to be updated"
+// @Success 201 {object} user.UpdateResponse "User updated"
+// @Failure 400 {object} user.ErrorResponse "Invalid ID"
+// @Failure 404 {object} user.ErrorResponse "User not found"
+// @Router /users/{id} [patch]
+func (h *Handler) PATCH(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	var user user.UpdateUser
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		utils.JSON(w, http.StatusBadRequest, "Невалидный формат JSON", nil, h.deps.Logger)
+		return
+	}
+
+	err := h.uc.UpdateUser(id, user)
+	if err != nil {
+		utils.JSON(w, http.StatusNotFound, err.Error(), nil, h.deps.Logger)
+		return
+	}
+
+	utils.JSON(w, http.StatusCreated, "Пользователь с id= "+id+" успешно обновлен", nil, h.deps.Logger)
 }

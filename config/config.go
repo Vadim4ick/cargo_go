@@ -55,8 +55,8 @@ func initConfig() Config {
 		SMTP_USER: getEnv("SMTP_USER", "firulvv@gmail.com"),
 		SMTP_PASS: getEnv("SMTP_PASS", "rkvt hdki wksz phnp"),
 
-		SWAGGER_LOGIN: getEnv("SMTP_PASS", "admin"),
-		SWAGGER_PASS:  getEnv("SMTP_PASS", "12345"),
+		SWAGGER_LOGIN: getEnv("SWAGGER_LOGIN", "admin"),
+		SWAGGER_PASS:  getEnv("SWAGGER_PASS", "12345"),
 		PATH_IMAGE:    getEnv("PATH_IMAGE", "./uploads"),
 	}
 }
