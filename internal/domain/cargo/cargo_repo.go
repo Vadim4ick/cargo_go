@@ -2,6 +2,7 @@ package cargo
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -48,34 +49,55 @@ func (r *PostgresCargoRepo) Create(c Cargo) (Cargo, error) {
 	return c, nil
 }
 
-func (r *PostgresCargoRepo) CreateCargoPhoto(p CargoPhoto) (CargoPhoto, error) {
-	err := r.db.QueryRow(context.Background(),
-		`INSERT INTO cargo_photos (url, cargoId) 
-		 VALUES ($1, $2)
-		 RETURNING id, url, cargoId, "createdAt"`,
-		p.URL, p.CargoID,
-	).Scan(
-		&p.ID,
-		&p.URL,
-		&p.CargoID,
-		&p.CreatedAt,
-	)
-	if err != nil {
-		return CargoPhoto{}, err
-	}
-	return p, nil
-}
-
 func (r *PostgresCargoRepo) FindAll() ([]Cargo, error) {
-	rows, err := r.db.Query(context.Background(), `SELECT * FROM cargos`)
+	const query = `
+SELECT
+    c.id,
+    c.cargonumber          AS "cargoNumber",
+    c.date,
+    c.loadunloaddate       AS "loadUnloadDate",
+    c.driver,
+    c.transportationinfo   AS "transportationInfo",
+    c.payoutamount         AS "payoutAmount",
+    c.payoutdate           AS "payoutDate",
+    c.paymentstatus        AS "paymentStatus",
+    c.payoutterms          AS "payoutTerms",
+    c."createdAt",
+    c.truckid              AS "truckId",
+    COALESCE(
+      json_agg(
+        json_build_object(
+          'id',        f.id,
+          'url',       f.url,
+          'cargoId',   f.owner_id,
+          'createdAt', f.created_at
+        )
+        ORDER BY f.created_at
+      ) FILTER (WHERE f.id IS NOT NULL),
+      '[]'
+    ) AS photos_json
+FROM   cargos c
+LEFT   JOIN files f
+       ON f.owner_table = 'cargos'
+      AND f.owner_id    = c.id
+GROUP  BY c.id
+ORDER  BY c."createdAt" DESC;
+`
+
+	rows, err := r.db.Query(context.Background(), query)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("query cargos: %w", err)
 	}
 	defer rows.Close()
 
-	var cargos []Cargo
+	var result []Cargo
+
 	for rows.Next() {
-		var c Cargo
+		var (
+			c          Cargo
+			photosJSON []byte
+		)
+
 		if err := rows.Scan(
 			&c.ID,
 			&c.CargoNumber,
@@ -89,30 +111,66 @@ func (r *PostgresCargoRepo) FindAll() ([]Cargo, error) {
 			&c.PayoutTerms,
 			&c.CreatedAt,
 			&c.TruckID,
+			&photosJSON,
 		); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("scan cargo: %w", err)
 		}
-		// подтягиваем для каждого груза его фото
-		photos, err := r.FindPhotosByCargoID(c.ID)
 
-		if err != nil {
-			return nil, err
+		// распаковываем JSON-массив файлов
+		if err := json.Unmarshal(photosJSON, &c.CargoPhotos); err != nil {
+			return nil, fmt.Errorf("unmarshal photos: %w", err)
 		}
-		c.CargoPhotos = photos
 
-		cargos = append(cargos, c)
+		result = append(result, c)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("rows iteration: %w", err)
 	}
 
-	return cargos, nil
+	return result, nil
 }
 
 func (r *PostgresCargoRepo) FindByID(id string) (Cargo, error) {
-	var c Cargo
-	err := r.db.QueryRow(context.Background(), `SELECT * FROM cargos WHERE id=$1`, id).Scan(
+	const q = `
+SELECT
+    c.id,
+    c.cargonumber          AS "cargoNumber",
+    c.date,
+    c.loadunloaddate       AS "loadUnloadDate",
+    c.driver,
+    c.transportationinfo   AS "transportationInfo",
+    c.payoutamount         AS "payoutAmount",
+    c.payoutdate           AS "payoutDate",
+    c.paymentstatus        AS "paymentStatus",
+    c.payoutterms          AS "payoutTerms",
+    c."createdAt",
+    c.truckid              AS "truckId",
+    COALESCE(
+      json_agg(
+        json_build_object(
+          'id',        f.id,
+          'url',       f.url,
+          'cargoId',   f.owner_id,
+          'createdAt', f.created_at
+        )
+        ORDER BY f.created_at
+      ) FILTER (WHERE f.id IS NOT NULL),
+      '[]'
+    ) AS photos_json
+FROM   cargos c
+LEFT   JOIN files f
+       ON f.owner_table = 'cargos'
+      AND f.owner_id    = c.id
+WHERE  c.id = $1
+GROUP  BY c.id;`
+
+	var (
+		c          Cargo
+		photosJSON []byte
+	)
+
+	err := r.db.QueryRow(context.Background(), q, id).Scan(
 		&c.ID,
 		&c.CargoNumber,
 		&c.Date,
@@ -125,40 +183,20 @@ func (r *PostgresCargoRepo) FindByID(id string) (Cargo, error) {
 		&c.PayoutTerms,
 		&c.CreatedAt,
 		&c.TruckID,
+		&photosJSON,
 	)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return Cargo{}, fmt.Errorf("груз с id=%d не существует", id)
+			return Cargo{}, fmt.Errorf("cargo with id=%s not found", id)
 		}
 		return Cargo{}, err
 	}
 
-	photos, err := r.FindPhotosByCargoID(c.ID)
-	if err != nil {
-		return Cargo{}, err
+	if err := json.Unmarshal(photosJSON, &c.CargoPhotos); err != nil {
+		return Cargo{}, fmt.Errorf("decode photos: %w", err)
 	}
-	c.CargoPhotos = photos
 
 	return c, nil
-}
-
-func (r *PostgresCargoRepo) FindPhotosByCargoID(cargoID string) ([]CargoPhoto, error) {
-	rows, err := r.db.Query(context.Background(),
-		`SELECT id, url, cargoId, "createdAt" FROM cargo_photos WHERE cargoId = $1`, cargoID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var photos []CargoPhoto
-	for rows.Next() {
-		var p CargoPhoto
-		if err := rows.Scan(&p.ID, &p.URL, &p.CargoID, &p.CreatedAt); err != nil {
-			return nil, err
-		}
-		photos = append(photos, p)
-	}
-	return photos, nil
 }
 
 func (r *PostgresCargoRepo) Update(c UpdateCargoInput, id string) (Cargo, error) {
@@ -239,27 +277,4 @@ func (r *PostgresCargoRepo) Update(c UpdateCargoInput, id string) (Cargo, error)
 func (r *PostgresCargoRepo) Delete(id string) error {
 	_, err := r.db.Exec(context.Background(), "DELETE FROM cargos WHERE id=$1", id)
 	return err
-}
-
-func (r *PostgresCargoRepo) DeleteCargoPhotos(ids []string) error {
-	_, err := r.db.Exec(context.Background(), "DELETE FROM cargo_photos WHERE id=ANY($1)", ids)
-	return err
-}
-
-func (r *PostgresCargoRepo) GetCargoPhotosByIDs(ids []string) ([]CargoPhoto, error) {
-	rows, err := r.db.Query(context.Background(), "SELECT * FROM cargo_photos WHERE id=ANY($1)", ids)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var photos []CargoPhoto
-	for rows.Next() {
-		var p CargoPhoto
-		if err := rows.Scan(&p.ID, &p.URL, &p.CargoID, &p.CreatedAt); err != nil {
-			return nil, err
-		}
-		photos = append(photos, p)
-	}
-	return photos, nil
 }

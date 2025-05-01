@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"test-project/config"
 	"test-project/internal/domain/auth"
 	cargoDomain "test-project/internal/domain/cargo"
 	"test-project/internal/domain/user"
@@ -70,7 +69,9 @@ func RegisterCargoRoute(r *mux.Router, deps *auth.Deps) {
 // @Failure 500 {object} cargo.ErrorResponse  "Внутренняя ошибка сервера"
 // @Router /cargo [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	role, err := middleware.GetUserRole(r.Context())
+	var ctx = r.Context()
+
+	role, err := middleware.GetUserRole(ctx)
 
 	if err != nil {
 		utils.JSON(w, http.StatusUnauthorized, err.Error(), nil, h.deps.Logger)
@@ -92,15 +93,13 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	form := r.MultipartForm
-	files := form.File["photos"]
-
-	photoURLs, err := utils.SaveUploadedFiles(files, config.Envs.PATH_IMAGE)
-
-	if err != nil {
-		utils.JSON(w, http.StatusInternalServerError, "Ошибка загрузки файлов: "+err.Error(), nil, h.deps.Logger)
+	// 3. вытаскиваем файлы и deletedIds
+	if err := r.ParseMultipartForm(32 << 20); err != nil { // 32 МБ
+		utils.JSON(w, http.StatusBadRequest, "multipart parse: "+err.Error(), nil, h.deps.Logger)
 		return
 	}
+
+	files := r.MultipartForm.File["photos"]
 
 	created, err := h.uc.CreateCargo(c)
 
@@ -109,15 +108,9 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, url := range photoURLs {
-		photo := cargoDomain.CargoPhoto{
-			URL:     url,
-			CargoID: created.ID,
-		}
-
-		_, err := h.uc.CreateCargoPhoto(photo)
-		if err != nil {
-			utils.JSON(w, http.StatusInternalServerError, "Ошибка сохранения фото: "+err.Error(), nil, h.deps.Logger)
+	if len(files) > 0 {
+		if err := h.deps.FileService.UploadMany(ctx, "cargos", created.ID, files); err != nil {
+			utils.JSON(w, http.StatusInternalServerError, "upload files: "+err.Error(), nil, h.deps.Logger)
 			return
 		}
 	}
